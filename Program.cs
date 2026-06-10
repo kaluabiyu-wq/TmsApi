@@ -7,6 +7,19 @@ builder.Services
 .AddAuthentication("Training")
 .AddScheme<AuthenticationSchemeOptions,TrainingAuthHandler>("Training",null);
 
+builder.Services.AddOptions<PaymentOptions>()
+.BindConfiguration("Payments")
+.ValidateDataAnnotations()
+.ValidateOnStart();
+
+
+builder.Services.AddSingleton<EnrollmentWorker>();
+builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+builder.Host.UseDefaultServiceProvider(options =>
+{
+options.ValidateScopes = true;
+options.ValidateOnBuild = true;
+});
 
 builder.Services.AddAuthorization();
 
@@ -16,14 +29,18 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // app.UseHttpsRedirection();
-app.MapGet("/api/assessments/results",()=>Results.Ok(new
+// app.MapGet("/api/assessments/results",()=>Results.Ok(new
+// {
+//     courseCode = "CS-101",
+//     studentId = "S-001",
+//     letterGrade = "A"
+// })).RequireAuthorization();
+
+app.MapGet("/api/enrollments/worker-smoke", (EnrollmentWorker worker) =>
 {
-    courseCode = "CS-101",
-    studentId = "S-001",
-    letterGrade = "A"
-})).RequireAuthorization();
-
-
+worker.ProcessBatch();
+return Results.Ok("processed");
+});
 // app.MapControllers();
 
 app.Run();
