@@ -29,18 +29,18 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // app.UseHttpsRedirection();
-// app.MapGet("/api/assessments/results",()=>Results.Ok(new
-// {
-//     courseCode = "CS-101",
-//     studentId = "S-001",
-//     letterGrade = "A"
-// })).RequireAuthorization();
+app.MapGet("/api/assessments/results",()=>Results.Ok(new
+{
+    courseCode = "CS-101",
+    studentId = "S-001",
+    letterGrade = "A"
+})).RequireAuthorization();
 
 app.MapGet("/api/enrollments/worker-smoke", (EnrollmentWorker worker) =>
 {
 worker.ProcessBatch();
 return Results.Ok("processed");
-});
+}).RequireAuthorization();
 // app.MapControllers();
 
 app.Run();
