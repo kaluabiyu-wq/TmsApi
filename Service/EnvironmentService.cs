@@ -64,29 +64,3 @@ public class EnrollmentService : IEnrollmentService
     }
 
 }
-
-public class EnrollmentWorker(IServiceScopeFactory scopeFactory)
-{
-    public void ProcessBatch()
-    {
-        var scope = scopeFactory.CreateScope();
-
-        var svc = scope.ServiceProvider.GetRequiredService<IEnrollmentService>();
-
-        var enrollment = svc.EnrollAsync("S-001","CS-101").Result;
-
-        var fetched = svc.GetByIdAsync(enrollment.Id).Result;
-
-        svc.DeleteAsync(enrollment.Id).Wait();
-
-    }
-}
-
-public class PaymentOptions
-{
-    [Required] public required string GatewayUrl { get; init; }
-
-    [Range(100, 100000)] public decimal MaxDepositeBirr { get; init; }
-
-
-}

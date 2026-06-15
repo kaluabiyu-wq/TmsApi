@@ -24,23 +24,32 @@ options.ValidateOnBuild = true;
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+app.UseMiddleware<RequestLoggingMiddleware>();
+
+app.UseExceptionHandler("/error");
+
+app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
 // app.UseHttpsRedirection();
-// app.MapGet("/api/assessments/results",()=>Results.Ok(new
-// {
-//     courseCode = "CS-101",
-//     studentId = "S-001",
-//     letterGrade = "A"
-// })).RequireAuthorization();
-
-app.MapGet("/api/enrollments/worker-smoke", (EnrollmentWorker worker) =>
+app.MapGet("/api/assessments/results",()=>
 {
-worker.ProcessBatch();
-return Results.Ok("processed");
+ return Results.Ok(new
+{
+    courseCode = "CS-101",
+    studentId = "S-001",
+    letterGrade = "A"
 });
+
+}).RequireAuthorization();
+
+// app.MapGet("/api/enrollments/worker-smoke", (EnrollmentWorker worker) =>
+// {
+// worker.ProcessBatch();
+// return Results.Ok("processed");
+// });
 // app.MapControllers();
 
 app.Run();
