@@ -1,42 +1,72 @@
+
 @TmsApi_HostAddress = http://localhost:5285
 
-### First enrollment (should log Information)
+
+### 
 POST {{TmsApi_HostAddress}}/api/enrollments
+X-Training-User: kalu
 Accept: application/json
 
 ###
-
-### Second enrollment - same student+course (should log Warning)
 POST {{TmsApi_HostAddress}}/api/enrollments
+X-Training-User: kalu
 Accept: application/json
 
 ###
-
-### Get nonexistent ID (should log Warning)
 GET {{TmsApi_HostAddress}}/api/enrollments/xyz
+X-Training-User: kalu
 Accept: application/json
 
 ###
-
-### Get all enrollments
 GET {{TmsApi_HostAddress}}/api/enrollments
+X-Training-User: kalu
 Accept: application/json
 
 ###
-
-
-### Post a new enrollment
 POST {{TmsApi_HostAddress}}/api/enrollments
+X-Training-User: Kalu
 Content-Type: application/json
 Accept: application/json
 
 {"studentId":"S-001","courseCode":"CS-101"}
 
 ###
+GET {{TmsApi_HostAddress}}/api/enrollments/803c65b2
+X-Training-User: kalu
+Accept: application/json
 
-### Get the Created enrollment(use the id)
-GET {{TmsApi_HostAddress}}/api/enrollments/046b713f
+###
+DELETE {{TmsApi_HostAddress}}/api/enrollments/803c65b2
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/enrollments/803c65b2
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/error
+X-Training-User: kalu
+Accept: application/json
+
+### Scalar UI — open this in browser instead
+GET {{TmsApi_HostAddress}}/scalar/v1
+X-Training-User: kalu
+Accept: text/html
+
+###
+
+### OpenAPI JSON spec (Expected: raw JSON)
+GET {{TmsApi_HostAddress}}/openapi/v1.json
+X-Training-User: kalu
 Accept: application/json
 
 ###
 
+### Error endpoint (Expected: ProblemDetails JSON)
+GET {{TmsApi_HostAddress}}/api/error
+X-Training-User: kalu
+Accept: application/json
+
+###

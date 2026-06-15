@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddOptions<PaymentOptions>()
 builder.Services.AddSingleton<EnrollmentWorker>();
 builder.Services.AddSingleton<IEnrollmentService, EnrollmentService>();
 
+builder.Services.AddProblemDetails();
+builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 
 builder.Host.UseDefaultServiceProvider(options =>
@@ -26,11 +29,26 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseExceptionHandler(); 
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
+
+   
 // Middleware pipeline (order matters)
+
+app.UseStatusCodePages();
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
+
 
 // Protected assessment endpoint
 app.MapGet("/api/assessments/results", () =>
@@ -43,23 +61,8 @@ app.MapGet("/api/assessments/results", () =>
     });
 }).RequireAuthorization();
 
-
-app.MapPost("/api/enrollments", async (IEnrollmentService svc) =>
+app.MapGet("/api/error", () =>
 {
-    var record = await svc.EnrollAsync("S-001", "CS-101");
-    return Results.Ok(record);
+    throw new TmsDatabaseException("Simulated database failure for ProblemDetails testing");
 });
-
-app.MapGet("/api/enrollments/{id}", async (string id, IEnrollmentService svc) =>
-{
-    var record = await svc.GetByIdAsync(id);
-    return record is null ? Results.NotFound() : Results.Ok(record);
-});
-
-app.MapGet("/api/enrollments", async (IEnrollmentService svc) =>
-{
-    var all = await svc.GetAllAsync();
-    return Results.Ok(all);
-});
-
 app.Run();
