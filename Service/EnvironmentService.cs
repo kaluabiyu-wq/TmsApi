@@ -1,10 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-public record EnrollmentRecord(
-string Id,
-string StudentId,
-string CourseCode,
-DateTime EnrolledAt);
+
 public interface IEnrollmentService
 {
     Task<EnrollmentRecord>EnrollAsync(string studentId,string courseCode);
@@ -64,3 +60,8 @@ public class EnrollmentService : IEnrollmentService
     }
 
 }
+public record EnrollmentRecord(
+string Id,
+string StudentId,
+string CourseCode,
+DateTime EnrolledAt);

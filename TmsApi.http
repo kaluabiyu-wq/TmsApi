@@ -1,17 +1,25 @@
 @TmsApi_HostAddress = http://localhost:5285
 
-GET {{TmsApi_HostAddress}}/weatherforecast/
+### First enrollment (should log Information)
+POST {{TmsApi_HostAddress}}/api/enrollments
 Accept: application/json
 
 ###
 
-GET {{TmsApi_HostAddress}}/api/enrollments/results
+### Second enrollment - same student+course (should log Warning)
+POST {{TmsApi_HostAddress}}/api/enrollments
 Accept: application/json
 
 ###
 
-GET {{TmsApi_HostAddress}}/api/enrollments/
+### Get nonexistent ID (should log Warning)
+GET {{TmsApi_HostAddress}}/api/enrollments/xyz
 Accept: application/json
 
 ###
 
+### Get all enrollments
+GET {{TmsApi_HostAddress}}/api/enrollments
+Accept: application/json
+
+###
