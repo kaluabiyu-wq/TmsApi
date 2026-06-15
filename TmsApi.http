@@ -1,6 +1,42 @@
 @TmsApi_HostAddress = http://localhost:5285
 
-GET {{TmsApi_HostAddress}}/weatherforecast/
+### First enrollment (should log Information)
+POST {{TmsApi_HostAddress}}/api/enrollments
 Accept: application/json
 
 ###
+
+### Second enrollment - same student+course (should log Warning)
+POST {{TmsApi_HostAddress}}/api/enrollments
+Accept: application/json
+
+###
+
+### Get nonexistent ID (should log Warning)
+GET {{TmsApi_HostAddress}}/api/enrollments/xyz
+Accept: application/json
+
+###
+
+### Get all enrollments
+GET {{TmsApi_HostAddress}}/api/enrollments
+Accept: application/json
+
+###
+
+
+### Post a new enrollment
+POST {{TmsApi_HostAddress}}/api/enrollments
+Content-Type: application/json
+Accept: application/json
+
+{"studentId":"S-001","courseCode":"CS-101"}
+
+###
+
+### Get the Created enrollment(use the id)
+GET {{TmsApi_HostAddress}}/api/enrollments/046b713f
+Accept: application/json
+
+###
+

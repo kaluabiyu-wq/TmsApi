@@ -1,17 +1,11 @@
-using System.ComponentModel.DataAnnotations;
 
-public record EnrollmentRecord(
-string Id,
-string StudentId,
-string CourseCode,
-DateTime EnrolledAt);
 public interface IEnrollmentService
 {
-    Task<EnrollmentRecord> EnrollAsync(string studentId, string courseCode);
+    Task<EnrollmentRecord> EnrollAsync(string studentId,string courseCode);
 
     Task<EnrollmentRecord?> GetByIdAsync(string id);
     Task<bool> DeleteAsync(string id);
-    Task<IReadOnlyList<EnrollmentRecord>> GetAllAsync();
+     Task<IReadOnlyList<EnrollmentRecord>> GetAllAsync();
 }
 public class EnrollmentService : IEnrollmentService
 {
@@ -24,7 +18,7 @@ public class EnrollmentService : IEnrollmentService
     public Task<EnrollmentRecord> EnrollAsync(string studentId, string courseCode)
     {
         var existing = _store.Values
-        .FirstOrDefault(e =>e.StudentId == studentId && e.CourseCode ==courseCode);
+        .FirstOrDefault(e => e.StudentId == studentId && e.CourseCode == courseCode);
         if (existing is not null)
         {
             _logger.LogWarning("Duplicate enrollment attempt {StudentId} already in {CourseCode} (record {EnrollmentId})",
@@ -64,29 +58,8 @@ public class EnrollmentService : IEnrollmentService
     }
 
 }
-
-public class EnrollmentWorker(IServiceScopeFactory scopeFactory)
-{
-    public void ProcessBatch()
-    {
-        var scope = scopeFactory.CreateScope();
-
-        var svc = scope.ServiceProvider.GetRequiredService<IEnrollmentService>();
-
-        var enrollment = svc.EnrollAsync("S-001","CS-101").Result;
-
-        var fetched = svc.GetByIdAsync(enrollment.Id).Result;
-
-        svc.DeleteAsync(enrollment.Id).Wait();
-
-    }
-}
-
-public class PaymentOptions
-{
-    [Required] public required string GatewayUrl { get; init; }
-
-    [Range(100, 100000)] public decimal MaxDepositeBirr { get; init; }
-
-
-}
+public record EnrollmentRecord(
+string Id,
+string StudentId,
+string CourseCode,
+DateTime EnrolledAt);

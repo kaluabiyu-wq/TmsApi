@@ -26,12 +26,12 @@ public class EnrollmentsController(IEnrollmentService enrollmentService):Control
         return CreatedAtAction(nameof(GetById), new {id = record.Id},record);
 
     }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult>Delete(String id)
-    {
-        var deleted = await enrollmentService.DeleteAsync(id);
-        return deleted ? NoContent():NotFound();
-    }
+    // [HttpDelete("{id}")]
+    // public async Task<IActionResult>Delete(String id)
+    // {
+    //     var deleted = await enrollmentService.DeleteAsync(id);
+    //     return deleted ? NoContent():NotFound();
+    // }
 
     
 }
