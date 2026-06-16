@@ -70,3 +70,75 @@ X-Training-User: kalu
 Accept: application/json
 
 ###
+
+
+GET {{TmsApi_HostAddress}}/api/students
+X-Training-User: kalu
+Accept: application/json
+
+###
+POST {{TmsApi_HostAddress}}/api/students
+Content-Type: application/json
+
+{
+    "name": "Kalu abiyu",
+    "gpa": 3.6
+}
+
+###
+GET {{TmsApi_HostAddress}}/api/students/df162c10
+
+###
+DELETE {{TmsApi_HostAddress}}/api/students/df162c10
+
+###
+GET {{TmsApi_HostAddress}}/api/students/df162c10
+
+// Course Testing
+###
+GET {{TmsApi_HostAddress}}/api/courses
+
+###
+POST {{TmsApi_HostAddress}}/api/courses
+Content-Type: application/json
+
+{
+    "title": "Full stack",
+    "capacity": 30
+}
+
+###
+GET {{TmsApi_HostAddress}}/api/courses/ee066ea8
+
+###
+DELETE {{TmsApi_HostAddress}}/api/courses/ee066ea8
+
+###
+GET {{TmsApi_HostAddress}}/api/courses/ee066ea8
+
+// Assessment Testing
+###
+GET {{TmsApi_HostAddress}}/api/assessments
+
+###
+POST {{TmsApi_HostAddress}}/api/assessments
+Content-Type: application/json
+
+{
+    "title": "Midterm Quiz",
+    "kind": "quiz",
+    "score": 85
+}
+
+###
+GET {{TmsApi_HostAddress}}/api/assessments/80f91621
+
+###
+DELETE {{TmsApi_HostAddress}}/api/assessments/80f91621
+
+###
+GET {{TmsApi_HostAddress}}/api/assessments/
+
+
+###
+GET {{TmsApi_HostAddress}}/api/error
