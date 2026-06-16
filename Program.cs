@@ -14,6 +14,13 @@ builder.Services.AddOptions<PaymentOptions>()
 
 builder.Services.AddSingleton<EnrollmentWorker>();
 builder.Services.AddSingleton<IEnrollmentService, EnrollmentService>();
+builder.Services.AddSingleton<IStudentService, StudentService>();
+builder.Services.AddSingleton<ICourseService, CourseService>();
+builder.Services.AddSingleton<IAssessmentService, AssessmentService>();
+
+
+
+
 
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
@@ -29,14 +36,16 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseExceptionHandler(); 
-
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapOpenApi();                 
+    app.MapScalarApiReference();       
 }
 
+else
+{
+    app.UseExceptionHandler();
+}
    
 // Middleware pipeline (order matters)
 
