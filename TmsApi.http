@@ -139,6 +139,13 @@ DELETE {{TmsApi_HostAddress}}/api/assessments/a316df77
 ###
 GET {{TmsApi_HostAddress}}/api/assessments/a316df77
 
+###
+GET {{TmsApi_HostAddress}}/api/test/deferred
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/test/translation-fail
+Accept: application/json
 
 ###
 GET {{TmsApi_HostAddress}}/api/error
