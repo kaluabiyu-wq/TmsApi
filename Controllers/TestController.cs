@@ -45,4 +45,26 @@ public class TestController(TmSDbContext context) : ControllerBase
             return BadRequest (new { Message = ex.Message});
         }
     }
+    [HttpGet("honor-roll-server")]
+    public IActionResult HonorRollServer()
+    {
+        Console.WriteLine("\n>> SERVER-SIDE: Query with inline Logic...");
+        var students = context.Students
+        .Where(s=> s.GPA >=3.5m).ToList();
+
+    Console.WriteLine($">>> SERVER-SIDE: {students.Count} students returned.\n");
+
+    return Ok(students);
+    }
+    [HttpGet("honor-roll-client")]
+    public IActionResult HonorRollClient()
+    {
+        Console.WriteLine("\n>> CLIENT-SIDE: Pulling ALL rows into RAM first...");
+        var students = context.Students
+        .AsEnumerable()
+        .Where(s => IsHonorRoll(s.GPA))
+        .ToList();
+       Console.WriteLine($">>> CLIENT-SIDE: {students.Count} students returned.\n");
+       return Ok(students);
+    }
 }

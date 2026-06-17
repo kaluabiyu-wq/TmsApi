@@ -87,9 +87,14 @@ Content-Type: application/json
 
 ###
 GET {{TmsApi_HostAddress}}/api/students/f515a2a7
+X-Training-User: kalu
+Accept: application/json
+
 
 ###
 DELETE {{TmsApi_HostAddress}}/api/students/f515a2a7
+X-Training-User: kalu
+Accept: application/json
 
 ###
 GET {{TmsApi_HostAddress}}/api/students/f515a2a7
@@ -97,6 +102,8 @@ GET {{TmsApi_HostAddress}}/api/students/f515a2a7
 // Course Testing
 ###
 GET {{TmsApi_HostAddress}}/api/courses
+X-Training-User: kalu
+Accept: application/json
 
 ###
 POST {{TmsApi_HostAddress}}/api/courses
@@ -109,16 +116,24 @@ Content-Type: application/json
 
 ###
 GET {{TmsApi_HostAddress}}/api/courses/e2302836
+X-Training-User: kalu
+Accept: application/json
 
 ###
 DELETE {{TmsApi_HostAddress}}/api/courses/e2302836
+X-Training-User: kalu
+Accept: application/json
 
 ###
 GET {{TmsApi_HostAddress}}/api/courses/e2302836
+X-Training-User: kalu
+Accept: application/json
 
 // Assessment Testing
 ###
 GET {{TmsApi_HostAddress}}/api/assessments
+X-Training-User: kalu
+Accept: application/json
 
 ###
 POST {{TmsApi_HostAddress}}/api/assessments
@@ -132,20 +147,66 @@ Content-Type: application/json
 
 ###
 GET {{TmsApi_HostAddress}}/api/assessments/a316df77
+X-Training-User: kalu
+Accept: application/json
 
 ###
 DELETE {{TmsApi_HostAddress}}/api/assessments/a316df77
+X-Training-User: kalu
+Accept: application/json
 
 ###
 GET {{TmsApi_HostAddress}}/api/assessments/a316df77
+X-Training-User: kalu
+Accept: application/json
 
 ###
 GET {{TmsApi_HostAddress}}/api/test/deferred
+X-Training-User: kalu
 Accept: application/json
 
 ###
 GET {{TmsApi_HostAddress}}/api/test/translation-fail
+X-Training-User: kalu
 Accept: application/json
 
 ###
+GET {{TmsApi_HostAddress}}/api/test/honor-roll-server
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/test/honor-roll-client
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/report/active-student
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/report/course-enrollment-descending-order
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/report/average-gpa
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/report/zero-enrollment-usingSubquery
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/report/zero-enrollment-usingEfCoreLeftJoin
+X-Training-User: kalu
+Accept: application/json
+
+
+###
 GET {{TmsApi_HostAddress}}/api/error
+X-Training-User: kalu
+Accept: application/json
