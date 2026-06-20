@@ -128,8 +128,35 @@ using (var scope = app.Services.CreateScope())
         };
         context.Enrollments.AddRange(enrollments);
         context.SaveChanges();
+
+ var ct = CancellationToken.None;
+
+ var courseStats = await context.Enrollments
+ .GroupBy(e => e.CourseId)
+ .Select(g => new
+ {
+     CourseId = g.Key,
+     StudentCount = g.Count(),
+     AverageGpa = g.Average(e => e.Student.GPA)
+
+ }).OrderByDescending(s => s.StudentCount)
+ .Take(5)
+  .ToListAsync(ct);
+
+   int pageSize = 25, pageNumber = 2;
+  var page = await context.Students
+  .OrderBy(s => s.Name)
+  .Skip((pageNumber -1) * pageSize)
+  .Take(pageSize)
+  .ToListAsync(ct);
+
+
+
     }
 }
+ 
+
+
 
 
 
