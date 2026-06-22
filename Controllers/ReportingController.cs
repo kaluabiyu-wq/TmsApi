@@ -92,8 +92,7 @@ public class ReportingController(TmSDbContext context): ControllerBase
      [HttpGet("Paged")]
 
   public async Task<IActionResult> Group(
-   [FromQuery]  int pageSize = 25,
-    [FromQuery] int pageNumber = 2,
+   int pageSize = 25, int pageNumber = 2,
     CancellationToken ct = default) {
      
   var page = await context.Students
