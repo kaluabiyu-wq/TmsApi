@@ -16,8 +16,8 @@ DbContext(options)
     public DbSet<Certificate> Certificates => Set<Certificate>();
 
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder b)
     {
-        base.OnModelCreating(modelBuilder);
+        b.ApplyConfigurationsFromAssembly(typeof(TmSDbContext).Assembly);
     }
 }

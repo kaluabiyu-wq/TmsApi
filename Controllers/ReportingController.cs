@@ -69,5 +69,43 @@ public class ReportingController(TmSDbContext context): ControllerBase
 
         return Ok(list);
     }
+ [HttpGet("Paginate")]
+    public async Task<IActionResult> GetTopCourses(
+    CancellationToken ct = default)
+    {
+ var courseStats = await context.Enrollments
+ .GroupBy(e => e.CourseId)
+ .Select(g => new
+ {
+     CourseId = g.Key,
+     StudentCount = g.Count(),
+     AverageGpa = g.Average(e => e.Student.GPA)
+
+ }).OrderByDescending(s => s.StudentCount)
+ .Take(5)
+  .ToListAsync(ct);
+
+  return Ok(courseStats);
+
+    }
+
+     [HttpGet("Paged")]
+
+  public async Task<IActionResult> Group(
+   [FromQuery]  int pageSize = 25,
+    [FromQuery] int pageNumber = 2,
+    CancellationToken ct = default) {
+     
+  var page = await context.Students
+  .OrderBy(s => s.Name)
+  .Skip((pageNumber - 1) * pageSize)
+  .Take(pageSize)
+  .ToListAsync(ct);
+
+  return Ok(page);
+
+}
+
+
 
 }
