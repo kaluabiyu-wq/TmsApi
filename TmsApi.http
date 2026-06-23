@@ -217,6 +217,21 @@ X-Training-User: kalu
 Accept: application/json
 
 ###
+GET {{TmsApi_HostAddress}}/api/report/round-trip
+X-Training-User: kalu
+Accept: application/json
+
+
+###
+GET {{TmsApi_HostAddress}}/api/report/shaped-query
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/report/using-include
+X-Training-User: kalu
+Accept: application/json
+###
 GET {{TmsApi_HostAddress}}/api/error
 X-Training-User: kalu
 Accept: application/json

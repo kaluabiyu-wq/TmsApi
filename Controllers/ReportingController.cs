@@ -106,6 +106,60 @@ public class ReportingController(TmSDbContext context): ControllerBase
 
 }
 
+[HttpGet("round-trip")]
+public async Task<IActionResult> RoundTrip(CancellationToken ct = default)
+    {
+
+        var students = await context.Students.AsNoTracking().ToListAsync(ct);
+        foreach (var s in students)
+        {
+            
+            var count = await context.Enrollments
+            .AsNoTracking()
+            .CountAsync(e => e.StudentId == s.ID,ct);
+            Console.WriteLine($"{s.Name}: {count}  enrollments");
+        }
+
+        return Ok(students);
+        
+    }
+
+[HttpGet("shaped-query")]
+public async Task<IActionResult> Shapedquery(CancellationToken  ct = default)
+    {
+
+        var report = await context.Students.AsNoTracking().Select(
+            s=> new
+            {
+                s.Name,EnrollmentCount = s.Enrollments.Count
+            }
+        ).ToListAsync(ct);
+        foreach (var r in report)
+        {
+        
+            Console.WriteLine($"{r.Name}: {r.EnrollmentCount}  enrollments");
+        }
+
+        return Ok(report);
+        
+    }
+
+
+[HttpGet("using-include")]
+public async Task<IActionResult> UsingInclude(CancellationToken  ct = default)
+    {
+
+        var students = await context.Students.AsNoTracking().Include(
+            s=> s.Enrollments ).ToListAsync(ct);
+        foreach (var s in students)
+        {
+        
+            Console.WriteLine($"{s.Name}: {s.Enrollments.Count}  enrollments");
+        }
+
+        return Ok(students);
+        
+    }
 
 
 }
