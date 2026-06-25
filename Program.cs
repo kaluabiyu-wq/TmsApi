@@ -103,7 +103,9 @@ using (var scope = app.Services.CreateScope())
              new() {RegistrationNumber = "TMS-2026-0005",Name ="Evan Wright",
             GPA = 2.5m, IsActive = true}
         };
-        context.Students.AddRange(students);
+        
+         context.Students.AddRange(students);
+         context.Entry(students).Property("Last Updated").CurrentValue = DateTime.UtcNow;
 
         var courses = new List<Course>
         {
@@ -128,7 +130,6 @@ using (var scope = app.Services.CreateScope())
         };
         context.Enrollments.AddRange(enrollments);
         context.SaveChanges();
-
     }
 }
 
