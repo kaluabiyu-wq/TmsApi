@@ -19,5 +19,6 @@ DbContext(options)
     protected override void OnModelCreating(ModelBuilder b)
     {
         b.ApplyConfigurationsFromAssembly(typeof(TmSDbContext).Assembly);
+    
     }
 }
