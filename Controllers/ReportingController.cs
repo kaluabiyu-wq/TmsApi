@@ -73,7 +73,7 @@ public class ReportingController(TmSDbContext context) : ControllerBase
     }
     [HttpGet("Paginate")]
     public async Task<IActionResult> GetTopCourses(
-       CancellationToken ct = default)
+       CancellationToken cancellationToken)
     {
         var courseStats = await context.Enrollments
         .GroupBy(e => e.CourseId)
@@ -85,40 +85,38 @@ public class ReportingController(TmSDbContext context) : ControllerBase
 
         }).OrderByDescending(s => s.StudentCount)
         .Take(5)
-         .ToListAsync(ct);
+         .ToListAsync(cancellationToken);
 
         return Ok(courseStats);
 
     }
 
     [HttpGet("Paged")]
-
-    public async Task<IActionResult> Group(
-int pageSize = 25, int pageNumber = 1,
-   CancellationToken ct = default)
+    public async Task<IActionResult> Group( CancellationToken cancellationToken,
+    int pageSize = 25, int pageNumber = 1)
     {
 
         var page = await context.Students
         .OrderBy(s => s.Name)
         .Skip((pageNumber - 1) * pageSize)
         .Take(pageSize)
-        .ToListAsync(ct);
+        .ToListAsync(cancellationToken);
 
         return Ok(page);
 
     }
 
     [HttpGet("round-trip")]
-    public async Task<IActionResult> RoundTrip(CancellationToken ct = default)
+    public async Task<IActionResult> RoundTrip(CancellationToken cancellationToken)
     {
 
-        var students = await context.Students.AsNoTracking().ToListAsync(ct);
+        var students = await context.Students.AsNoTracking().ToListAsync(cancellationToken);
         foreach (var s in students)
         {
 
             var count = await context.Enrollments
             .AsNoTracking()
-            .CountAsync(e => e.StudentId == s.ID, ct);
+            .CountAsync(e => e.StudentId == s.ID, cancellationToken);
             Console.WriteLine($"{s.Name}: {count}  enrollments");
         }
 
@@ -127,7 +125,7 @@ int pageSize = 25, int pageNumber = 1,
     }
 
     [HttpGet("shaped-query")]
-    public async Task<IActionResult> Shapedquery(CancellationToken ct = default)
+    public async Task<IActionResult> Shapedquery(CancellationToken cancellationToken)
     {
 
         var report = await context.Students.AsNoTracking().Select(
@@ -136,7 +134,7 @@ int pageSize = 25, int pageNumber = 1,
                 s.Name,
                 EnrollmentCount = s.Enrollments.Count
             }
-        ).ToListAsync(ct);
+        ).ToListAsync(cancellationToken);
         foreach (var r in report)
         {
 
@@ -149,19 +147,16 @@ int pageSize = 25, int pageNumber = 1,
 
 
     [HttpGet("using-include")]
-    public async Task<IActionResult> UsingInclude(CancellationToken ct = default)
+    public async Task<IActionResult> UsingInclude(CancellationToken cancellationToken)
     {
 
-        var students = await context.Students.AsNoTracking()
-        .Include(
-            s => s.Enrollments).ToListAsync(ct);
-        foreach (var s in students)
-        {
+       var students = await context.Students
+    .Include(s => s.Enrollments)
+    .ToListAsync(cancellationToken);
+    
+    foreach (var s in students)
+    Console.WriteLine($"{s.Name}: {s.Enrollments.Count} enrollments");
 
-            Console.WriteLine($"{s.Name}: {s.Enrollments.Count}  enrollments");
-        }
-
-        return Ok(students);
-
+return Ok(students);
     }
 }

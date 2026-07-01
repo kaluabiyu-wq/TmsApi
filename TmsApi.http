@@ -86,18 +86,18 @@ Content-Type: application/json
 }
 
 ###
-GET {{TmsApi_HostAddress}}/api/students/f515a2a7
+GET {{TmsApi_HostAddress}}/api/students/1ac5c1ef
 X-Training-User: kalu
 Accept: application/json
 
 
 ###
-DELETE {{TmsApi_HostAddress}}/api/students/f515a2a7
+DELETE {{TmsApi_HostAddress}}/api/students/1ac5c1ef
 X-Training-User: kalu
 Accept: application/json
 
 ###
-GET {{TmsApi_HostAddress}}/api/students/f515a2a7
+GET {{TmsApi_HostAddress}}/api/students/1ac5c1ef
 
 // Course Testing
 ###
@@ -231,6 +231,55 @@ Accept: application/json
 GET {{TmsApi_HostAddress}}/api/report/using-include
 X-Training-User: kalu
 Accept: application/json
+
+###
+POST {{TmsApi_HostAddress}}/api/students 
+X-Training-User: kalu
+Content-Type: application/json
+Accept: application/json
+
+{"name":"kalu",
+"registrationnumber":"123",
+"gpa":"3.5"
+}
+
+
+### Tab A
+GET {{TmsApi_HostAddress}}/api/students/4b883438
+X-Training-User: kalu
+Accept: application/json
+
+### Tab A
+PUT {{TmsApi_HostAddress}}/api/students/4b883438
+X-Training-User: kalu
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name":"kalu",
+  "registrationnumber":"123",
+  
+  "gpa": 3.5
+}
+
+### Tab B 
+GET {{TmsApi_HostAddress}}/api/students/4b883438
+X-Training-User: kalu
+Accept: application/json
+
+
+### Tab B 
+PUT {{TmsApi_HostAddress}}/api/students/4b883438
+X-Training-User: kalu
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "kalu",
+  "registrationnumber":"456",
+  "gpa": 3.9
+}
+
 ###
 GET {{TmsApi_HostAddress}}/api/error
 X-Training-User: kalu

@@ -32,7 +32,11 @@ builder.Services.AddSingleton<IAssessmentService, AssessmentService>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
 
 builder.Host.UseDefaultServiceProvider(options =>
 {
@@ -106,6 +110,7 @@ using (var scope = app.Services.CreateScope())
         
          context.Students.AddRange(students);
          context.Entry(students).Property("Last Updated").CurrentValue = DateTime.UtcNow;
+          
 
         var courses = new List<Course>
         {
@@ -129,8 +134,29 @@ using (var scope = app.Services.CreateScope())
             Grade = 3.9m},
         };
         context.Enrollments.AddRange(enrollments);
+
         context.SaveChanges();
     }
+
+
 }
+
+app.MapPut("/api/students/{id}", async (int id, Student students1, TmSDbContext context) =>
+{
+    var student = await context.Students.FindAsync(id);
+     student.Name = students1.Name;
+     student.GPA = students1.GPA;
+
+    try
+    {
+        await context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        return Results.Conflict("The record was modified by another user.");
+    }
+
+    return Results.Ok(student);
+});
 
 app.Run();

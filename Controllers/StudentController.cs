@@ -46,8 +46,6 @@ public class StudentsController(IStudentService studentService) : ControllerBase
         return deleted ? NoContent() : NotFound();
     }
 
-   
-
 
     public record CreateStudentRequest(string Name, double? Gpa);
 }
