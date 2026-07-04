@@ -8,12 +8,12 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
 {
     public void Configure(EntityTypeBuilder<Student> builder)
     {
-
+        builder.HasQueryFilter(s=>s.IsDeleted);
         builder.Property<DateTime>("LastUpdated")
         .HasColumnType("timeStamp without time Zone")
         .HasDefaultValueSql("now()");
         builder.Property(s => s.Version).IsRowVersion();
-
+       
     }
 
 

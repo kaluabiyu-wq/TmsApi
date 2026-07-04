@@ -14,6 +14,7 @@ public class Enrollment
 
     public int Year {get; set;}
 
+   public bool IsArchived {get;set;} = false;
     public DateTime EnrolledAt { get; set;} = DateTime.UtcNow;
     public Student Student { get; set;} = null!;
     public Course Course {get; set;} = null!;

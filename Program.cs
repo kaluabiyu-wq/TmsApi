@@ -144,8 +144,6 @@ using (var scope = app.Services.CreateScope())
 app.MapPut("/api/students/{id}", async (int id, Student students1, TmSDbContext context) =>
 {
     var student = await context.Students.FindAsync(id);
-     student.Name = students1.Name;
-     student.GPA = students1.GPA;
 
     try
     {
@@ -153,10 +151,11 @@ app.MapPut("/api/students/{id}", async (int id, Student students1, TmSDbContext 
     }
     catch (DbUpdateConcurrencyException)
     {
-        return Results.Conflict("The record was modified by another user.");
+        return Results.Conflict("The record was modified by another user.-m ");
     }
 
     return Results.Ok(student);
 });
 
 app.Run();
+
