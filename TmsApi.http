@@ -280,6 +280,30 @@ Accept: application/json
   "gpa": 3.9
 }
 
+
+
+###
+POST {{TmsApi_HostAddress}}/api/courses
+X-Training-User: kalu
+Content-Type: application/json
+Accept: application/json
+{
+  "Code":"CSE-101",
+  "title":"Web-Development Fundamentals",
+  "maxCapacity":30
+}
+
+###
+GET {{TmsApi_HostAddress}}/api/courses/
+X-Training-User: kalu
+Accept: application/json
+
+
+###
+GET {{TmsApi_HostAddress}}/api/courses
+X-Training-User: kalu
+Accept: application/json
+
 ###
 GET {{TmsApi_HostAddress}}/api/error
 X-Training-User: kalu

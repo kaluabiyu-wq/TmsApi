@@ -1,5 +1,9 @@
 
 
+using Microsoft.EntityFrameworkCore;
+using TmsApi.Data;
+using TmsApi.Entities;
+
 public class CourseService : ICourseService
 {
     private readonly Dictionary<string, CourseRecord> _store = new();
@@ -82,7 +86,6 @@ public class CourseService : ICourseService
 
         return Task.FromResult(removed);
     }
+
 }
-
-
 public record CourseRecord(string Id,string Title,int Capacity, DateTime CreatedAt);
