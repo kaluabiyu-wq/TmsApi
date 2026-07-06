@@ -360,6 +360,28 @@ Accept: application/json
 {
   "studentId": 1
 }
+
+###
+GET {{TmsApi_HostAddress}}/api/courses?page=1&pageSize=10
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/courses?page=3&pageSize=10
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/courses?search=fund
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/courses?orderBy=Code&descending=true&pageSize=5
+X-Training-User: kalu
+Accept: application/json
+
+
 ###
 GET {{TmsApi_HostAddress}}/api/error
 X-Training-User: kalu
