@@ -4,74 +4,36 @@ using Microsoft.EntityFrameworkCore;
 using TmsApi.Data;
 using TmsApi.Entities;
 
-public class EnrollmentService : IEnrollmentService
+public class EnrollmentService(TmSDbContext context, ILogger<EnrollmentService> logger) : IEnrollmentService
 {
-    private readonly Dictionary<string, EnrollmentRecord> _store = new();
-    private readonly ILogger<EnrollmentService> _logger;
-    public EnrollmentService(ILogger<EnrollmentService> logger)
-    {
-        _logger = logger;
-    }
-    public Task<EnrollmentRecord> EnrollAsync(string studentId, string courseCode)
-    {
-        var existing = _store.Values
-        .FirstOrDefault(e => e.StudentId == studentId && e.CourseCode == courseCode);
-        if (existing is not null)
-        {
-            _logger.LogWarning("Duplicate enrollment attempt {StudentId} already in {CourseCode} (record {EnrollmentId})",
-            studentId,courseCode,existing.Id);
-            return Task.FromResult(existing);
-        }
-        var id = Guid.NewGuid().ToString("N")[..8];
-        var record = new EnrollmentRecord(id, studentId, courseCode, DateTime.UtcNow);
-        _store[id] = record;
-        _logger.LogInformation("Enrolled {StudentId} in {CourseCode} record {EnrollmentId}",
-        studentId, courseCode, id);
-        return Task.FromResult(record);
-    }
-    public Task<EnrollmentRecord?> GetByIdAsync(string id)
-    {
-        _store.TryGetValue(id, out var record);
-        if(record is null)
-        {
-            _logger.LogWarning("Enrollment {EnrollmentId} not found",id);
-        }
-        return Task.FromResult(record);
-    }
-    public Task<IReadOnlyList<EnrollmentRecord>> GetAllAsync()
-    {
-        IReadOnlyList<EnrollmentRecord> all = _store.Values.ToList();
-        return Task.FromResult(all);
-    }
-    public Task<bool> DeleteAsync(string id)
-    {
-        var removed = _store.Remove(id);
-        if(removed)
-        _logger.LogInformation("Deleted enrollment {EnrollmentId}",id);
-        else
-        _logger.LogWarning("Deleted failed enrollment {EnrollmentId} not Found",id);
-        
-        return Task.FromResult(removed);
-    }
-
-public async Task<int> ArchiveOldEnrollmentsAsync(
-    TmSDbContext context,
-    CancellationToken cancellationToken)
+public Task<EnrollmentResponseDto?> GetByIdAsync(int courseId, int
+id, CancellationToken ct) =>
+context.Enrollments
+.AsNoTracking()
+.Where(e => e.ID == id && e.CourseId == courseId)
+.Select(e => new EnrollmentResponseDto(e.ID, e.CourseId, e.
+StudentId, e.EnrolledAt))
+.FirstOrDefaultAsync(ct);
+public async Task<EnrollmentResponseDto> CreateAsync(int courseId, EnrollStudentRequest request, CancellationToken ct)
 {
-    int cutoffYear = DateTime.UtcNow.Year - 1;
+    var enrollment = new Enrollment
+    {
+        CourseId = courseId,
+        StudentId = request.StudentId,
+        EnrolledAt = DateTime.UtcNow
+    };
 
-    int rowsAffected = await context.Enrollments
-        .Where(e => e.Year <= cutoffYear && !e.IsArchived)
-        .ExecuteUpdateAsync(
-            s => s.SetProperty(e => e.IsArchived, true),
-            cancellationToken);
+    context.Enrollments.Add(enrollment);
+    await context.SaveChangesAsync(ct);
 
-    _logger.LogInformation("Archived {Count} old enrollments", rowsAffected);
-    return rowsAffected;
+    logger.LogInformation(
+        "Enrollment {EnrollmentId} created for student {StudentId} in course {CourseId}",
+        enrollment.ID, enrollment.StudentId, enrollment.CourseId);
+
+    return (await GetByIdAsync(courseId, enrollment.ID, ct))!;
+
+    throw new NotImplementedException();
 }
+
+
 }
-public record EnrollmentRecord(
-string Id,
-string StudentId,
-string CourseCode,
-DateTime EnrolledAt);

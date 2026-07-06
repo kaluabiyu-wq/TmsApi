@@ -45,6 +45,7 @@ public class StudentsController(IStudentService studentService) : ControllerBase
         var deleted = await studentService.DeleteAsync(id);
         return deleted ? NoContent() : NotFound();
     }
+    
 
 
     public record CreateStudentRequest(string Name, double? Gpa);

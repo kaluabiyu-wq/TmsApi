@@ -5,55 +5,39 @@ using TmsApi.Data;
 
 
 [ApiController]
-[Route("api/enrollments")]
-public class EnrollmentsController(IEnrollmentService enrollmentService,TmSDbContext context):ControllerBase
+[Route("api/courses/{courseId-int}/enrollments")]
+public class EnrollmentsController(
+ICourseService courseService,
+IEnrollmentService enrollmentService) : ControllerBase
 {
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var enrollments = await enrollmentService.GetAllAsync();
-        return Ok(enrollments);
-    }
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id)
-    {
-        var record = await enrollmentService.GetByIdAsync(id);
-        return record is not null ? Ok(record):NotFound();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult>Create([FromBody] CreateEnrollmentRequest request)
-    {
-        var record = await enrollmentService.EnrollAsync(request.StudentId, request.CourseCode);
-        return CreatedAtAction(nameof(GetById), new {id = record.Id},record);
-
-    }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult>Delete(String id)
-    {
-        var deleted = await enrollmentService.DeleteAsync(id);
-        return deleted ? NoContent():NotFound();
-    }
-
- [HttpPost("archive")]
-    public async Task<IActionResult> BulkArchiveEnrollmentsAsync(  
-        int cutoffYear, CancellationToken cancellationToken)
-    {
-        if (cutoffYear >= DateTime.UtcNow.Year)
-            return BadRequest("cutoffYear must be before the current year.");
-
-        int rowsAffected = await context.Enrollments
-            .Where(e => e.Year <= cutoffYear && !e.IsArchived)
-            .ExecuteUpdateAsync(
-                s => s.SetProperty(e => e.IsArchived, true),
-                cancellationToken);
-
-        return Ok(new { archived = rowsAffected, cutoffYear });
-    }
+[HttpGet("{id:int}", Name = nameof(GetEnrollment))]
+public async Task<IActionResult> GetEnrollment(int courseId, int id,
+CancellationToken ct)
+{
+var enrollment = await enrollmentService.GetByIdAsync(courseId,
+id, ct);
+return enrollment is not null ? Ok(enrollment) : NotFound();
 }
+[HttpPost]
+public async Task<IActionResult> EnrollStudent(int courseId, EnrollStudentRequest request, CancellationToken ct)
+{
+    var course = await courseService.GetByIdAsync(courseId, ct);
+    if (course is null)
+    {
+        return NotFound();
+    }
 
+    if (course.EnrollmentCount >= course.MaxCapacity)
+    {
+        return Conflict(new ProblemDetails
+        {
+            Title = "Course is full",
+            Detail = $"Course '{course.Title}' has reached its maximum capacity of {course.MaxCapacity}.",
+            Status = StatusCodes.Status409Conflict
+        });
+    }
 
- public record CreateEnrollmentRequest(string StudentId,string CourseCode);
-
-
- 
+    var enrollment = await enrollmentService.CreateAsync(courseId, request, ct);
+    return CreatedAtAction(nameof(GetEnrollment), new { courseId, id = enrollment.Id }, enrollment);
+}
+}

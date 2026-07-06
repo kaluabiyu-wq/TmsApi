@@ -3,6 +3,7 @@ using Scalar.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using TmsApi.Data;
 using TmsApi.Entities;
+using TmsApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,8 +25,7 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("TmsDatabase"))
 builder.Services.AddSingleton<EnrollmentWorker>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddSingleton<IStudentService, StudentService>();
-builder.Services.AddSingleton<ICourseService, CourseService>();
-builder.Services.AddScoped<ICourseServices, CourseServices>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 
 
@@ -97,7 +97,7 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<TmSDbContext>();
     context.Database.Migrate();
 
-    if (!context.Students.Any())
+    if (!context.Students.Any() && !context.Courses.Any())
     {
         var students = new List<Student>
         {

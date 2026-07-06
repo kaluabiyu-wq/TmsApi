@@ -287,23 +287,79 @@ POST {{TmsApi_HostAddress}}/api/courses
 X-Training-User: kalu
 Content-Type: application/json
 Accept: application/json
+
 {
   "Code":"CSE-101",
   "title":"Web-Development Fundamentals",
   "maxCapacity":30
 }
 
+
 ###
-GET {{TmsApi_HostAddress}}/api/courses/
+POST {{TmsApi_HostAddress}}/api/courses
+X-Training-User: kalu
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Code":"abc",
+  "title":"x",
+  "maxCapacity":9999
+}
+
+
+###
+POST {{TmsApi_HostAddress}}/api/courses
+X-Training-User: kalu
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Code":"CSE-102",
+  "title":"TypeScript",
+  "maxCapacity":25
+}
+
+
+###
+GET {{TmsApi_HostAddress}}/api/courses/13
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/courses/11
 X-Training-User: kalu
 Accept: application/json
 
 
 ###
-GET {{TmsApi_HostAddress}}/api/courses
+GET {{TmsApi_HostAddress}}/api/courses/9999
 X-Training-User: kalu
 Accept: application/json
 
+
+
+###
+POST {{TmsApi_HostAddress}}/api/courses
+X-Training-User: kalu
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Code":"CSE-103",
+  "title":"Angular",
+  "maxCapacity":1
+}
+
+### Enroll student 1 (should succeed - 201)
+POST {{TmsApi_HostAddress}}/api/courses/13/enrollments
+X-Training-User: kalu
+Content-Type: application/json
+Accept: application/json
+
+{
+  "studentId": 1
+}
 ###
 GET {{TmsApi_HostAddress}}/api/error
 X-Training-User: kalu

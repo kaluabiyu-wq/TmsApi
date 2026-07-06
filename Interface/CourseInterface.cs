@@ -1,12 +1,13 @@
 
 
+using Tms.Api.Dtos;
 using TmsApi.Entities;
 
 public interface ICourseService
 {
-    Task<CourseRecord> CreateAsync(string title, int capacity);
-    Task<CourseRecord?> GetByIdAsync(string id);
-    Task<IReadOnlyList<CourseRecord>> GetAllAsync();
-    Task<bool> DeleteAsync(string id);
-   
+Task<CourseResponseDto?> GetByIdAsync(int id, CancellationToken ct);
+Task<CourseResponseDto> CreateAsync(CreateCourseRequest request, CancellationToken ct);
+
+
+Task<bool> CodeExistAsync (string Code,CancellationToken ct);
 }

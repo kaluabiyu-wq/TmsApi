@@ -10,11 +10,11 @@ public class EnrollmentWorker(IServiceScopeFactory scopeFactory)
         var svc = scope.ServiceProvider
                        .GetRequiredService<IEnrollmentService>();
 
-          var enrollments = svc.GetAllAsync().Result;
-        foreach (var enrollment in enrollments)
-        {
-            Console.WriteLine(
-                $"Processing {enrollment.Id} - {enrollment.StudentId} - {enrollment.CourseCode}");
-        }
+        //   var enrollments = svc.GetAllAsync().Result;
+        // foreach (var enrollment in enrollments)
+        // {
+        //     Console.WriteLine(
+        //         $"Processing {enrollment.Id} - {enrollment.StudentId} - {enrollment.CourseCode}");
+        // }
     }
 }
