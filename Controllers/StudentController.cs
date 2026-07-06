@@ -1,5 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TmsApi.Data;
 using TmsApi.Entities;
 
 
@@ -8,7 +10,7 @@ namespace TmsApi.Controllers;
 
 [ApiController]
 [Route("api/students")]
-public class StudentsController(IStudentService studentService) : ControllerBase
+public class StudentsController(IStudentService studentService,TmSDbContext context) : ControllerBase
 {
     
     [HttpGet]
@@ -27,11 +29,10 @@ public class StudentsController(IStudentService studentService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateStudentRequest request)
+    public async Task<IActionResult> Create( CreateStudentRequest request)
     {
         var student = await studentService.CreateAsync(
-            request.Name,
-            request.Gpa);
+            request.Name,request.Gpa);
 
         return CreatedAtAction(
             nameof(GetById),
@@ -46,6 +47,26 @@ public class StudentsController(IStudentService studentService) : ControllerBase
         return deleted ? NoContent() : NotFound();
     }
 
+ [HttpPut("{id}")]
+public async Task<IActionResult> Update(string id,  CreateStudentRequest request)
+{
+    var student = await context.Students.FindAsync(id);
+    if (student is null) return NotFound();
 
-    public record CreateStudentRequest(string Name, double? Gpa);
+    student.Name = request.Name;
+    student.GPA = request.Gpa;
+    try
+    {
+        await context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        return Conflict("The record was modified by another user.");
+    }
+
+    return Ok(student);
+}
+
+
+    public record CreateStudentRequest(string Name, decimal Gpa);
 }
