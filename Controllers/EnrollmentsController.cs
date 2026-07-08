@@ -5,10 +5,9 @@ using TmsApi.Data;
 
 
 [ApiController]
-[Route("api/courses/{courseId-int}/enrollments")]
+[Route("api/courses/{courseId:int}/enrollments")]
 public class EnrollmentsController(
-ICourseService courseService,
-IEnrollmentService enrollmentService) : ControllerBase
+ICourseService courseService,IEnrollmentService enrollmentService) : ControllerBase
 {
 [HttpGet("{id:int}", Name = nameof(GetEnrollment))]
 public async Task<IActionResult> GetEnrollment(int courseId, int id,
