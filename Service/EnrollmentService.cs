@@ -35,5 +35,13 @@ public async Task<EnrollmentResponseDto> CreateAsync(int courseId, EnrollStudent
     throw new NotImplementedException();
 }
 
+public Task<EnrollmentResponseDto?> GetByCourseAsync(int courseId, CancellationToken ct) =>
+context.Enrollments
+.AsNoTracking()
+.Where(e => e.CourseId == courseId)
+.Select(e => new EnrollmentResponseDto(e.ID, e.CourseId, e.
+StudentId, e.EnrolledAt))
+.FirstOrDefaultAsync(ct);
+
 
 }

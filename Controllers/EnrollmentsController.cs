@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TmsApi.Data;
+using TmsApi.Entities;
 
 
 
@@ -15,8 +16,7 @@ IEnrollmentService enrollmentService) : ControllerBase
 public async Task<IActionResult> GetEnrollment(int courseId, int id,
 CancellationToken ct)
 {
-var enrollment = await enrollmentService.GetByIdAsync(courseId,
-id, ct);
+var enrollment = await enrollmentService.GetByIdAsync(courseId,id, ct);
 return enrollment is not null ? Ok(enrollment) : NotFound();
 }
 [HttpPost]
@@ -41,4 +41,18 @@ public async Task<IActionResult> EnrollStudent(int courseId, EnrollStudentReques
     var enrollment = await enrollmentService.CreateAsync(courseId, request, ct);
     return CreatedAtAction(nameof(GetEnrollment), new { courseId, id = enrollment.Id }, enrollment);
 }
+[HttpGet(Name = "ListCourseEnrollments")]
+public async Task<IActionResult> GetEnrollments(int courseId, CancellationToken ct)
+{
+    var course = await courseService.GetByIdAsync(courseId, ct);
+    if (course == null)
+    {
+        return NotFound();
+    }
+    var enrollments = await enrollmentService.GetByCourseAsync(courseId, ct);
+
+    return Ok(enrollments);
+}
+
+
 }
