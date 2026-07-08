@@ -5,7 +5,7 @@ using TmsApi.Data;
 
 
 [ApiController]
-[Route("api/courses/{courseId-int}/enrollments")]
+[Route("api/courses/{courseId:int}/enrollments")]
 public class EnrollmentsController(
 ICourseService courseService,
 IEnrollmentService enrollmentService) : ControllerBase

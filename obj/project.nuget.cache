@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lRWFbYISMLY=",
+  "dgSpecHash": "2JY7UCMP0aI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\tarik\\Desktop\\M5-session3\\TmsApi2\\TmsApi.csproj",
+  "projectFilePath": "C:\\Users\\tarik\\Desktop\\kalu\\M6-session\\M6-session-1\\TmsApi2\\TmsApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tarik\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\tarik\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.9\\microsoft.aspnetcore.openapi.10.0.9.nupkg.sha512",
@@ -40,9 +40,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
-      "projectPath": "C:\\Users\\tarik\\Desktop\\M5-session3\\TmsApi2\\TmsApi.csproj",
+      "projectPath": "C:\\Users\\tarik\\Desktop\\kalu\\M6-session\\M6-session-1\\TmsApi2\\TmsApi.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\tarik\\Desktop\\M5-session3\\TmsApi2\\TmsApi.csproj",
+      "filePath": "C:\\Users\\tarik\\Desktop\\kalu\\M6-session\\M6-session-1\\TmsApi2\\TmsApi.csproj",
       "libraryId": "Microsoft.OpenApi",
       "targetGraphs": [
         "net10.0"
