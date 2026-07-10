@@ -14,26 +14,26 @@ public class StudentsController(IStudentService studentService,TmSDbContext cont
 {
     
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken ct)
     {
-        var students = await studentService.GetAllAsync();
+        var students = await studentService.GetAllAsync(ct);
         return Ok(students);
     }
 
    
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id)
+    public async Task<IActionResult> GetById(int id,CancellationToken ct)
     {
-        var student = await studentService.GetByIdAsync(id);
+        var student = await studentService.GetByIdAsync(id,ct);
         return student is not null ? Ok(student) : NotFound();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateStudentRequest request)
+    public async Task<IActionResult> Create([FromBody] CreateStudentRequest request,CancellationToken ct)
     {
         var student = await studentService.CreateAsync(
             request.Name,
-            request.Gpa);
+            request.Gpa,ct);
 
         return CreatedAtAction(
             nameof(GetById),
@@ -42,9 +42,9 @@ public class StudentsController(IStudentService studentService,TmSDbContext cont
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
+    public async Task<IActionResult> Delete(int id,CancellationToken ct)
     {
-        var deleted = await studentService.DeleteAsync(id);
+        var deleted = await studentService.DeleteAsync(id,ct);
         return deleted ? NoContent() : NotFound();
     }
     

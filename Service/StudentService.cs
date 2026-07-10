@@ -1,91 +1,72 @@
+using Microsoft.EntityFrameworkCore;
+using TmsApi.Data;
+using TmsApi.Entities;
 
+namespace TmsApi.Services;
 
-public class StudentService : IStudentService
+public class StudentService(TmSDbContext context, ILogger<StudentService> logger) : IStudentService
 {
-    private readonly Dictionary<string, StudentRecord> _store = new();
-    private readonly ILogger<StudentService> _logger;
-
-    public StudentService(ILogger<StudentService> logger)
+    public async Task<StudentRecord> CreateAsync(string name, decimal gpa, CancellationToken ct)
     {
-        _logger = logger;
-    }
-
-    public Task<StudentRecord> CreateAsync(string name, decimal gpa)
-    {
-      
-        var existing = _store.Values
-            .FirstOrDefault(s => s.Name == name);
+        var existing = await context.Students
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.Name == name, ct);
 
         if (existing is not null)
         {
-            _logger.LogWarning(
+            logger.LogWarning(
                 "Duplicate student {StudentName} already exists (record {StudentId})",
-                name,
-                existing.Id);
+                name, existing.ID);
 
-            return Task.FromResult(existing);
+            return new StudentRecord(existing.ID, existing.Name, DateTime.UtcNow, existing.GPA);
         }
 
-        var id = Guid.NewGuid().ToString("N")[..8];
+        var student = new Student
+        {
+            RegistrationNumber = Guid.NewGuid().ToString("N")[..12],
+            Name = name,
+            GPA = gpa
+        };
 
-        var student = new StudentRecord(
-            id,
-            name,
-            DateTime.UtcNow,
-            gpa);
+        context.Students.Add(student);
+        await context.SaveChangesAsync(ct);
 
-        _store[id] = student;
-
-        _logger.LogInformation(
+        logger.LogInformation(
             "Created student {StudentName} with id {StudentId}",
-            name,
-            id);
+            name, student.ID);
 
-        return Task.FromResult(student);
+        return new StudentRecord(student.ID, student.Name, DateTime.UtcNow, student.GPA);
     }
 
-    public Task<StudentRecord?> GetByIdAsync(string id)
-    {
-        _store.TryGetValue(id, out var student);
+    public Task<StudentRecord?> GetByIdAsync(int id, CancellationToken ct) =>
+        context.Students
+            .AsNoTracking()
+            .Where(s => s.ID == id)
+            .Select(s => new StudentRecord(s.ID, s.Name, DateTime.UtcNow, s.GPA))
+            .FirstOrDefaultAsync(ct);
 
+    public Task<List<StudentRecord>> GetAllAsync(CancellationToken ct) =>
+        context.Students
+            .AsNoTracking()
+            .Select(s => new StudentRecord(s.ID, s.Name, DateTime.UtcNow, s.GPA))
+            .ToListAsync(ct);
+
+    public async Task<bool> DeleteAsync(int id, CancellationToken ct)
+    {
+        var student = await context.Students.FindAsync([id], ct);
         if (student is null)
         {
-            _logger.LogWarning(
-                "Student {StudentId} not found",
-                id);
+            logger.LogWarning("Delete failed. Student {StudentId} not found", id);
+            return false;
         }
 
-        return Task.FromResult(student);
+        context.Students.Remove(student);
+        await context.SaveChangesAsync(ct);
+
+        logger.LogInformation("Deleted student {StudentId}", id);
+
+        return true;
     }
-
-    public Task<IReadOnlyList<StudentRecord>> GetAllAsync()
-    {
-        IReadOnlyList<StudentRecord> students = _store.Values.ToList();
-
-        return Task.FromResult(students);
-    }
-
-    public Task<bool> DeleteAsync(string id)
-    {
-        var removed = _store.Remove(id);
-
-        if (removed)
-        {
-            _logger.LogInformation(
-                "Deleted student {StudentId}",
-                id);
-        }
-        else
-        {
-            _logger.LogWarning(
-                "Delete failed. Student {StudentId} not found",
-                id);
-        }
-
-        return Task.FromResult(removed);
-    }
-    
 }
 
-
-public record StudentRecord(string Id,string Name, DateTime EnrollmentDate, decimal Gpa);
+public record StudentRecord(int Id, string Name, DateTime EnrollmentDate, decimal Gpa);
