@@ -6,6 +6,8 @@ using TmsApi.Entities;
 using TmsApi.Services;
 using Tms.Api.Persistence;
 using Tms.Api.Filters;
+using Asp.Versioning;
+using TmsApi.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,20 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("TmsDatabase"))
 .LogTo(Console.WriteLine, LogLevel.Information)
 .EnableSensitiveDataLogging()
 );
+
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+})
+.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
 
 builder.Services.AddSingleton<EnrollmentWorker>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
@@ -73,6 +89,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseMiddleware<V1DeprecationMiddleware>();
 // app.UseHttpsRedirection();
 
 app.UseAuthentication();

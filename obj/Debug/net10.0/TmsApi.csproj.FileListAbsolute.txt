@@ -676,3 +676,7 @@ C:\Users\tarik\Desktop\kalu\M6-session\TmsApi2\obj\Debug\net10.0\refint\TmsApi.d
 C:\Users\tarik\Desktop\kalu\M6-session\TmsApi2\obj\Debug\net10.0\TmsApi.pdb
 C:\Users\tarik\Desktop\kalu\M6-session\TmsApi2\obj\Debug\net10.0\TmsApi.genruntimeconfig.cache
 C:\Users\tarik\Desktop\kalu\M6-session\TmsApi2\obj\Debug\net10.0\ref\TmsApi.dll
+C:\Users\tarik\Desktop\kalu\M6-session\TmsApi2\bin\Debug\net10.0\Asp.Versioning.Abstractions.dll
+C:\Users\tarik\Desktop\kalu\M6-session\TmsApi2\bin\Debug\net10.0\Asp.Versioning.Http.dll
+C:\Users\tarik\Desktop\kalu\M6-session\TmsApi2\bin\Debug\net10.0\Asp.Versioning.Mvc.dll
+C:\Users\tarik\Desktop\kalu\M6-session\TmsApi2\bin\Debug\net10.0\Asp.Versioning.Mvc.ApiExplorer.dll
