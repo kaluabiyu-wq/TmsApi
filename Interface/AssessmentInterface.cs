@@ -1,10 +1,12 @@
+using Tms.Api.Dtos;
+
 public interface IAssessmentService
 {
-    Task<AssessmentRecord> CreateAsync(string title,string kind,double score);
+    Task<AssessmentResponseDto?> GetByIdAsync(int courseId, int id, CancellationToken ct);
 
-    Task<AssessmentRecord?> GetByIdAsync(string id);
+    Task<AssessmentResponseDto> CreateAsync(int courseId, CreateAssessmentRequest request, CancellationToken ct);
 
-    Task<IReadOnlyList<AssessmentRecord>> GetAllAsync();
+    Task<List<AssessmentResponseDto>> GetByCourseAsync(int courseId, CancellationToken ct);
 
-    Task<bool> DeleteAsync(string id);
+   
 }
