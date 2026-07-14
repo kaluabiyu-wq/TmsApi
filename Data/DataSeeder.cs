@@ -36,7 +36,7 @@ public static class DataSeeder
     ];
 
 
-       private static readonly (string RegistrationNumber, string Name, decimal Gpa, bool IsActive)[] Students =
+    private static readonly (string RegistrationNumber, string Name, decimal Gpa, bool IsActive)[] Students =
 [
     ("TMS-2026-0001", "Alice Smith", 3.8m, true),
     ("TMS-2026-0002", "Bob Jones", 2.9m, true),
@@ -68,9 +68,19 @@ public static class DataSeeder
     ("TMS-2026-0028", "Yonas Berhanu", 3.1m, false),
     ("TMS-2026-0029", "Ruth Melaku", 3.9m, true),
     ("TMS-2026-0030", "Amanuel Sisay", 2.7m, true),
+    ("TMS-2026-0031", "Betelhem Alemayehu", 3.6m, true),
+    ("TMS-2026-0032", "Getachew Mamo", 2.8m, false),
+    ("TMS-2026-0033", "Frehiwot Shiferaw", 3.9m, true),
+    ("TMS-2026-0034", "Abenezer Tsegaye", 3.0m, true),
+    ("TMS-2026-0035", "Alemitu Gebre", 2.6m, true),
+    ("TMS-2026-0036", "Tewodros Belay", 3.4m, false),
+    ("TMS-2026-0037", "Hanna Fantahun", 3.8m, true),
+    ("TMS-2026-0038", "Girum Endale", 2.9m, true),
+    ("TMS-2026-0039", "Mahlet Kassahun", 3.5m, true),
+    ("TMS-2026-0040", "Solomon Aklilu", 3.1m, false),
 
 ];
-    
+
 
     public static async Task SeedAsync(TmSDbContext context, CancellationToken ct = default)
     {
