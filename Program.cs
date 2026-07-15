@@ -8,6 +8,7 @@ using Tms.Api.Persistence;
 using Tms.Api.Filters;
 using Asp.Versioning;
 using TmsApi.Api.Middleware;
+using Tms.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,8 @@ builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
+builder.Services.AddScoped<ICertficateService,CertificateService>();
+
 
 
 builder.Services.AddProblemDetails();

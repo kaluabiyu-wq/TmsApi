@@ -4,6 +4,7 @@ using TmsApi.Entities;
 
 namespace TmsApi.Services;
 
+
 public class EnrollmentService(TmSDbContext context, ILogger<EnrollmentService> logger) : IEnrollmentService
 {
     public Task<EnrollmentResponseDto?> GetByIdAsync(int courseId, int id, CancellationToken ct) =>
