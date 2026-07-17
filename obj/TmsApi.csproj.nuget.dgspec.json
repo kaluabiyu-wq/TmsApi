@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tarik\\Desktop\\kalu\\M6-session\\TmsApi2\\TmsApi.csproj": {}
+    "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Csproj": {}
   },
   "projects": {
-    "C:\\Users\\tarik\\Desktop\\kalu\\M6-session\\TmsApi2\\TmsApi.csproj": {
+    "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\kalu\\M6-session\\TmsApi2\\TmsApi.csproj",
+        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Csproj",
         "projectName": "TmsApi",
-        "projectPath": "C:\\Users\\tarik\\Desktop\\kalu\\M6-session\\TmsApi2\\TmsApi.csproj",
+        "projectPath": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Csproj",
         "packagesPath": "C:\\Users\\tarik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tarik\\Desktop\\kalu\\M6-session\\TmsApi2\\obj\\",
+        "outputPath": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tarik\\AppData\\Roaming\\NuGet\\NuGet.Config"
