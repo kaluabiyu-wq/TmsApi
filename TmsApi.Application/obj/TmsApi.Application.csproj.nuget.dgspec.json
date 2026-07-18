@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj": {}
+    "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj": {
+    "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj",
+        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj",
         "projectName": "TmsApi.Application",
-        "projectPath": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj",
+        "projectPath": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj",
         "packagesPath": "C:\\Users\\tarik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Application\\obj\\",
+        "outputPath": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tarik\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -27,8 +27,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj": {
-                "projectPath": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj"
+              "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj": {
+                "projectPath": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj"
               }
             }
           }
@@ -349,14 +349,14 @@
         }
       }
     },
-    "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj": {
+    "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj",
         "projectName": "TmsApi.Domain",
-        "projectPath": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj",
+        "projectPath": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj",
         "packagesPath": "C:\\Users\\tarik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Domain\\obj\\",
+        "outputPath": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tarik\\AppData\\Roaming\\NuGet\\NuGet.Config"

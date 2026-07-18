@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CdcXJPsZTlc=",
+  "dgSpecHash": "onJjAm3Q+lw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\tarik\\Desktop\\M7-s\\TmsApi2\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tarik\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
     "C:\\Users\\tarik\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
