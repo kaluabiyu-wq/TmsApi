@@ -268,3 +268,10 @@ C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\obj\Debug\net10.0\refint\TmsApi.A
 C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\obj\Debug\net10.0\TmsApi.Api.pdb
 C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\obj\Debug\net10.0\TmsApi.Api.genruntimeconfig.cache
 C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\obj\Debug\net10.0\ref\TmsApi.Api.dll
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\MediatR.dll
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\MediatR.Contracts.dll
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll

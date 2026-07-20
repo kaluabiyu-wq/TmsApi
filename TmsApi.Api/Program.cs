@@ -7,11 +7,26 @@ using TmsApi.Application.Interfaces;
 using TmsApi.Api.Middlewares;
 using TmsApi.Api.Filters;
 using TmsApi.Infrastructure.Persistence.Services;
+using TmsApi.Application.Enrollments.Commands;
+using FluentValidation;
+using MediatR;
+using TmsApi.Application.Behaviors;
+using TmsApi.Api.ExceptionHandlers;
 
 
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMediatR(cfg =>cfg.RegisterServicesFromAssemblies(typeof(EnrollStudentHandler).Assembly));
+builder.Services.AddValidatorsFromAssembly(typeof(EnrollStudentValidator).Assembly);
+
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>),typeof(LoggingBehavior<,>));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>),typeof(ValidationBehavior<,>));
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 
 builder.Services
     .AddAuthentication("Training")
