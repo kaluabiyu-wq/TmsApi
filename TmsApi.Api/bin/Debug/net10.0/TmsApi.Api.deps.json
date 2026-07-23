@@ -12,6 +12,7 @@
           "Asp.Versioning.Mvc.ApiExplorer": "10.0.0",
           "Microsoft.AspNetCore.OpenApi": "10.0.9",
           "Microsoft.EntityFrameworkCore.Design": "10.0.10",
+          "Microsoft.Extensions.Caching.Hybrid": "10.8.0",
           "Scalar.AspNetCore": "2.16.3",
           "TmsApi.Application": "1.0.0",
           "TmsApi.Infrastructure": "1.0.0"
@@ -448,6 +449,14 @@
           }
         }
       },
+      "Microsoft.Extensions.Caching.Hybrid/10.8.0": {
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Caching.Hybrid.dll": {
+            "assemblyVersion": "10.8.0.0",
+            "fileVersion": "10.800.26.36402"
+          }
+        }
+      },
       "Microsoft.Extensions.DependencyModel/10.0.10": {
         "runtime": {
           "lib/net10.0/Microsoft.Extensions.DependencyModel.dll": {
@@ -813,6 +822,13 @@
       "sha512": "sha512-wNonj40aZxia+GtuBiiD6ZqVh4h6y5Nje1bGdmzZ8/ui0QRsAN+S0SIrLHFCEGbG9cDbeaE40sh+Lr7o9rRs6g==",
       "path": "microsoft.entityframeworkcore.relational/10.0.10",
       "hashPath": "microsoft.entityframeworkcore.relational.10.0.10.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Caching.Hybrid/10.8.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RCtCTK3eqKXx8LXqd7B8GjbTkIp4k3EgKeunaCmBJ+WA55Nva83CI2I+wVyp0S9jTG+aT6AYWQbkKOfvFOlmLA==",
+      "path": "microsoft.extensions.caching.hybrid/10.8.0",
+      "hashPath": "microsoft.extensions.caching.hybrid.10.8.0.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyModel/10.0.10": {
       "type": "package",

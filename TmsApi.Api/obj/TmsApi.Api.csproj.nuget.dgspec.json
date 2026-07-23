@@ -71,6 +71,10 @@
               "target": "Package",
               "version": "[10.0.10, )"
             },
+            "Microsoft.Extensions.Caching.Hybrid": {
+              "target": "Package",
+              "version": "[10.8.0, )"
+            },
             "Scalar.AspNetCore": {
               "target": "Package",
               "version": "[2.16.3, )"

@@ -275,3 +275,4 @@ C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.Ident
 C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
 C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.Extensions.Caching.Hybrid.dll

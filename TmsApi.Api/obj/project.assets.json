@@ -565,6 +565,22 @@
           }
         }
       },
+      "Microsoft.Extensions.Caching.Hybrid/10.8.0": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/Microsoft.Extensions.Caching.Hybrid.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Caching.Hybrid.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
+        }
+      },
       "Microsoft.Extensions.DependencyModel/10.0.10": {
         "type": "package",
         "compile": {
@@ -2244,6 +2260,33 @@
         "microsoft.entityframeworkcore.relational.nuspec"
       ]
     },
+    "Microsoft.Extensions.Caching.Hybrid/10.8.0": {
+      "sha512": "RCtCTK3eqKXx8LXqd7B8GjbTkIp4k3EgKeunaCmBJ+WA55Nva83CI2I+wVyp0S9jTG+aT6AYWQbkKOfvFOlmLA==",
+      "type": "package",
+      "path": "microsoft.extensions.caching.hybrid/10.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "README.md",
+        "buildTransitive/net462/Microsoft.Extensions.Caching.Hybrid.targets",
+        "buildTransitive/net8.0/_._",
+        "lib/net10.0/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/net10.0/Microsoft.Extensions.Caching.Hybrid.xml",
+        "lib/net462/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/net462/Microsoft.Extensions.Caching.Hybrid.xml",
+        "lib/net8.0/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/net8.0/Microsoft.Extensions.Caching.Hybrid.xml",
+        "lib/net9.0/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/net9.0/Microsoft.Extensions.Caching.Hybrid.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Caching.Hybrid.xml",
+        "lib/netstandard2.1/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/netstandard2.1/Microsoft.Extensions.Caching.Hybrid.xml",
+        "microsoft.extensions.caching.hybrid.10.8.0.nupkg.sha512",
+        "microsoft.extensions.caching.hybrid.nuspec"
+      ]
+    },
     "Microsoft.Extensions.DependencyModel/10.0.10": {
       "sha512": "rfZA1RjR021RPqSmIPovfz2aOd79TGqJ9BengbjnzIISOVwjLmuSDnhCMmiY/1c6iYvGolQ1iNGzkav0u11XEA==",
       "type": "package",
@@ -2713,6 +2756,7 @@
       "Asp.Versioning.Mvc.ApiExplorer >= 10.0.0",
       "Microsoft.AspNetCore.OpenApi >= 10.0.9",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.10",
+      "Microsoft.Extensions.Caching.Hybrid >= 10.8.0",
       "Scalar.AspNetCore >= 2.16.3",
       "TmsApi.Application >= 1.0.0",
       "TmsApi.Infrastructure >= 1.0.0"
@@ -2787,6 +2831,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[10.0.10, )"
+          },
+          "Microsoft.Extensions.Caching.Hybrid": {
+            "target": "Package",
+            "version": "[10.8.0, )"
           },
           "Scalar.AspNetCore": {
             "target": "Package",

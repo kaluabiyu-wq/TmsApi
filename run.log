@@ -1,0 +1,49 @@
+Using launch settings from TmsApi.Api\Properties\launchSettings.json...
+Building...
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\TmsApi.Api.csproj : warning NU1903: Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\TmsApi.Api.csproj : warning NU1903: Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\Controllers\V2\TranscriptsController.cs(21,66): warning CS8604: Possible null reference argument for parameter 'term' in 'SearchCoursesQuery.SearchCoursesQuery(string term)'. [C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\TmsApi.Api.csproj]
+warn: Microsoft.AspNetCore.Server.Kestrel[0]
+      Overriding address(es) 'http://localhost:5285'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5285
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /Scalar/v2 [69aab958]
+warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
+      Failed to determine the https port for redirect.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /Scalar/v2 200 217ms [69aab958]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /Scalar/scalar.aspnetcore.js [2cf05494]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /Scalar/scalar.js [3a54949a]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /Scalar/scalar.aspnetcore.js 200 25ms [2cf05494]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /Scalar/scalar.js 200 62ms [3a54949a]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /openapi/v2.json [648c1544]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /openapi/v2.json 200 181ms [648c1544]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /Scalar/favicon.svg [8bc337ae]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /Scalar/favicon.svg 200 1ms [8bc337ae]
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
