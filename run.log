@@ -1,8 +1,8 @@
 Using launch settings from TmsApi.Api\Properties\launchSettings.json...
 Building...
-C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\TmsApi.Api.csproj : warning NU1903: Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc
-C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\TmsApi.Api.csproj : warning NU1903: Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc
-C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\Controllers\V2\TranscriptsController.cs(21,66): warning CS8604: Possible null reference argument for parameter 'term' in 'SearchCoursesQuery.SearchCoursesQuery(string term)'. [C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\TmsApi.Api.csproj]
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Api\TmsApi.Api.csproj : warning NU1903: Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Api\TmsApi.Api.csproj : warning NU1903: Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Api\Controllers\V2\SearchController.cs(17,66): warning CS8604: Possible null reference argument for parameter 'term' in 'SearchCoursesQuery.SearchCoursesQuery(string term)'. [C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Api\TmsApi.Api.csproj]
 warn: Microsoft.AspNetCore.Server.Kestrel[0]
       Overriding address(es) 'http://localhost:5285'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
 info: Microsoft.Hosting.Lifetime[14]
@@ -12,38 +12,164 @@ info: Microsoft.Hosting.Lifetime[0]
 info: Microsoft.Hosting.Lifetime[0]
       Hosting environment: Development
 info: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api
+      Content root path: C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Api
 info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
-      Request  GET /Scalar/v2 [69aab958]
+      Request  GET /api/v2/courses [5dfcb28b]
 warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
       Failed to determine the https port for redirect.
 info: TrainingAuthHandler[7]
       Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache MISS for v2:course:all fetching from DB
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Student' has a global query filter defined and is the required end of a relationship with the entity 'Certificate'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: 7/23/2026 22:13:11.549 CoreEventId.PossibleIncorrectRequiredNavigationWithQueryFilterInteractionWarning[10622] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      Entity 'Student' has a global query filter defined and is the required end of a relationship with the entity 'Certificate'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Student' has a global query filter defined and is the required end of a relationship with the entity 'Enrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: 7/23/2026 22:13:11.551 CoreEventId.PossibleIncorrectRequiredNavigationWithQueryFilterInteractionWarning[10622] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      Entity 'Student' has a global query filter defined and is the required end of a relationship with the entity 'Enrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10400]
+      Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+warn: 7/23/2026 22:13:11.561 CoreEventId.SensitiveDataLoggingEnabledWarning[10400] (Microsoft.EntityFrameworkCore.Infrastructure) 
+      Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (51ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT c."Id", c."Code", c."Title", c."MaxCapacity", (
+          SELECT count(*)::int
+          FROM "Enrollments" AS e
+          WHERE c."Id" = e."CourseId")
+      FROM "Courses" AS c
+info: 7/23/2026 22:13:12.875 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (51ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT c."Id", c."Code", c."Title", c."MaxCapacity", (
+          SELECT count(*)::int
+          FROM "Enrollments" AS e
+          WHERE c."Id" = e."CourseId")
+      FROM "Courses" AS c
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
 info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
-      Response GET /Scalar/v2 200 217ms [69aab958]
+      Response GET /api/v2/courses 200 2828ms [5dfcb28b]
 info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
-      Request  GET /Scalar/scalar.aspnetcore.js [2cf05494]
-info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
-      Request  GET /Scalar/scalar.js [3a54949a]
+      Request  GET /api/v2/courses [1cbd199b]
 info: TrainingAuthHandler[7]
       Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 11ms [1cbd199b]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [7d0f2e4a]
 info: TrainingAuthHandler[7]
       Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
 info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
-      Response GET /Scalar/scalar.aspnetcore.js 200 25ms [2cf05494]
+      Response GET /api/v2/courses 200 15ms [7d0f2e4a]
 info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
-      Response GET /Scalar/scalar.js 200 62ms [3a54949a]
-info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
-      Request  GET /openapi/v2.json [648c1544]
+      Request  GET /api/v2/courses [56b284f4]
 info: TrainingAuthHandler[7]
       Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
 info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
-      Response GET /openapi/v2.json 200 181ms [648c1544]
+      Response GET /api/v2/courses 200 1ms [56b284f4]
 info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
-      Request  GET /Scalar/favicon.svg [8bc337ae]
+      Request  GET /api/v2/courses [13730b18]
 info: TrainingAuthHandler[7]
       Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
 info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
-      Response GET /Scalar/favicon.svg 200 1ms [8bc337ae]
-info: Microsoft.Hosting.Lifetime[0]
-      Application is shutting down...
+      Response GET /api/v2/courses 200 2ms [13730b18]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [0df5316f]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [0df5316f]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [3e3122d0]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 2ms [3e3122d0]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [b1d260e7]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [b1d260e7]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [52b00a78]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 2ms [52b00a78]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [e5d83334]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [e5d83334]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [1dfddfd6]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [1dfddfd6]

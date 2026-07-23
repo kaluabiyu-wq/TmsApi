@@ -13,7 +13,6 @@ using MediatR;
 using TmsApi.Application.Behaviors;
 using TmsApi.Api.ExceptionHandlers;
 using Microsoft.Extensions.Caching.Hybrid;
-
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -130,6 +129,7 @@ builder.Services.AddRateLimiter(options =>
 });
 
 
+
 builder.Services
     .AddAuthentication("Training")
     .AddScheme<AuthenticationSchemeOptions, TrainingAuthHandler>("Training", null);
@@ -221,6 +221,8 @@ app.UseRateLimiter();
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseMiddleware<V1DeprecationMiddleware>();
 app.UseHttpsRedirection();
+// app.MapHealthChecks("/health/live").DisableRateLimiting();
+// app.MapHealthChecks("/health/ready").DisableRateLimiting();
 
 app.UseAuthentication();
 app.UseAuthorization();

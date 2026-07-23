@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ibBgCEiOFck=",
+  "dgSpecHash": "D8/JWed3++Y=",
   "success": true,
-  "projectFilePath": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Api\\TmsApi.Api.csproj",
+  "projectFilePath": "C:\\Users\\tarik\\Desktop\\M7-2\\TmsApi2\\TmsApi.Api\\TmsApi.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tarik\\.nuget\\packages\\asp.versioning.abstractions\\10.0.0\\asp.versioning.abstractions.10.0.0.nupkg.sha512",
     "C:\\Users\\tarik\\.nuget\\packages\\asp.versioning.http\\10.0.0\\asp.versioning.http.10.0.0.nupkg.sha512",
@@ -52,9 +52,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
-      "projectPath": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Api\\TmsApi.Api.csproj",
+      "projectPath": "C:\\Users\\tarik\\Desktop\\M7-2\\TmsApi2\\TmsApi.Api\\TmsApi.Api.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Api\\TmsApi.Api.csproj",
+      "filePath": "C:\\Users\\tarik\\Desktop\\M7-2\\TmsApi2\\TmsApi.Api\\TmsApi.Api.csproj",
       "libraryId": "Microsoft.OpenApi",
       "targetGraphs": [
         "net10.0"

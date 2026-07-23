@@ -22,3 +22,15 @@ C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domai
 C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\refint\TmsApi.Domain.dll
 C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.pdb
 C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\ref\TmsApi.Domain.dll
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\bin\Debug\net10.0\TmsApi.Domain.deps.json
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\bin\Debug\net10.0\TmsApi.Domain.dll
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\bin\Debug\net10.0\TmsApi.Domain.pdb
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.AssemblyInfoInputs.cache
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.AssemblyInfo.cs
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.csproj.CoreCompileInputs.cache
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.sourcelink.json
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.dll
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\refint\TmsApi.Domain.dll
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.pdb
+C:\Users\tarik\Desktop\M7-2\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\ref\TmsApi.Domain.dll

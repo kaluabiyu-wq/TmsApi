@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DS5lY7iJkFM=",
+  "dgSpecHash": "i5y7wHJkNAc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\tarik\\Desktop\\M7-0\\TmsApi2\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\tarik\\Desktop\\M7-2\\TmsApi2\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tarik\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
     "C:\\Users\\tarik\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\12.1.1\\fluentvalidation.dependencyinjectionextensions.12.1.1.nupkg.sha512",
