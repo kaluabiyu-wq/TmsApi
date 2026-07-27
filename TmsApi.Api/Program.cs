@@ -128,6 +128,14 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy => 
+    policy.WithOrigins("http://localhost:4200")
+    .AllowAnyHeader()
+    .AllowAnyMethod());
+});
+
 
 
 builder.Services
@@ -215,7 +223,7 @@ if (app.Environment.IsDevelopment())
 });
 
 }
-
+app.UseCors("AllowAngular");
 
 app.UseRateLimiter(); 
 app.UseMiddleware<RequestLoggingMiddleware>();
@@ -223,6 +231,7 @@ app.UseMiddleware<V1DeprecationMiddleware>();
 app.UseHttpsRedirection();
 // app.MapHealthChecks("/health/live").DisableRateLimiting();
 // app.MapHealthChecks("/health/ready").DisableRateLimiting();
+
 
 app.UseAuthentication();
 app.UseAuthorization();
