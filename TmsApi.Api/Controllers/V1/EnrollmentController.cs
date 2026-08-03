@@ -8,6 +8,13 @@ namespace TmsApi.Api.Controllers.V1;
 
 public record CreateEnrollmentRequest(string StudentId);
 
+public record EnrollmentSummaryDto(
+    int Id,
+    string StudentName,
+    string CourseName,
+    string Status,
+    DateTime EnrolledAt);
+
 [ApiController]
 [Route("api/v{version:apiVersion}/courses/{courseId:int}/enrollments")]
 [ApiVersion("1.0")]
@@ -56,70 +63,101 @@ public class EnrollmentController(TmSDbContext context) : ControllerBase
         });
     }
 
-[HttpPost]
-public async Task<IActionResult> Create(
-    int courseId,
-    [FromBody] CreateEnrollmentRequest request,
-    CancellationToken ct)
-{
-   
-    var course = await context.Courses
-        .FirstOrDefaultAsync(c => c.Id == courseId, ct);
-
-    if (course is null)
+    [HttpPost]
+    public async Task<IActionResult> Create(
+        int courseId,
+        [FromBody] CreateEnrollmentRequest request,
+        CancellationToken ct)
     {
-        return NotFound(new { message = $"Course {courseId} was not found." });
-    }
+        var course = await context.Courses
+            .FirstOrDefaultAsync(c => c.Id == courseId, ct);
 
-    
-    var student = await context.Students
-        .FirstOrDefaultAsync(s => s.RegistrationNumber == request.StudentId, ct);
-
-    if (student is null)
-    {
-        return NotFound(new
+        if (course is null)
         {
-            message = $"No student found with registration number '{request.StudentId}'.",
-        });
-    }
+            return NotFound(new { message = $"Course {courseId} was not found." });
+        }
 
-   
-    var alreadyEnrolled = await context.Enrollments
-        .AnyAsync(e => e.CourseId == courseId && e.StudentId == student.ID, ct);
+        var student = await context.Students
+            .FirstOrDefaultAsync(s => s.RegistrationNumber == request.StudentId, ct);
 
-    if (alreadyEnrolled)
-    {
-        return Conflict(new { message = "This student is already enrolled in this course." });
-    }
-
-   
-    var currentEnrollmentCount = await context.Enrollments
-        .CountAsync(e => e.CourseId == courseId, ct);
-
-    if (currentEnrollmentCount >= course.MaxCapacity)
-    {
-        return Conflict(new { message = "This course is full." });
-    }
-
-    var enrollment = new Enrollment
-    {
-        CourseId = courseId,
-        StudentId = student.ID,
-        EnrolledAt = DateTime.UtcNow,
-    };
-
-    context.Enrollments.Add(enrollment);
-    await context.SaveChangesAsync(ct);
-
-    return CreatedAtAction(
-        nameof(GetEnrollments),
-        new { courseId, version = "1.0" },
-        new
+        if (student is null)
         {
-            enrollment.ID,
-            enrollment.CourseId,
-            StudentId = student.RegistrationNumber,
-            enrollment.EnrolledAt,
-        });
-}
+            return NotFound(new
+            {
+                message = $"No student found with registration number '{request.StudentId}'.",
+            });
+        }
+
+        var alreadyEnrolled = await context.Enrollments
+            .AnyAsync(e => e.CourseId == courseId && e.StudentId == student.ID, ct);
+
+        if (alreadyEnrolled)
+        {
+            return Conflict(new { message = "This student is already enrolled in this course." });
+        }
+
+        var currentEnrollmentCount = await context.Enrollments
+            .CountAsync(e => e.CourseId == courseId, ct);
+
+        if (currentEnrollmentCount >= course.MaxCapacity)
+        {
+            return Conflict(new { message = "This course is full." });
+        }
+
+        var enrollment = new Enrollment
+        {
+            CourseId = courseId,
+            StudentId = student.ID,
+            EnrolledAt = DateTime.UtcNow,
+        };
+
+        context.Enrollments.Add(enrollment);
+        await context.SaveChangesAsync(ct);
+
+        return CreatedAtAction(
+            nameof(GetEnrollments),
+            new { courseId, version = "1.0" },
+            new
+            {
+                enrollment.ID,
+                enrollment.CourseId,
+                StudentId = student.RegistrationNumber,
+                enrollment.EnrolledAt,
+            });
+    }
+
+  
+  
+    [HttpGet]
+    [Route("~/api/v1/enrollments")]
+    public async Task<IActionResult> GetAllEnrollments(CancellationToken ct)
+    {
+        var items = await context.Enrollments
+            .AsNoTracking()
+            .Select(e => new EnrollmentSummaryDto(
+                e.ID,
+                e.Student.Name,
+                e.Course.Title,
+                e.Status,
+                e.EnrolledAt))
+            .ToListAsync(ct);
+
+        return Ok(items);
+    }
+
+    [HttpPost]
+    [Route("~/api/v1/enrollments/{enrollmentId:int}/approve")]
+    public async Task<IActionResult> ApproveEnrollment(int enrollmentId, CancellationToken ct)
+    {
+        var enrollment = await context.Enrollments
+            .FirstOrDefaultAsync(e => e.ID == enrollmentId, ct);
+
+        if (enrollment is null)
+            return NotFound(new { message = "Enrollment not found." });
+
+        enrollment.Status = "Approved";
+        await context.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
 }
