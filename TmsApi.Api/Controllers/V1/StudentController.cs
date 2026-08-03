@@ -1,59 +1,59 @@
-
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TmsApi.Domain.Entities;
 using TmsApi.Infrastructure.Persistence;
 
 namespace TmsApi.Api.Controllers.V1;
 
+public record CreateStudentRequest(string RegistrationNumber, string Name);
+
 [ApiController]
 [Route("api/v{version:apiVersion}/students")]
 [ApiVersion("1.0")]
-public class StudentController(TmSDbContext context) : ControllerBase
+public class StudentsController(TmSDbContext context) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAssessments(
-        int id,
-        [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 20,
-        CancellationToken ct = default)
+    public async Task<IActionResult> GetAll(CancellationToken ct)
     {
-        page = Math.Max(1, page);
-        pageSize = Math.Clamp(pageSize, 1, 50);
-
-        var baseQuery = context.Students
+        var students = await context.Students
             .AsNoTracking()
-            .Where(s => s.ID == id );
-
-        var totalCount = await baseQuery.CountAsync(ct);
-
-        var items = await baseQuery
-            .OrderBy(a => a.ID)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Select(a => new
-            {
-                a.ID,
-                a.RegistrationNumber,
-                a.Name,
-                a.GPA,
-                a.IsActive
-            })
+            .Select(s => new { s.ID, s.RegistrationNumber, s.Name })
             .ToListAsync(ct);
 
-        var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-
-        return Ok(new
-        {
-            items,
-            totalCount,
-            page,
-            pageSize,
-            totalPages,
-            hasNext = page < totalPages,
-            hasPrevious = page > 1
-        });
+        return Ok(students);
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Create(
+        [FromBody] CreateStudentRequest request,
+        CancellationToken ct)
+    {
+        var alreadyExists = await context.Students
+            .AnyAsync(s => s.RegistrationNumber == request.RegistrationNumber, ct);
 
+        if (alreadyExists)
+        {
+            return Conflict(new
+            {
+                message = $"A student with registration number '{request.RegistrationNumber}' already exists.",
+            });
+        }
+
+        var student = new Student
+        {
+            RegistrationNumber = request.RegistrationNumber,
+            Name = request.Name,
+            GPA = 0,
+            IsActive = true,
+        };
+
+        context.Students.Add(student);
+        await context.SaveChangesAsync(ct);
+
+        return CreatedAtAction(
+            nameof(GetAll),
+            new { version = "1.0" },
+            new { student.ID, student.RegistrationNumber, student.Name });
+    }
 }
