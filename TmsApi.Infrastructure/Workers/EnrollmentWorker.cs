@@ -1,7 +1,9 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TmsApi.Application.Interfaces;
  
 
-
+namespace TmsApi.Infrastructure.Workers;
 public class EnrollmentWorker(IServiceScopeFactory scopeFactory)
 {
     public void ProcessBatch()
@@ -21,3 +23,5 @@ public class EnrollmentWorker(IServiceScopeFactory scopeFactory)
         // }
     }
 }
+
+
