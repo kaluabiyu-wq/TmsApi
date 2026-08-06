@@ -1,17 +1,16 @@
 using System.Threading.Channels;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using TmsApi.Application.Transcripts;
+using TmsApi.Application.Notifications;
 using TmsApi.Infrastructure.Transcripts;
-
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
 namespace TmsApi.Infrastructure.Workers;
 
 public class TranscriptWorker(
     Channel<TranscriptRequest> channel,
-    IServiceScopeFactory scopeFactory,
     ITranscriptStatusStore statusStore,
+    ITranscriptNotificationService notificationService,
     ILogger<TranscriptWorker> logger)
     : BackgroundService
 {
@@ -21,33 +20,27 @@ public class TranscriptWorker(
 
         await foreach (var request in channel.Reader.ReadAllAsync(ct))
         {
-            var reportId = request.ReportId
-                ?? throw new InvalidOperationException("ReportId must be set before queueing.");
+            var reportId = request.ReportId!;
 
             try
             {
                 await statusStore.MarkProcessingAsync(reportId, ct);
 
-                logger.LogInformation(
-                    "Generating transcript {ReportId} for student {StudentId}",
-                    reportId, request.StudentId);
-
-                using var scope = scopeFactory.CreateScope();
-                    await Task.Delay(TimeSpan.FromSeconds(5), ct);
+                await Task.Delay(TimeSpan.FromSeconds(5), ct);
 
                 var downloadUrl = $"/api/v2/transcripts/{reportId}/download";
                 await statusStore.MarkReadyAsync(reportId, downloadUrl, ct);
 
-                logger.LogInformation("Transcript ready: {ReportId}", reportId);
-            }
-            catch (OperationCanceledException) when (ct.IsCancellationRequested)
-            {
-                logger.LogWarning("Worker shutdown transcript {ReportId} did not complete", reportId);
-                throw;
+                await notificationService.NotifyTranscriptReadyAsync(
+                    request.StudentId, reportId, downloadUrl);
+
+                logger.LogInformation(
+                    "Transcript ready, notification sent: {ReportId} for student {StudentId}",
+                    reportId, request.StudentId);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to generate transcript {ReportId}", reportId);
+                logger.LogError(ex, "Transcript generation failed: {ReportId}", reportId);
                 await statusStore.MarkFailedAsync(reportId, ex.Message, CancellationToken.None);
             }
         }

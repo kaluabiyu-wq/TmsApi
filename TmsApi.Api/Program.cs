@@ -21,6 +21,10 @@ using TmsApi.Infrastructure.Transcripts;
 using System.Threading.Channels;
 using TmsApi.Application.Transcripts;
 using TmsApi.Infrastructure.Workers;
+using TmsApi.Api.Hubs;
+using TmsApi.Application.Notifications;
+using TmsApi.Api.Notifications;
+
 
 
 
@@ -163,7 +167,15 @@ builder.Services.AddSingleton(Channel.CreateBounded<TranscriptRequest>(
     }));
 
 builder.Services.AddHostedService<TranscriptWorker>();
-
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<ITranscriptNotificationService,SignalRTranscriptNotificationService>();
+builder.Services.AddSingleton(Channel.CreateBounded<TranscriptRequest>(
+new BoundedChannelOptions(100)
+{
+FullMode = BoundedChannelFullMode.Wait
+}));
+// builder.Services.AddSignalR().AddAzureSignalR(
+//     builder.Configuration.GetConnectionString("AzureSignalR"));
 
 builder.Services.AddSingleton<EnrollmentWorker>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
@@ -237,6 +249,7 @@ if (app.Environment.IsDevelopment())
 
 }
 app.UseCors("AllowAngular");
+app.MapHub<TmsHub>("/hubs/tms");
 
 app.UseRateLimiter(); 
 app.UseMiddleware<RequestLoggingMiddleware>();
