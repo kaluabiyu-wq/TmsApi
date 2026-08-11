@@ -1,6 +1,9 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using TmsApi.Api.Hubs;
+using TmsApi.Application.Hubs;
 using TmsApi.Domain.Entities;
 using TmsApi.Infrastructure.Persistence;
 
@@ -18,7 +21,7 @@ public record EnrollmentSummaryDto(
 [ApiController]
 [Route("api/v{version:apiVersion}/courses/{courseId:int}/enrollments")]
 [ApiVersion("1.0")]
-public class EnrollmentController(TmSDbContext context) : ControllerBase
+public class EnrollmentController(TmSDbContext context,IHubContext<TmsHub, ITmsHubClient> hubContext) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetEnrollments(
@@ -145,19 +148,56 @@ public class EnrollmentController(TmSDbContext context) : ControllerBase
         return Ok(items);
     }
 
-    [HttpPost]
-    [Route("~/api/v1/enrollments/{enrollmentId:int}/approve")]
-    public async Task<IActionResult> ApproveEnrollment(int enrollmentId, CancellationToken ct)
+   
+[HttpPost("~/api/v1/enrollments/{id:int}/approve")]
+public async Task<IActionResult> Approve(int id, CancellationToken ct)
+{
+    var enrollment = await context.Enrollments
+        .Include(e => e.Course)
+        .FirstOrDefaultAsync(e => e.ID == id, ct);
+
+    if (enrollment is null)
+        return NotFound(new { message = "Enrollment not found." });
+
+    if (enrollment.Status != "Pending")
     {
-        var enrollment = await context.Enrollments
-            .FirstOrDefaultAsync(e => e.ID == enrollmentId, ct);
-
-        if (enrollment is null)
-            return NotFound(new { message = "Enrollment not found." });
-
-        enrollment.Status = "Approved";
-        await context.SaveChangesAsync(ct);
-
-        return NoContent();
+        return Problem(
+            statusCode: StatusCodes.Status409Conflict,
+            title: "Enrollment rejected",
+            detail: $"Enrollment {id} is already '{enrollment.Status}' and cannot be re-approved.",
+            type: "https://tms.local/errors/invalid_status_transition");
     }
+
+     var approvedCount = await context.Enrollments
+        .CountAsync(e => e.CourseId == enrollment.CourseId && e.Status == "Approved", ct);
+
+    if (approvedCount >= enrollment.Course.MaxCapacity)
+    {
+        return Problem(
+            statusCode: StatusCodes.Status409Conflict,
+            title: "Enrollment rejected",
+            detail: $"Course {enrollment.CourseId} is full ({approvedCount}/{enrollment.Course.MaxCapacity}).",
+            type: "https://tms.local/errors/course_full");
+    }
+
+    enrollment.Status = "Approved";
+
+    try
+    {
+        await context.SaveChangesAsync(ct);
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        return Problem(
+            statusCode: StatusCodes.Status409Conflict,
+            title: "Enrollment rejected",
+            detail: "This enrollment was modified by another request. Reload and try again.",
+            type: "https://tms.local/errors/concurrency_conflict");
+    }
+
+    await hubContext.Clients.All.ReceiveEnrollmentStatusUpdated(id.ToString(), "Approved");
+
+    return NoContent();
+}
+
 }

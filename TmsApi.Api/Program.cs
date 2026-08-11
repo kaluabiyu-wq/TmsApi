@@ -231,38 +231,34 @@ builder.Services.AddApiVersioning(options =>
 var app = builder.Build();
 
 app.UseExceptionHandler();
-
 app.UseStatusCodePages();
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference(options =>
-{
-    options.WithTitle("TMS API Reference")
-    .WithTheme(ScalarTheme.DeepSpace)
-    .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
-    options.AddDocument("v1", "API Version 1.0")
-    .AddDocument("v2", "API Version 2.0");
-
-});
-
+    {
+        options.WithTitle("TMS API Reference")
+            .WithTheme(ScalarTheme.DeepSpace)
+            .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+        options.AddDocument("v1", "API Version 1.0")
+            .AddDocument("v2", "API Version 2.0");
+    });
 }
-app.UseCors("AllowAngular");
-app.MapHub<TmsHub>("/hubs/tms");
 
-app.UseRateLimiter(); 
-app.UseMiddleware<RequestLoggingMiddleware>();
-app.UseMiddleware<V1DeprecationMiddleware>();
 app.UseHttpsRedirection();
-// app.MapHealthChecks("/health/live").DisableRateLimiting();
-// app.MapHealthChecks("/health/ready").DisableRateLimiting();
 
+app.UseCors("AllowAngular");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseRateLimiter();
+app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseMiddleware<V1DeprecationMiddleware>();
+
+
+app.MapHub<TmsHub>("/hubs/tms");
 app.MapControllers();
 
 app.Run();
-
