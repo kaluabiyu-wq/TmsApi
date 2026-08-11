@@ -136,12 +136,20 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 
+
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
+?? ["http://localhost:4200"];
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngular", policy => 
-    policy.WithOrigins("http://localhost:4200")
+    options.AddPolicy("TmsClient", policy => 
+    {
+    policy.WithOrigins(allowedOrigins)
     .AllowAnyHeader()
-    .AllowAnyMethod());
+    .AllowAnyMethod()
+    .AllowCredentials()
+    .SetPreflightMaxAge(TimeSpan.FromMinutes(10));
+});
 });
 
 
@@ -248,7 +256,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowAngular");
+app.UseCors("TmsClient");
 
 app.UseAuthentication();
 app.UseAuthorization();
