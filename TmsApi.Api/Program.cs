@@ -24,6 +24,7 @@ using TmsApi.Infrastructure.Workers;
 using TmsApi.Api.Hubs;
 using TmsApi.Application.Notifications;
 using TmsApi.Api.Notifications;
+using Microsoft.AspNetCore.Antiforgery;
 
 
 
@@ -151,6 +152,10 @@ builder.Services.AddCors(options =>
     .SetPreflightMaxAge(TimeSpan.FromMinutes(10));
 });
 });
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-XSRF-TOKEN";
+});
 
 
 
@@ -257,6 +262,28 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("TmsClient");
+app.Use(async (context,next) =>
+{
+    if (context.User.Identity?.IsAuthenticated == true || context.Request.Cookies
+           .ContainsKey("tms_auth")
+    )
+    {
+        var antiforgery = context.RequestServices.GetRequiredService<IAntiforgery>();
+
+        var tokens = antiforgery.GetAndStoreTokens(context);
+
+        context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!,
+        
+           new CookieOptions
+           {
+               HttpOnly = false,
+               Secure = !builder.Environment.IsDevelopment(),
+               SameSite = SameSiteMode.Strict
+           });
+
+    }
+    await next(context);
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
