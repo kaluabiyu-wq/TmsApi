@@ -1,6 +1,5 @@
 using TmsApi.Application.DTOs;
 
-
 namespace TmsApi.Application.Interfaces;
 
 public interface IAssessmentService

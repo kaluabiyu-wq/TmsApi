@@ -3,11 +3,12 @@ using TmsApi.Application.DTOs;
 using TmsApi.Domain.Entities;
 using TmsApi.Application.Interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TmsApi.Infrastructure.Persistence.Services;
 
 
-public class CertificateService(TmSDbContext context, ILogger<CertificateService> logger) : ICertficateService
+public class CertificateService(TmsDbContext context, ILogger<CertificateService> logger) : ICertficateService
 {
 
     public Task<CertficateResponseDto?> GetByIdAsync( int courseId,int id, CancellationToken ct) =>

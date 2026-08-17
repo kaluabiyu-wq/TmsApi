@@ -1,12 +1,16 @@
 
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TmsApi.Domain.Entities;
 
 namespace TmsApi.Infrastructure.Persistence;
-public class TmSDbContext(DbContextOptions<TmSDbContext> options) : 
-DbContext(options)
+
+public class TmsDbContext : IdentityDbContext<TmsUser>
 {
+    public  TmsDbContext(DbContextOptions<TmsDbContext> options) : 
+  base(options) 
+{}
     public DbSet<Student> Students => Set<Student>();
     public DbSet<Course> Courses => Set<Course>();
 
@@ -20,7 +24,10 @@ DbContext(options)
 
     protected override void OnModelCreating(ModelBuilder b)
     {
-        b.ApplyConfigurationsFromAssembly(typeof(TmSDbContext).Assembly);
+        base.OnModelCreating(b);
+        b.ApplyConfigurationsFromAssembly(typeof(TmsDbContext).Assembly);
     
     }
+
+    
 }

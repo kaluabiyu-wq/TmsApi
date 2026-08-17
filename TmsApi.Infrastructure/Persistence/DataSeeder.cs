@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using TmsApi.Application.DTOs;
 using TmsApi.Infrastructure.Persistence;
 using TmsApi.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 
 namespace TmsApi.Infrastructure.Persistence;
 
@@ -108,7 +111,7 @@ public static class DataSeeder
 ];
 
 
-    public static async Task SeedAsync(TmSDbContext context, CancellationToken ct = default)
+    public static async Task SeedAsync(TmsDbContext context, CancellationToken ct = default)
     {
         await context.Database.MigrateAsync(ct);
 

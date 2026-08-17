@@ -7,7 +7,7 @@ using TmsApi.Application.Interfaces;
 
 namespace TmsApi.Infrastructure.Persistence.Services;
 
-public class AssessmentService(TmSDbContext context, ILogger<AssessmentService> logger) : IAssessmentService
+public class AssessmentService(TmsDbContext context, ILogger<AssessmentService> logger) : IAssessmentService
 {
     public Task<AssessmentResponseDto?> GetByIdAsync(int courseId, int id, CancellationToken ct) =>
         context.Assessments

@@ -21,7 +21,7 @@ public record EnrollmentSummaryDto(
 [ApiController]
 [Route("api/v{version:apiVersion}/courses/{courseId:int}/enrollments")]
 [ApiVersion("1.0")]
-public class EnrollmentController(TmSDbContext context,IHubContext<TmsHub, ITmsHubClient> hubContext) : ControllerBase
+public class EnrollmentController(TmsDbContext context,IHubContext<TmsHub, ITmsHubClient> hubContext) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetEnrollments(

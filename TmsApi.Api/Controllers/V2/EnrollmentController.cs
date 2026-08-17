@@ -15,7 +15,7 @@ namespace TmsApi.Api.Controllers.V2;
 [ApiController]
 [Route("api/v{version:apiVersion}/enrollments")]
 [ApiVersion("2.0")]
-public class EnrollmentsController(TmSDbContext context,IMediator mediator,IHubContext<TmsHub, ITmsHubClient> hubContext) : ControllerBase
+public class EnrollmentsController(TmsDbContext context,IMediator mediator,IHubContext<TmsHub, ITmsHubClient> hubContext) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Enroll(EnrollstudentCommand command, CancellationToken ct)

@@ -46,3 +46,4 @@ C:\Users\tarik\Desktop\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.dll
 C:\Users\tarik\Desktop\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\refint\TmsApi.Domain.dll
 C:\Users\tarik\Desktop\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.pdb
 C:\Users\tarik\Desktop\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\ref\TmsApi.Domain.dll
+C:\Users\tarik\Desktop\TmsApi2\TmsApi.Domain\obj\Debug\net10.0\TmsApi.Domain.csproj.AssemblyReference.cache

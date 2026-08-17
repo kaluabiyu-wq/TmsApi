@@ -5,10 +5,11 @@ using TmsApi.Application.DTOs;
 using TmsApi.Application.Interfaces;
 using Microsoft.Extensions.Logging;
 using TmsApi.Application.Enrollments.Queries;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TmsApi.Infrastructure.Persistence.Services;
 
-public class EnrollmentService(TmSDbContext context, ILogger<EnrollmentService> logger) : IEnrollmentService
+public class EnrollmentService(TmsDbContext context, ILogger<EnrollmentService> logger) : IEnrollmentService
 
 {
     public Task<EnrollmentResponseDto?> GetByIdAsync(int courseId, int id, CancellationToken ct) =>

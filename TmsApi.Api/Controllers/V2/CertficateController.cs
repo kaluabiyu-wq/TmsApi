@@ -9,7 +9,7 @@ namespace TmsApi.Api.Controllers.V2;
 [ApiVersion("2.0")]
 
 
-public class CertficateController(TmSDbContext context) : ControllerBase
+public class CertficateController(TmsDbContext context) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetCertficates(

@@ -11,7 +11,7 @@ public record CreateGradeRequest(int StudentId, int CourseId, int Score);
 [ApiController]
 [Route("api/v{version:apiVersion}/grades")]
 [ApiVersion("1.0")]
-public class GradeController(TmSDbContext context) : ControllerBase
+public class GradeController(TmsDbContext context) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken ct)

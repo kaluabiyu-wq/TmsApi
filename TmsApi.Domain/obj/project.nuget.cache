@@ -1,8 +1,24 @@
 {
   "version": 2,
-  "dgSpecHash": "fO+M81/J4FQ=",
+  "dgSpecHash": "Nta8EGzzbdc=",
   "success": true,
   "projectFilePath": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
+  "expectedPackageFiles": [
+    "C:\\Users\\tarik\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.9\\microsoft.aspnetcore.openapi.10.0.9.nupkg.sha512",
+    "C:\\Users\\tarik\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
+      "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj",
+      "libraryId": "Microsoft.OpenApi",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }
