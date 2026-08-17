@@ -19,11 +19,23 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                     .GroupBy(e => e.PropertyName)
                     .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray())),
 
+          InvalidOperationException ioe => (
+                StatusCodes.Status409Conflict,
+                "Conflict",
+                ioe.Message,
+                (IDictionary<string, string[]>?)null),
+
+            KeyNotFoundException knfe => (
+                StatusCodes.Status404NotFound,
+                "Not found",
+                knfe.Message,
+                (IDictionary<string, string[]>?)null),
+
             _ => (
                 StatusCodes.Status500InternalServerError,
                 "Server error",
                 $"An unexpected error occurred. Trace ID: {httpContext.TraceIdentifier}",
-                null)
+                (IDictionary<string, string[]>?)null),
         };
 
         if (status == StatusCodes.Status500InternalServerError)
