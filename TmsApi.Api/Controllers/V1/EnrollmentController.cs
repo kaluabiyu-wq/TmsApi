@@ -195,7 +195,7 @@ public async Task<IActionResult> Approve(int id, CancellationToken ct)
             type: "https://tms.local/errors/concurrency_conflict");
     }
 
-    await hubContext.Clients.All.ReceiveEnrollmentStatusUpdated(id.ToString(), "Approved");
+    await hubContext.Clients.All.ReceiveEnrollmentStatusUpdated(id, "Approved");
 
     return NoContent();
 }
