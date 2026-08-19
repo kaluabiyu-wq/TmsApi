@@ -564,3 +564,8 @@ C:\Users\tarik\Desktop\TmsApi2\TmsApi.Api\obj\Debug\net10.0\TmsApi.Api.genruntim
 C:\Users\tarik\Desktop\TmsApi2\TmsApi.Api\obj\Debug\net10.0\ref\TmsApi.Api.dll
 C:\Users\tarik\Desktop\TmsApi2\TmsApi.Api\bin\Debug\net10.0\BCrypt-Net-Next.dll
 C:\Users\tarik\Desktop\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\tarik\Desktop\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\tarik\Desktop\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
+C:\Users\tarik\Desktop\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\tarik\Desktop\TmsApi2\TmsApi.Api\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\tarik\Desktop\TmsApi2\TmsApi.Api\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll

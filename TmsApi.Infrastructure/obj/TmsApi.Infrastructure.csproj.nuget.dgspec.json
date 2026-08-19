@@ -777,9 +777,17 @@
               "target": "Package",
               "version": "[10.0.10, )"
             },
+            "Microsoft.Extensions.Identity.Stores": {
+              "target": "Package",
+              "version": "[10.0.11, )"
+            },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[10.0.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.22.0, )"
             }
           },
           "imports": [
