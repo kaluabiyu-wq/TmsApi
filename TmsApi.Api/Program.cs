@@ -32,6 +32,8 @@ using Microsoft.IdentityModel.Tokens.Experimental;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using TmsApi.Api.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -220,6 +222,16 @@ builder.Services.AddScoped<ICertficateService,CertificateService>();
 builder.Services.AddScoped<ICachedCourseService,CachedCourseService>();
 builder.Services.AddSingleton<ITranscriptStatusStore,InMemoryTranscriptStatusStore>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddSingleton<IAuthorizationHandler, CourseInstructoreHandler>();
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("AuthLimiter", opt=>
+    {
+        opt.PermitLimit = 5;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueLimit = 0;
+    });
+});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -244,6 +256,9 @@ builder.Services.AddAuthentication(options =>
         )
     };
 });
+builder.Services.AddAuthorizationBuilder()
+.AddPolicy("CanEditCourse", policy =>
+ policy.Requirements.Add(new CourseInstructorRequirement ()));
 
 
 builder.Services.AddProblemDetails();
@@ -337,10 +352,16 @@ app.Use(async (context,next) =>
                Secure = !builder.Environment.IsDevelopment(),
                SameSite = SameSiteMode.Strict
            });
+        context.Response.Headers.Append("X-Content-Type-Options","nosniff");
+        context.Response.Headers.Append("Referrer-Policy","strict-origin-when-cross-origin");
+        context.Response.Headers.Append("content-seciurity-policy",
+        "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';"
+        );
 
     }
     await next(context);
 });
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();

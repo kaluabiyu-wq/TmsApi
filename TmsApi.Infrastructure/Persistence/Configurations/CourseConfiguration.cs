@@ -14,6 +14,8 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
         b.HasIndex(c => c.Code).IsUnique();
          b.HasMany(c => c.Enrollments).WithOne(e => e.Course)
          .HasForeignKey(e=> e.CourseId);
+        b.HasOne(c => c.Instructor).WithMany().HasForeignKey(c => c.InstructorId)
+        .IsRequired(false); 
        
     }
 }
