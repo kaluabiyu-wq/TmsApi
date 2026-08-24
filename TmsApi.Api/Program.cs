@@ -113,6 +113,16 @@ builder.Services.AddRateLimiter(options =>
         opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
         
     }
+
+    );
+
+    options.AddFixedWindowLimiter("AuthLimiter",opt =>
+    {
+        opt.PermitLimit = 5;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueLimit = 0;
+        
+    }
     
     );
     options.AddTokenBucketLimiter("search", opt =>
@@ -223,15 +233,7 @@ builder.Services.AddScoped<ICachedCourseService,CachedCourseService>();
 builder.Services.AddSingleton<ITranscriptStatusStore,InMemoryTranscriptStatusStore>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddSingleton<IAuthorizationHandler, CourseInstructoreHandler>();
-builder.Services.AddRateLimiter(options =>
-{
-    options.AddFixedWindowLimiter("AuthLimiter", opt=>
-    {
-        opt.PermitLimit = 5;
-        opt.Window = TimeSpan.FromMinutes(1);
-        opt.QueueLimit = 0;
-    });
-});
+
 
 builder.Services.AddAuthentication(options =>
 {
@@ -318,7 +320,7 @@ var app = builder.Build();
 app.UseExceptionHandler();
 app.UseStatusCodePages();
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference(options =>
@@ -337,13 +339,17 @@ app.UseCors("TmsClient");
 
 app.Use(async (context, next) =>
 {
-    context.Response.Headers.Append("X-Frame-Options", "DENY");
-    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
-    context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
-    context.Response.Headers.Append("Content-Security-Policy",
-        "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';"
-    );
-    await next(context);
+    // Skip strict CSP for Scalar's API docs UI (needs inline scripts to render)
+    if (!context.Request.Path.StartsWithSegments("/scalar"))
+    {
+        context.Response.Headers.Append("X-Frame-Options", "DENY");
+        context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+        context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+        context.Response.Headers.Append("Content-Security-Policy",
+            "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';"
+        );
+    }
+    await next();
 });
  
 app.Use(async (context,next) =>
