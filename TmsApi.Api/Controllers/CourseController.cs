@@ -6,7 +6,7 @@ namespace TmsApi.Api.Controllers;
 
 [Authorize(Roles ="Instructor,Admin")]
 [ApiController]
-[Route("api/controller")]
+[Route("api/Course")]
 public class CourseController : ControllerBase
 {
     private readonly TmsDbContext _context;
