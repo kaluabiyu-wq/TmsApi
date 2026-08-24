@@ -9,7 +9,7 @@ namespace TmsApi.Application.Interfaces;
 public interface ICourseService
 {
 Task<CourseResponseDto?> GetByCodeAsync(string code, CancellationToken ct);
-Task<CourseResponseDto> CreateAsync(CreateCourseRequest request, CancellationToken ct);
+Task<CourseResponseDto> CreateAsync(CreateCourseRequest request,string instructorId, CancellationToken ct);
 
 
 Task<bool> CodeExistAsync (string Code,CancellationToken ct);

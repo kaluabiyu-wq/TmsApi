@@ -5,7 +5,7 @@ using TmsApi.Domain.Entities;
 
 namespace TmsApi.Api.Authorization;
 
-public class CourseInstructoreHandler :
+public class CourseInstructorHandler :
 AuthorizationHandler<CourseInstructorRequirement, Course>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CourseInstructorRequirement requirement, Course resource)

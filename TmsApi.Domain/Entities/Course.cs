@@ -15,11 +15,7 @@ public class Course
 
     public int MaxCapacity {get;set;}
 
-    public string? InstructorId {get;set;}
-
-    public TmsUser? Instructor {get;set;}
-
-
+    public string InstructorId {get;set;} = string.Empty;
     public string Description { get; set; } = string.Empty; 
     public ICollection<Enrollment> Enrollments { get; set;} = new List<Enrollment>();
     public ICollection<Assessment> Assessments { get; set;} = new List<Assessment>();
