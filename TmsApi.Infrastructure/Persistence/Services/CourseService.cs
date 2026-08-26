@@ -119,5 +119,10 @@ public async Task DeleteAsync(int id, CancellationToken ct)
     await context.SaveChangesAsync(ct);
 }
 
+public Task<Course?> GetCourseByCodeAsync(string code, CancellationToken ct) =>
+    context.Courses.AsNoTracking()
+        .Include(c => c.Enrollments)
+        .FirstOrDefaultAsync(c => c.Code == code, ct);
+
 }
 

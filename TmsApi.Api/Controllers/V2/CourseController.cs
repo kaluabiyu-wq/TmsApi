@@ -64,7 +64,7 @@ public class CourseController(ICachedCourseService cachedCourseService, TmsDbCon
         var authResult = await authorizationService.AuthorizeAsync(User, course, "CanEditCourse");
         if (!authResult.Succeeded)
         {
-            return Forbid(); // 403 — caller doesn't own this course and isn't Admin
+            return Forbid(); 
         }
 
         var updated = await courseService.UpdateAsync(new UpdateCourseCommand(id, body.Title), ct);

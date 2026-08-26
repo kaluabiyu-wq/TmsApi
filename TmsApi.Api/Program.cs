@@ -375,4 +375,8 @@ app.UseMiddleware<V1DeprecationMiddleware>();
 app.MapHub<TmsHub>("/hubs/tms").RequireCors("TmsClient");
 app.MapControllers();
 
+
+
 app.Run();
+
+public partial class Program {}
