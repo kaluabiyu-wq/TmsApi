@@ -24,14 +24,14 @@ public class CoursesApiTests : IClassFixture<CustomWebApplicatonFactory>
 
         response.EnsureSuccessStatusCode();
 
-         var page = await response.Content.ReadFromJsonAsync<PagedCoursesJson>();
-        Assert.NotNull(page?.Data);
+        var page = await response.Content.ReadFromJsonAsync<PagedCoursesJson>();
+        Assert.NotNull(page?.Items);
     }
 
     [Fact]
     public async Task CreateCourse_InvalidCode_ReturnsValidationError()
     {
-         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GenerateTestJwt());
+             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GenerateTestJwt());
 
         var response = await _client.PostAsJsonAsync("/api/v2.0/courses", new
         {
@@ -43,8 +43,7 @@ public class CoursesApiTests : IClassFixture<CustomWebApplicatonFactory>
         Assert.True(
             response.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.UnprocessableEntity);
     }
-
-       private static string GenerateTestJwt()
+    private static string GenerateTestJwt()
     {
         var claims = new[]
         {
@@ -68,7 +67,8 @@ public class CoursesApiTests : IClassFixture<CustomWebApplicatonFactory>
 
     private sealed class PagedCoursesJson
     {
-        public List<CourseRowJson> Data { get; set; } = default!;
+        public List<CourseRowJson> Items { get; set; } = default!;
+        public int TotalCount { get; set; }
     }
 
     private sealed class CourseRowJson

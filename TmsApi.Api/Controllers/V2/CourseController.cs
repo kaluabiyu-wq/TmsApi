@@ -6,6 +6,7 @@ using TmsApi.Application.DTOs;
 using TmsApi.Application.Interfaces;
 using TmsApi.Application.Courses.Commands;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace TmsApi.Api.Controllers.V2;
 
@@ -32,19 +33,27 @@ public class CourseController(ICachedCourseService cachedCourseService, TmsDbCon
             .Take(pageSize)
             .ToList();
 
-        var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-        var hasNext = page < totalPages;
-        var hasPrevious = page > 1;
-
+     var paged = new PagedResponse<CourseResponseDto>
+     {
+       Items = rows,
+       TotalCount = totalCount,
+       Page = page,
+       PageSize = pageSize  
+     };
         return Ok(new
         {
-            data = rows,
-            meta = new { totalCount, page, pageSize, totalPages, hasNext, hasPrevious },
-            links = new
+            items = paged.Items,
+            totalCount = paged.TotalCount,
+            page = paged.Page,
+            pageSize = paged.PageSize,
+            totalPages = paged.TotalPages,
+            hasNext = paged.HasNext,
+            hasPrevious = paged.HasPrevious,
+             links = new
             {
                 self = $"/api/v2/courses?page={page}&pageSize={pageSize}",
-                next = hasNext ? $"/api/v2/courses?page={page + 1}&pageSize={pageSize}" : (string?)null,
-                prev = hasPrevious ? $"/api/v2/courses?page={page - 1}&pageSize={pageSize}" : (string?)null,
+                next = paged.HasNext ? $"/api/v2/courses?page={page + 1}&pageSize={pageSize}" : (string?)null,
+                prev = paged.HasPrevious ? $"/api/v2/courses?page={page - 1}&pageSize={pageSize}" : (string?)null,
                 enroll = "/api/v2/enrollments"
             }
         });
