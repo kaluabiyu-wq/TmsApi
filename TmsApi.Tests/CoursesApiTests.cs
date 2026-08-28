@@ -1,6 +1,10 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
-
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace TmsApi_Tests;
 
@@ -20,13 +24,15 @@ public class CoursesApiTests : IClassFixture<CustomWebApplicatonFactory>
 
         response.EnsureSuccessStatusCode();
 
-        var page = await response.Content.ReadFromJsonAsync<PagedCoursesJson>();
-        Assert.NotNull(page?.Items);
+         var page = await response.Content.ReadFromJsonAsync<PagedCoursesJson>();
+        Assert.NotNull(page?.Data);
     }
 
     [Fact]
     public async Task CreateCourse_InvalidCode_ReturnsValidationError()
     {
+         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GenerateTestJwt());
+
         var response = await _client.PostAsJsonAsync("/api/v2.0/courses", new
         {
             code = "",
@@ -38,10 +44,31 @@ public class CoursesApiTests : IClassFixture<CustomWebApplicatonFactory>
             response.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.UnprocessableEntity);
     }
 
+       private static string GenerateTestJwt()
+    {
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, "test-instructor-id"),
+            new Claim(ClaimTypes.Role, "Instructor"),
+        };
+
+        var key = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes("ThisIsASecretKeyForTestingPurposesOnly123456!"));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: "TmsTestIssuer",
+            audience: "TmsTestAudience",
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(30),
+            signingCredentials: creds);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
     private sealed class PagedCoursesJson
     {
-        public List<CourseRowJson> Items { get; set; } = default!;
-        public int TotalCount { get; set; }
+        public List<CourseRowJson> Data { get; set; } = default!;
     }
 
     private sealed class CourseRowJson

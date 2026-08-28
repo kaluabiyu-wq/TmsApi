@@ -1,5 +1,3 @@
-
-
 using System.Security.Cryptography.X509Certificates;
 using NSubstitute;
 using TmsApi.Application.Common;
@@ -18,22 +16,20 @@ public class EnrollStudentStudentHandlerTests
           var enrollmentService = Substitute.For<IEnrollmentService>();
           var courseService = Substitute.For<ICourseService>();
 
-          enrollmentService.ExistsAsync(99, "Cs-401", Arg.Any<CancellationToken>())
+          enrollmentService.ExistsAsync(99, "CS-401", Arg.Any<CancellationToken>())
           .Returns(Task.FromResult(true));
 
-          var course = new Course
-          {
-              Id = 1,
-              Code = "Cs-401",
-              Title = "Advanced Web Dev",
-              MaxCapacity = 30,
-               Enrollments = new List<Enrollment>(),
-          };
-          courseService.GetCourseByCodeAsync("Cs-401", Arg.Any<CancellationToken>())
-          .Returns(Task.FromResult<Course?>(course));
+          var course = new CourseResponseDto(
+              Id: 1,
+              Code: "CS-401",
+              Title: "Advanced Web Dev",
+              MaxCapacity: 30,
+              EnrollmentCount: 0);
+          courseService.GetByCodeAsync("CS-401", Arg.Any<CancellationToken>())
+          .Returns(Task.FromResult<CourseResponseDto?>(course));
 
           var handler = new EnrollStudentHandler(enrollmentService, courseService);
-          var command = new EnrollstudentCommand(StudentId: 99,Coursecode: "Cs-401");
+          var command = new EnrollstudentCommand(StudentId: 99, Coursecode: "CS-401");
           var result = await handler.Handle(command, CancellationToken.None);
 
           Assert.False(result.IsSuccess);
@@ -52,18 +48,14 @@ public class EnrollStudentStudentHandlerTests
         var enrollmentService = Substitute.For<IEnrollmentService>();
         var courseService = Substitute.For<ICourseService>();
 
-        var course = new Course
-        {
-            Id = 1,
-            Code = "CS-401",
-            Title = "Advanced web dev",
-            MaxCapacity = 35,
-            Enrollments = Enumerable.Range(1,35)
-            .Select(i=> new Enrollment {ID = i, CourseId = 1, Status = "pending"})
-            .ToList()
-        };
-        courseService.GetCourseByCodeAsync("CS-401", Arg.Any<CancellationToken>())
-        .Returns(Task.FromResult<Course?>(course));
+         var course = new CourseResponseDto(
+            Id: 1,
+            Code: "CS-401",
+            Title: "Advanced web dev",
+            MaxCapacity: 35,
+            EnrollmentCount: 35);
+        courseService.GetByCodeAsync("CS-401", Arg.Any<CancellationToken>())
+        .Returns(Task.FromResult<CourseResponseDto?>(course));
 
         var handler = new EnrollStudentHandler(enrollmentService, courseService);
         var command = new EnrollstudentCommand(StudentId:100, Coursecode: "CS-401");
@@ -72,7 +64,7 @@ public class EnrollStudentStudentHandlerTests
 
         Assert.False(result.IsSuccess);
         Assert.Equal("course_full", result.Error.Code);
-        Assert.Equal(EnrollmentError.courseFull("Advanced web Dev",35), result.Error);
+        Assert.Equal(EnrollmentError.courseFull("Advanced web dev",35), result.Error);
 
         await enrollmentService.DidNotReceive()
         .AddAsync(Arg.Any<Enrollment>(), Arg.Any<CancellationToken>());
@@ -83,19 +75,14 @@ public class EnrollStudentStudentHandlerTests
         var enrollmentService = Substitute.For<IEnrollmentService>();
         var courseService = Substitute.For<ICourseService>();
 
-
-         var course = new Course
-        {
-            Id = 1,
-            Code = "CS-401",
-            Title = "Advanced web dev",
-            MaxCapacity = 35,
-            Enrollments = Enumerable.Range(1,20)
-            .Select(i=> new Enrollment {ID = i, CourseId = 1, Status = "pending"})
-            .ToList()
-        };
-        courseService.GetCourseByCodeAsync("CS-401",Arg.Any<CancellationToken>())
-        .Returns(Task.FromResult<Course?>(course));
+         var course = new CourseResponseDto(
+            Id: 1,
+            Code: "CS-401",
+            Title: "Advanced web dev",
+            MaxCapacity: 35,
+            EnrollmentCount: 20);
+        courseService.GetByCodeAsync("CS-401",Arg.Any<CancellationToken>())
+        .Returns(Task.FromResult<CourseResponseDto?>(course));
         enrollmentService.ExistsAsync(100, "CS-401",Arg.Any<CancellationToken>())
         .Returns(Task.FromResult(false));
         var handler = new EnrollStudentHandler(enrollmentService,courseService);
@@ -105,7 +92,7 @@ public class EnrollStudentStudentHandlerTests
 
         Assert.True(result.IsSuccess);
         Assert.Equal(100, result.Value.StudentId);
-        Assert.Equal("Cs-401", result.Value.CourseCode);
+        Assert.Equal("CS-401", result.Value.CourseCode);
 
         await enrollmentService.Received(1).AddAsync(
             Arg.Is<Enrollment>(e=>e.StudentId == 100 && e.CourseId == 1),

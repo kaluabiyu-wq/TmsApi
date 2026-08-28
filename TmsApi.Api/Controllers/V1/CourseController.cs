@@ -61,7 +61,7 @@ public async Task<IActionResult> DeleteCourse(int id, [FromServices] ICourseServ
     return NoContent();
 }
 
-    [HttpPut("(id)")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateCourse(int id, [FromBody] UpdateCourseDto dto)
     {
         var course = await context.Courses.FindAsync(id);
