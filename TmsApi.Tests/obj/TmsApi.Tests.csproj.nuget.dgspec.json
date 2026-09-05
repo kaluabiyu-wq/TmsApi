@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Tests\\TmsApi.Tests.csproj": {}
+    "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Tests\\TmsApi.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj": {
+    "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj",
+        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj",
         "projectName": "TmsApi.Api",
-        "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj",
-        "packagesPath": "C:\\Users\\CSUG\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Api\\obj\\",
+        "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj",
+        "packagesPath": "C:\\Users\\tarik\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\CSUG\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\tarik\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -27,11 +27,11 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj": {
-                "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj"
+              "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj": {
+                "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj"
               },
-              "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj"
+              "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj"
               }
             }
           }
@@ -46,7 +46,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.400"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net10.0": {
@@ -115,7 +115,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.303/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -533,17 +533,17 @@
         }
       }
     },
-    "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj": {
+    "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj",
+        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj",
         "projectName": "TmsApi.Application",
-        "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj",
-        "packagesPath": "C:\\Users\\CSUG\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\obj\\",
+        "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj",
+        "packagesPath": "C:\\Users\\tarik\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\CSUG\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\tarik\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -556,8 +556,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj": {
-                "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj"
+              "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj": {
+                "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj"
               }
             }
           }
@@ -572,7 +572,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.400"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net10.0": {
@@ -608,7 +608,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.303/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -886,17 +886,17 @@
         }
       }
     },
-    "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj": {
+    "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj",
         "projectName": "TmsApi.Domain",
-        "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj",
-        "packagesPath": "C:\\Users\\CSUG\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Domain\\obj\\",
+        "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj",
+        "packagesPath": "C:\\Users\\tarik\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\CSUG\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\tarik\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -921,7 +921,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.400"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net10.0": {
@@ -949,7 +949,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.303/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -1227,17 +1227,17 @@
         }
       }
     },
-    "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj": {
+    "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj",
         "projectName": "TmsApi.Infrastructure",
-        "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\CSUG\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\tarik\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\CSUG\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\tarik\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -1250,11 +1250,11 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj": {
-                "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj"
+              "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj": {
+                "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj"
               },
-              "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj": {
-                "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj"
+              "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj": {
+                "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj"
               }
             }
           }
@@ -1269,7 +1269,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.400"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net10.0": {
@@ -1335,7 +1335,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.303/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -1613,17 +1613,17 @@
         }
       }
     },
-    "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Tests\\TmsApi.Tests.csproj": {
+    "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Tests\\TmsApi.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Tests\\TmsApi.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Tests\\TmsApi.Tests.csproj",
         "projectName": "TmsApi.Tests",
-        "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Tests\\TmsApi.Tests.csproj",
-        "packagesPath": "C:\\Users\\CSUG\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Tests\\obj\\",
+        "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Tests\\TmsApi.Tests.csproj",
+        "packagesPath": "C:\\Users\\tarik\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\CSUG\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\tarik\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -1636,11 +1636,11 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj": {
-                "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj"
+              "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj": {
+                "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj"
               },
-              "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj": {
-                "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj"
+              "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj": {
+                "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj"
               }
             }
           }
@@ -1655,7 +1655,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.400"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
         "net10.0": {
@@ -1707,7 +1707,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.303/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
