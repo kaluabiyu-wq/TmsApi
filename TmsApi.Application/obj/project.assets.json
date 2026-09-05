@@ -530,19 +530,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tarik\\.nuget\\packages\\": {}
+    "C:\\Users\\CSUG\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj",
+      "projectUniqueName": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj",
       "projectName": "TmsApi.Application",
-      "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj",
-      "packagesPath": "C:\\Users\\tarik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Application\\obj\\",
+      "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj",
+      "packagesPath": "C:\\Users\\CSUG\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\tarik\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\CSUG\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -555,8 +555,8 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj": {
-              "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Domain\\TmsApi.Domain.csproj"
+            "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj": {
+              "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Domain\\TmsApi.Domain.csproj"
             }
           }
         }
@@ -571,7 +571,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.300"
+      "SdkAnalysisLevel": "10.0.400"
     },
     "frameworks": {
       "net10.0": {
@@ -607,7 +607,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.303/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

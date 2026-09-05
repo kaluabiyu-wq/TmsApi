@@ -3085,19 +3085,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tarik\\.nuget\\packages\\": {}
+    "C:\\Users\\CSUG\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Api\\TmsApi.Api.csproj",
+      "projectUniqueName": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj",
       "projectName": "TmsApi.Api",
-      "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Api\\TmsApi.Api.csproj",
-      "packagesPath": "C:\\Users\\tarik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Api\\obj\\",
+      "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Api\\TmsApi.Api.csproj",
+      "packagesPath": "C:\\Users\\CSUG\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\tarik\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\CSUG\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -3110,11 +3110,11 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj": {
-              "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Application\\TmsApi.Application.csproj"
+            "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj": {
+              "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Application\\TmsApi.Application.csproj"
             },
-            "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\tarik\\Desktop\\TmsApi2\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj"
+            "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\CSUG\\Desktop\\kalu\\TmsApi\\TmsApi.Infrastructure\\TmsApi.Infrastructure.csproj"
             }
           }
         }
@@ -3129,7 +3129,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.300"
+      "SdkAnalysisLevel": "10.0.400"
     },
     "frameworks": {
       "net10.0": {
@@ -3198,7 +3198,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.303/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -3621,7 +3621,7 @@
       "code": "NU1510",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "PackageReference Microsoft.AspNetCore.SignalR will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.",
+      "message": "PackageReference Microsoft.AspNetCore.SignalR will not be pruned. This package is automatically available and does not need to be referenced explicitly. Remove the PackageReference item.",
       "libraryId": "Microsoft.AspNetCore.SignalR",
       "targetGraphs": [
         "net10.0"

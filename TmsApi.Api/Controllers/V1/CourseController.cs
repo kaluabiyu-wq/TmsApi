@@ -76,7 +76,13 @@ public async Task<IActionResult> DeleteCourse(int id, [FromServices] ICourseServ
         return NoContent();
     }
 
-
+[HttpGet("{id:int}")] 
+public async Task<IActionResult> GetCourseDetail(int id, [FromServices] ICourseService 
+courseService, CancellationToken ct) 
+{ 
+var detail = await courseService.GetDetailByIdAsync(id, ct); 
+return detail is null ? NotFound() : Ok(detail); 
+}
 
 }
 public record UpdateCourseDto(string Title);
