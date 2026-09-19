@@ -1,4 +1,3 @@
-
 public interface IEnrollmentService
 {
     Task<EnrollmentRecord> EnrollAsync(string studentId,string courseCode);
@@ -7,3 +6,4 @@ public interface IEnrollmentService
     Task<bool> DeleteAsync(string id);
      Task<IReadOnlyList<EnrollmentRecord>> GetAllAsync();
 }
+

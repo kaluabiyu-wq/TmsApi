@@ -1,6 +1,5 @@
 
 
-
 public class StudentService : IStudentService
 {
     private readonly Dictionary<string, StudentRecord> _store = new();
@@ -11,7 +10,7 @@ public class StudentService : IStudentService
         _logger = logger;
     }
 
-    public Task<StudentRecord> CreateAsync(string name, double? gpa)
+    public Task<StudentRecord> CreateAsync(string name, decimal? gpa)
     {
       
         var existing = _store.Values
@@ -85,7 +84,8 @@ public class StudentService : IStudentService
 
         return Task.FromResult(removed);
     }
+    
 }
 
 
-public record StudentRecord(string Id,string Name, DateTime EnrollmentDate, double? Gpa);
+public record StudentRecord(string Id,string Name, DateTime EnrollmentDate, decimal? Gpa);

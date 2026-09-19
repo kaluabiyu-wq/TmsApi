@@ -1,4 +1,7 @@
 
+using TmsApi.Data;
+using Microsoft.EntityFrameworkCore;
+
 public class EnrollmentService : IEnrollmentService
 {
     private readonly Dictionary<string, EnrollmentRecord> _store = new();
@@ -49,6 +52,21 @@ public class EnrollmentService : IEnrollmentService
         return Task.FromResult(removed);
     }
 
+public async Task<int> ArchiveOldEnrollmentsAsync(
+    TmSDbContext context,
+    CancellationToken cancellationToken)
+{
+    int cutoffYear = DateTime.UtcNow.Year - 1;
+
+    int rowsAffected = await context.Enrollments
+        .Where(e => e.Year <= cutoffYear && !e.IsArchived)
+        .ExecuteUpdateAsync(
+            s => s.SetProperty(e => e.IsArchived, true),
+            cancellationToken);
+
+    _logger.LogInformation("Archived {Count} old enrollments", rowsAffected);
+    return rowsAffected;
+}
 }
 public record EnrollmentRecord(
 string Id,

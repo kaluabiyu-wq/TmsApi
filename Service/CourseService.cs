@@ -1,6 +1,5 @@
 
 
-
 public class CourseService : ICourseService
 {
     private readonly Dictionary<string, CourseRecord> _store = new();

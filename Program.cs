@@ -59,7 +59,7 @@ else
 
 app.UseStatusCodePages();
 app.UseMiddleware<RequestLoggingMiddleware>();
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -128,8 +128,9 @@ using (var scope = app.Services.CreateScope())
         };
         context.Enrollments.AddRange(enrollments);
         context.SaveChanges();
-
     }
 }
+
+
 
 app.Run();

@@ -1,3 +1,5 @@
+
+
 public interface ICourseService
 {
     Task<CourseRecord> CreateAsync(string title, int capacity);
