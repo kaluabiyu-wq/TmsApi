@@ -15,8 +15,7 @@ public class RequestLoggingMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        // Generate a short correlation id and stamp it on the response BEFORE
-        // calling next — once the response starts, headers can no longer be set.
+    
         var correlationId = Guid.NewGuid().ToString("N")[..8];
         context.Response.Headers["X-Correlation-Id"] = correlationId;
 
