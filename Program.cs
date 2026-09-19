@@ -16,7 +16,7 @@ builder.Services.AddOptions<PaymentOptions>()
     .ValidateOnStart();
 builder.Services.AddDbContext<TmSDbContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("TmsDatabase"))
-.LogTo(Console.WriteLine, LogLevel.Information)
+.LogTo(Console.WriteLine,LogLevel.Information)
 .EnableSensitiveDataLogging()
 );
 
@@ -32,11 +32,7 @@ builder.Services.AddSingleton<IAssessmentService, AssessmentService>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-    });
+builder.Services.AddControllers();
 
 builder.Host.UseDefaultServiceProvider(options =>
 {
@@ -50,20 +46,20 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapOpenApi();                 
+    app.MapScalarApiReference();       
 }
 
 else
 {
     app.UseExceptionHandler();
 }
-
+   
 // Middleware pipeline (order matters)
 
 app.UseStatusCodePages();
 app.UseMiddleware<RequestLoggingMiddleware>();
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -77,7 +73,7 @@ app.MapGet("/api/assessments/results", () =>
     return Results.Ok(new
     {
         courseCode = "CS-101",
-        studentId = "S-001",
+        studentId  = "S-001",
         letterGrade = "A"
     });
 }).RequireAuthorization();
@@ -92,7 +88,7 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<TmSDbContext>();
     context.Database.Migrate();
 
-    if (!context.Students.Any() && !context.Courses.Any())
+    if(!context.Students.Any())
     {
         var students = new List<Student>
         {
@@ -107,10 +103,7 @@ using (var scope = app.Services.CreateScope())
              new() {RegistrationNumber = "TMS-2026-0005",Name ="Evan Wright",
             GPA = 2.5m, IsActive = true}
         };
-
         context.Students.AddRange(students);
-        //  context.Entry(students).Property("Last Updated").CurrentValue = DateTime.UtcNow;
-
 
         var courses = new List<Course>
         {
@@ -134,13 +127,10 @@ using (var scope = app.Services.CreateScope())
             Grade = 3.9m},
         };
         context.Enrollments.AddRange(enrollments);
-
         context.SaveChanges();
     }
-
-
 }
 
 
-app.Run();
 
+app.Run();
