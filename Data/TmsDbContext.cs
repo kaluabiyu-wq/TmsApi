@@ -14,4 +14,10 @@ DbContext(options)
     public DbSet<Assessment> Assessments => Set<Assessment>();
 
     public DbSet<Certificate> Certificates => Set<Certificate>();
+
+
+    protected override void OnModelCreating(ModelBuilder b)
+    {
+        b.ApplyConfigurationsFromAssembly(typeof(TmSDbContext).Assembly);
+    }
 }

@@ -207,6 +207,17 @@ Accept: application/json
 
 
 ###
+GET {{TmsApi_HostAddress}}/api/report/paginate
+X-Training-User: kalu
+Accept: application/json
+
+###
+GET {{TmsApi_HostAddress}}/api/report/paged
+X-Training-User: kalu
+Accept: application/json
+
+###
 GET {{TmsApi_HostAddress}}/api/error
 X-Training-User: kalu
 Accept: application/json
+
