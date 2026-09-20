@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using TmsApi.Infrastructure.Persistence;
 using TmsApi.Application.Interfaces;
 using TmsApi.Application.Courses.Commands;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TmsApi.Api.Controllers.V2;
 
 [ApiController]
 [Route("api/v{version:apiVersion}/courses")]
 [ApiVersion("2.0")]
-public class CourseController(ICachedCourseService cachedCourseService) : ControllerBase
+public class CourseController(ICachedCourseService cachedCourseService, TmsDbContext context) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetCourses(
@@ -47,20 +48,31 @@ public class CourseController(ICachedCourseService cachedCourseService) : Contro
             }
         });
     }
-[HttpPut("{id:int}")]
-public async Task<IActionResult> UpdateCourse(
-    int id,
-    [FromBody] UpdateCourseRequestBody body,
-    [FromServices] ICourseService courseService,
-    [FromServices] ICachedCourseService cachedCourseService,
-    CancellationToken ct)
-{
-    var updated = await courseService.UpdateAsync(new UpdateCourseCommand(id, body.Title), ct);
+ [Authorize(Roles = "Instructor,Admin")]
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateCourse(
+        int id,
+        [FromBody] UpdateCourseRequestBody body,
+        [FromServices] ICourseService courseService,
+        [FromServices] ICachedCourseService cachedCourseService,
+        [FromServices] IAuthorizationService authorizationService,
+        CancellationToken ct)
+    {
+        var course = await context.Courses.FindAsync(new object?[] { id }, ct);
+        if (course == null) return NotFound();
 
-    await cachedCourseService.InvalidateCourseCachedAsync(ct);
+        var authResult = await authorizationService.AuthorizeAsync(User, course, "CanEditCourse");
+        if (!authResult.Succeeded)
+        {
+            return Forbid(); // 403 — caller doesn't own this course and isn't Admin
+        }
 
-    return Ok(updated);
-}
+        var updated = await courseService.UpdateAsync(new UpdateCourseCommand(id, body.Title), ct);
 
-public record UpdateCourseRequestBody(string Title);
+        await cachedCourseService.InvalidateCourseCachedAsync(ct);
+
+        return Ok(updated);
+    }
+
+    public record UpdateCourseRequestBody(string Title);
 }

@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TmsApi.Application.Interfaces;
@@ -9,8 +10,10 @@ namespace TmsApi.Api.Controllers.V1;
 [ApiController]
 [Route("api/v{version:apiVersion}/courses")]
 [ApiVersion("1.0")]
-public class CourseController(TmsDbContext context) : ControllerBase
+public class CourseController(TmsDbContext context,IAuthorizationService authorizationService) : ControllerBase
 {
+
+    
     [HttpGet]
     public async Task<IActionResult> GetCourses(
         [FromQuery] int page = 1,
@@ -57,4 +60,23 @@ public async Task<IActionResult> DeleteCourse(int id, [FromServices] ICourseServ
     await courseService.DeleteAsync(id, ct);
     return NoContent();
 }
+
+    [HttpPut("(id)")]
+    public async Task<IActionResult> UpdateCourse(int id, [FromBody] UpdateCourseDto dto)
+    {
+        var course = await context.Courses.FindAsync(id);
+        if(course  == null) return NotFound();
+        var authResult = await authorizationService.AuthorizeAsync(User, course, "CanEditCourse");
+        if(!authResult.Succeeded)
+        {
+            return Forbid();
+        }
+        course.Title = dto.Title;
+        await context.SaveChangesAsync();
+        return NoContent();
+    }
+
+
+
 }
+public record UpdateCourseDto(string Title);

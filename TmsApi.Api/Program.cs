@@ -32,6 +32,8 @@ using Microsoft.IdentityModel.Tokens.Experimental;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using TmsApi.Api.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -109,6 +111,16 @@ builder.Services.AddRateLimiter(options =>
         opt.PermitLimit = 5;
         opt.QueueLimit = 20;
         opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        
+    }
+
+    );
+
+    options.AddFixedWindowLimiter("AuthLimiter",opt =>
+    {
+        opt.PermitLimit = 5;
+        opt.Window = TimeSpan.FromMinutes(1);
+        opt.QueueLimit = 0;
         
     }
     
@@ -220,6 +232,8 @@ builder.Services.AddScoped<ICertficateService,CertificateService>();
 builder.Services.AddScoped<ICachedCourseService,CachedCourseService>();
 builder.Services.AddSingleton<ITranscriptStatusStore,InMemoryTranscriptStatusStore>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddSingleton<IAuthorizationHandler, CourseInstructorHandler>();
+
 
 builder.Services.AddAuthentication(options =>
 {
@@ -244,6 +258,9 @@ builder.Services.AddAuthentication(options =>
         )
     };
 });
+builder.Services.AddAuthorizationBuilder()
+.AddPolicy("CanEditCourse", policy =>
+ policy.Requirements.Add(new CourseInstructorRequirement ()));
 
 
 builder.Services.AddProblemDetails();
@@ -319,6 +336,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("TmsClient");
+
+app.UseMiddleware<SecurityHeadersMiddleware>();
+ 
 app.Use(async (context,next) =>
 {
     if (context.User.Identity?.IsAuthenticated == true || context.Request.Cookies
@@ -341,13 +361,15 @@ app.Use(async (context,next) =>
     }
     await next(context);
 });
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseRateLimiter();
+
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseMiddleware<V1DeprecationMiddleware>();
+
 
 
 app.MapHub<TmsHub>("/hubs/tms").RequireCors("TmsClient");

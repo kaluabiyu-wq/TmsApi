@@ -21,14 +21,15 @@ public class CourseService(TmsDbContext context, ILogger<CourseService> logger) 
                 c.Enrollments.Count))
             .FirstOrDefaultAsync(ct);
 
-  public async Task<CourseResponseDto> CreateAsync(CreateCourseRequest request, CancellationToken ct)
+  public async Task<CourseResponseDto> CreateAsync(CreateCourseRequest request,string instructorId, CancellationToken ct)
 {
 
 var course = new Course
 {
 Code = request.Code,
 Title = request.Title,
-MaxCapacity = request.MaxCapacity
+MaxCapacity = request.MaxCapacity,
+InstructorId = instructorId
 };
 context.Courses.Add(course);
 await context.SaveChangesAsync(ct);

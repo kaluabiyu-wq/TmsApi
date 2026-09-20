@@ -5,6 +5,7 @@ using TmsApi.Domain.Entities;
 using TmsApi.Infrastructure.Persistence;
 using TmsApi.Infrastructure.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace TmsApi.Api.Controllers.V1;
 
@@ -73,6 +74,7 @@ public class AuthController : ControllerBase
 
    public record LoginRequest(string Email, string Password);
 
+    [EnableRateLimiting("AuthLimiter")]
     [HttpPost("login")]
     public async Task<IActionResult> Login(
         [FromBody] LoginRequest request)
