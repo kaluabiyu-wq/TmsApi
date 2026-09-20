@@ -28,6 +28,10 @@ using Microsoft.AspNetCore.Antiforgery;
 using TmsApi.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens.Experimental;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 
@@ -215,7 +219,31 @@ builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 builder.Services.AddScoped<ICertficateService,CertificateService>();
 builder.Services.AddScoped<ICachedCourseService,CachedCourseService>();
 builder.Services.AddSingleton<ITranscriptStatusStore,InMemoryTranscriptStatusStore>();
+builder.Services.AddScoped<TokenService>();
 
+builder.Services.AddAuthentication(options =>
+{
+   options.DefaultAuthenticateScheme = 
+   JwtBearerDefaults.AuthenticationScheme;
+  options.DefaultChallengeScheme = 
+    JwtBearerDefaults.AuthenticationScheme;
+
+
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]!)
+        )
+    };
+});
 
 
 builder.Services.AddProblemDetails();
