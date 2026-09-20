@@ -6,10 +6,11 @@ using TmsApi.Application.DTOs;
 using Microsoft.EntityFrameworkCore;
 using TmsApi.Domain.Entities;
 using TmsApi.Application.Interfaces;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TmsApi.Infrastructure.Persistence.Services;
 
-public class StudentService(TmSDbContext context, ILogger<StudentService> logger) : IStudentService
+public class StudentService(TmsDbContext context, ILogger<StudentService> logger) : IStudentService
 {
     public Task<StudentResponseDto?> GetByIdAsync(int id, CancellationToken ct) =>
         context.Students

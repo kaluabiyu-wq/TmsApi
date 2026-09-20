@@ -9,7 +9,7 @@ namespace TmsApi.Api.Controllers.V1;
 [Route("api/v{version:apiVersion}/courses/{courseId:int}/certficates")]
 [ApiVersion("1.0")]
 
-public class CertficateController(TmSDbContext context) : ControllerBase
+public class CertficateController(TmsDbContext context) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetCertficates(

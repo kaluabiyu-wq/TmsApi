@@ -11,7 +11,7 @@ public record CreateStudentRequest(string RegistrationNumber, string Name);
 [ApiController]
 [Route("api/v{version:apiVersion}/students")]
 [ApiVersion("1.0")]
-public class StudentsController(TmSDbContext context) : ControllerBase
+public class StudentsController(TmsDbContext context) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken ct)

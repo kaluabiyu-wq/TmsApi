@@ -9,7 +9,7 @@ namespace TmsApi.Api.Controllers.V1;
 [ApiController]
 [Route("api/v{version:apiVersion}/courses/{courseId:int}/assessments")]
 [ApiVersion("1.0")]
-public class AssessmentController(TmSDbContext context) : ControllerBase
+public class AssessmentController(TmsDbContext context) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAssessments(

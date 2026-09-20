@@ -11,7 +11,7 @@ using TmsApi.Infrastructure.Persistence;
 
 namespace TmsApi.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(TmSDbContext))]
+    [DbContext(typeof(TmsDbContext))]
     [Migration("20260616175907_initialCreate")]
     partial class initialCreate
     {

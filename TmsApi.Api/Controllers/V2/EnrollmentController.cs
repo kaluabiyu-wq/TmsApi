@@ -15,7 +15,7 @@ namespace TmsApi.Api.Controllers.V2;
 [ApiController]
 [Route("api/v{version:apiVersion}/enrollments")]
 [ApiVersion("2.0")]
-public class EnrollmentsController(TmSDbContext context,IMediator mediator,IHubContext<TmsHub, ITmsHubClient> hubContext) : ControllerBase
+public class EnrollmentsController(TmsDbContext context,IMediator mediator,IHubContext<TmsHub, ITmsHubClient> hubContext) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Enroll(EnrollstudentCommand command, CancellationToken ct)
@@ -92,7 +92,7 @@ public async Task<IActionResult> Approve(int id, CancellationToken ct)
             type: "https://tms.local/errors/concurrency_conflict");
     }
 
-    await hubContext.Clients.All.ReceiveEnrollmentStatusUpdated(id.ToString(), "Approved");
+    await hubContext.Clients.All.ReceiveEnrollmentStatusUpdated(id, "Approved");
 
     return NoContent();
 }

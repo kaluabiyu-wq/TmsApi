@@ -25,6 +25,9 @@ using TmsApi.Api.Hubs;
 using TmsApi.Application.Notifications;
 using TmsApi.Api.Notifications;
 using Microsoft.AspNetCore.Antiforgery;
+using TmsApi.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 
 
@@ -168,7 +171,7 @@ builder.Services.AddOptions<PaymentOptions>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-builder.Services.AddDbContext<TmSDbContext>(options =>
+builder.Services.AddDbContext<TmsDbContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("TmsDatabase"))
 .LogTo(Console.WriteLine, LogLevel.Information)
 .EnableSensitiveDataLogging()
@@ -179,6 +182,8 @@ builder.Services.AddSingleton(Channel.CreateBounded<TranscriptRequest>(
         FullMode = BoundedChannelFullMode.Wait
     }));
 
+
+
 builder.Services.AddHostedService<TranscriptWorker>();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<ITranscriptNotificationService,SignalRTranscriptNotificationService>();
@@ -187,6 +192,19 @@ new BoundedChannelOptions(100)
 {
 FullMode = BoundedChannelFullMode.Wait
 }));
+builder.Services.AddIdentityCore<TmsUser>(options =>
+{
+    options.Password.RequiredLength = 12;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireDigit = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+    options.Lockout.AllowedForNewUsers = true;
+   
+    
+}).AddRoles<IdentityRole>()
+  .AddEntityFrameworkStores<TmsDbContext>();
 // builder.Services.AddSignalR().AddAzureSignalR(
 //     builder.Configuration.GetConnectionString("AzureSignalR"));
 
@@ -239,6 +257,17 @@ builder.Services.AddApiVersioning(options =>
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
 });
+
+var service = new CryptoDemoService();
+string hash1 = service.HashUserPassword("Password123!");
+string hash2 = service.HashUserPassword("Password123!");
+
+Console.WriteLine($"Hash 1: {hash1}");
+Console.WriteLine($"Hash 2: {hash2}");
+
+bool match1 = service.VerifyUserPassword("Password!23!",hash1);
+bool match2 = service.VerifyUserPassword("Password!23!",hash2);
+
 
 
 var app = builder.Build();

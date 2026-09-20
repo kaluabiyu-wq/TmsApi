@@ -6,11 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using TmsApi.Application.Interfaces;
 using Microsoft.Extensions.Logging;
 using TmsApi.Application.Courses.Commands;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TmsApi.Infrastructure.Persistence.Services;
 
 
-public class CourseService(TmSDbContext context, ILogger<CourseService> logger) : ICourseService
+public class CourseService(TmsDbContext context, ILogger<CourseService> logger) : ICourseService
 {
  public Task<CourseResponseDto?> GetByCodeAsync(string code, CancellationToken ct) =>
         context.Courses.AsNoTracking()
