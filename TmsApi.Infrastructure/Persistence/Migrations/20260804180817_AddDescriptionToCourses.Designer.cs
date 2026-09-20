@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TmsApi.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using TmsApi.Infrastructure.Persistence;
 namespace TmsApi.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(TmSDbContext))]
-    partial class TmSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260804180817_AddDescriptionToCourses")]
+    partial class AddDescriptionToCourses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,32 +156,6 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("TmsApi.Domain.Entities.Grade", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Score")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("Grades");
-                });
-
             modelBuilder.Entity("TmsApi.Domain.Entities.Student", b =>
                 {
                     b.Property<int>("ID")
@@ -260,25 +237,6 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
 
                     b.HasOne("TmsApi.Domain.Entities.Student", "Student")
                         .WithMany("Enrollments")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("TmsApi.Domain.Entities.Grade", b =>
-                {
-                    b.HasOne("TmsApi.Domain.Entities.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TmsApi.Domain.Entities.Student", "Student")
-                        .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

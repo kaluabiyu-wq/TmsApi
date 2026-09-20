@@ -17,6 +17,15 @@ using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using TmsApi.Api.RateLimiting;
+using TmsApi.Infrastructure.Transcripts;
+using System.Threading.Channels;
+using TmsApi.Application.Transcripts;
+using TmsApi.Infrastructure.Workers;
+using TmsApi.Api.Hubs;
+using TmsApi.Application.Notifications;
+using TmsApi.Api.Notifications;
+using Microsoft.AspNetCore.Antiforgery;
+
 
 
 
@@ -128,12 +137,24 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 
+
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
+?? ["http://localhost:4200"];
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngular", policy => 
-    policy.WithOrigins("http://localhost:4200")
+    options.AddPolicy("TmsClient", policy => 
+    {
+    policy.WithOrigins(allowedOrigins)
     .AllowAnyHeader()
-    .AllowAnyMethod());
+    .AllowAnyMethod()
+    .AllowCredentials()
+    .SetPreflightMaxAge(TimeSpan.FromMinutes(10));
+});
+});
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-XSRF-TOKEN";
 });
 
 
@@ -152,6 +173,22 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("TmsDatabase"))
 .LogTo(Console.WriteLine, LogLevel.Information)
 .EnableSensitiveDataLogging()
 );
+builder.Services.AddSingleton(Channel.CreateBounded<TranscriptRequest>(
+    new BoundedChannelOptions(100)
+    {
+        FullMode = BoundedChannelFullMode.Wait
+    }));
+
+builder.Services.AddHostedService<TranscriptWorker>();
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<ITranscriptNotificationService,SignalRTranscriptNotificationService>();
+builder.Services.AddSingleton(Channel.CreateBounded<TranscriptRequest>(
+new BoundedChannelOptions(100)
+{
+FullMode = BoundedChannelFullMode.Wait
+}));
+// builder.Services.AddSignalR().AddAzureSignalR(
+//     builder.Configuration.GetConnectionString("AzureSignalR"));
 
 builder.Services.AddSingleton<EnrollmentWorker>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
@@ -159,6 +196,7 @@ builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 builder.Services.AddScoped<ICertficateService,CertificateService>();
 builder.Services.AddScoped<ICachedCourseService,CachedCourseService>();
+builder.Services.AddSingleton<ITranscriptStatusStore,InMemoryTranscriptStatusStore>();
 
 
 
@@ -206,37 +244,56 @@ builder.Services.AddApiVersioning(options =>
 var app = builder.Build();
 
 app.UseExceptionHandler();
-
 app.UseStatusCodePages();
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference(options =>
-{
-    options.WithTitle("TMS API Reference")
-    .WithTheme(ScalarTheme.DeepSpace)
-    .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
-    options.AddDocument("v1", "API Version 1.0")
-    .AddDocument("v2", "API Version 2.0");
-
-});
-
+    {
+        options.WithTitle("TMS API Reference")
+            .WithTheme(ScalarTheme.DeepSpace)
+            .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+        options.AddDocument("v1", "API Version 1.0")
+            .AddDocument("v2", "API Version 2.0");
+    });
 }
-app.UseCors("AllowAngular");
 
-app.UseRateLimiter(); 
-app.UseMiddleware<RequestLoggingMiddleware>();
-app.UseMiddleware<V1DeprecationMiddleware>();
 app.UseHttpsRedirection();
-// app.MapHealthChecks("/health/live").DisableRateLimiting();
-// app.MapHealthChecks("/health/ready").DisableRateLimiting();
 
+app.UseCors("TmsClient");
+app.Use(async (context,next) =>
+{
+    if (context.User.Identity?.IsAuthenticated == true || context.Request.Cookies
+           .ContainsKey("tms_auth")
+    )
+    {
+        var antiforgery = context.RequestServices.GetRequiredService<IAntiforgery>();
+
+        var tokens = antiforgery.GetAndStoreTokens(context);
+
+        context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!,
+        
+           new CookieOptions
+           {
+               HttpOnly = false,
+               Secure = !builder.Environment.IsDevelopment(),
+               SameSite = SameSiteMode.Strict
+           });
+
+    }
+    await next(context);
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseRateLimiter();
+app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseMiddleware<V1DeprecationMiddleware>();
+
+
+app.MapHub<TmsHub>("/hubs/tms").RequireCors("TmsClient");
 app.MapControllers();
 
 app.Run();
-
