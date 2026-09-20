@@ -91,16 +91,17 @@ public class ReportingController(TmSDbContext context) : ControllerBase
 
     }
 
-    [HttpGet("Paged")]
-    public async Task<IActionResult> Group( CancellationToken cancellationToken,
-    int pageSize = 25, int pageNumber = 1)
-    {
+   
 
-        var page = await context.Students
-        .OrderBy(s => s.Name)
-        .Skip((pageNumber - 1) * pageSize)
-        .Take(pageSize)
-        .ToListAsync(cancellationToken);
+  public async Task<IActionResult> Group(
+   int pageSize = 25, int pageNumber = 1,
+    CancellationToken ct = default) {
+     
+  var page = await context.Students
+  .OrderBy(s => s.Name)
+  .Skip((pageNumber - 1) * pageSize)
+  .Take(pageSize)
+  .ToListAsync(ct);
 
         return Ok(page);
 

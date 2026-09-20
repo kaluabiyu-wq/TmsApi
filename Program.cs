@@ -68,7 +68,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseMiddleware<RequestLoggingMiddleware>();
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -139,11 +139,8 @@ using (var scope = app.Services.CreateScope())
             Grade = 3.9m},
         };
         context.Enrollments.AddRange(enrollments);
-
         context.SaveChanges();
     }
-
-
 }
 
 // app.MapPut("/api/students/{id}", async (int id, Student students1, TmSDbContext context) =>
@@ -164,3 +161,4 @@ using (var scope = app.Services.CreateScope())
 
 app.Run();
 
+app.Run();
