@@ -1,59 +1,71 @@
-
 using Microsoft.AspNetCore.Mvc;
+using Tms.Api.Dtos;
+using TmsApi.Services;
+
+namespace TmsApi.Controllers;
 
 [ApiController]
-[Route("api/assessments")]
+[Route("api/courses/{courseId:int}/assessments")]
+[Tags("Assessments")]
+[Produces("application/json")]
+[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
 public class AssessmentsController(
+    ICourseService courseService,
     IAssessmentService assessmentService) : ControllerBase
 {
-  
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [HttpGet("{id:int}", Name = nameof(GetAssessment))]
+    [ProducesResponseType(typeof(AssessmentResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [EndpointSummary("Get one assessment for a course")]
+    public async Task<IActionResult> GetAssessment(int courseId, int id, CancellationToken ct)
     {
-        var assessments = await assessmentService.GetAllAsync();
+        var assessment = await assessmentService.GetByIdAsync(courseId, id, ct);
+        return assessment is not null ? Ok(assessment) : NotFound();
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(AssessmentResponseDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [EndpointSummary("Create an assessment for a course")]
+    [EndpointDescription("Returns 404 if the course does not exist.")]
+    public async Task<IActionResult> CreateAssessment(int courseId, CreateAssessmentRequest request, CancellationToken ct)
+    {
+        var course = await courseService.GetByIdAsync(courseId, ct);
+        if (course is null)
+        {
+            return NotFound(new ProblemDetails
+            {
+                Title = "Course not found",
+                Detail = $"No course exists with id {courseId}.",
+                Status = StatusCodes.Status404NotFound
+            });
+        }
+
+        var assessment = await assessmentService.CreateAsync(courseId, request, ct);
+        return CreatedAtAction(nameof(GetAssessment), new { courseId, id = assessment.Id }, assessment);
+    }
+
+    [HttpGet(Name = "ListCourseAssessments")]
+    [ProducesResponseType(typeof(List<AssessmentResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [EndpointSummary("List assessments for a course")]
+    public async Task<IActionResult> GetAssessments(int courseId, CancellationToken ct)
+    {
+        var course = await courseService.GetByIdAsync(courseId, ct);
+        if (course is null)
+        {
+            return NotFound(new ProblemDetails
+            {
+                Title = "Course not found",
+                Detail = $"No course exists with id {courseId}.",
+                Status = StatusCodes.Status404NotFound
+            });
+        }
+
+        var assessments = await assessmentService.GetByCourseAsync(courseId, ct);
         return Ok(assessments);
     }
 
-  
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id)
-    {
-        var assessment = await assessmentService.GetByIdAsync(id);
 
-        return assessment is not null
-            ? Ok(assessment)
-            : NotFound();
-    }
-
-   
-    [HttpPost]
-    public async Task<IActionResult> Create(
-        [FromBody] CreateAssessmentRequest request)
-    {
-        var assessment = await assessmentService.CreateAsync(
-            request.Title,
-            request.Kind,
-            request.Score);
-
-        return CreatedAtAction(
-            nameof(GetById),
-            new { id = assessment.Id },
-            assessment);
-    }
-
-  
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
-    {
-        var deleted = await assessmentService.DeleteAsync(id);
-
-        return deleted
-            ? NoContent()
-            : NotFound();
-    }
-
-    public record CreateAssessmentRequest(
-        string Title,
-        string Kind,
-        double Score);
 }

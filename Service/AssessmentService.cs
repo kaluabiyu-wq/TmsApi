@@ -1,96 +1,62 @@
+using Microsoft.EntityFrameworkCore;
+using Tms.Api.Dtos;
+using TmsApi.Data;
+using TmsApi.Entities;
 
-public class AssessmentService : IAssessmentService
+namespace TmsApi.Services;
+
+public class AssessmentService(TmSDbContext context, ILogger<AssessmentService> logger) : IAssessmentService
 {
-    private readonly Dictionary<string, AssessmentRecord> _store = new();
-    private readonly ILogger<AssessmentService> _logger;
+    public Task<AssessmentResponseDto?> GetByIdAsync(int courseId, int id, CancellationToken ct) =>
+        context.Assessments
+            .AsNoTracking()
+            .Where(a => a.Id == id && a.CourseId == courseId)
+            .Select(a => new AssessmentResponseDto(a.Id, a.Title, a.Weight, a.MaxScore, a.CourseId))
+            .FirstOrDefaultAsync(ct);
 
-    public AssessmentService(ILogger<AssessmentService> logger)
+    public async Task<AssessmentResponseDto> CreateAsync(int courseId, CreateAssessmentRequest request, CancellationToken ct)
     {
-        _logger = logger;
-    }
-
-    public Task<AssessmentRecord> CreateAsync(
-        string title,
-        string kind,
-        double score)
-    {
-        var existing = _store.Values
-            .FirstOrDefault(a =>
-                a.Title == title &&
-                a.Kind == kind);
+        var existing = await context.Assessments
+            .AsNoTracking()
+            .Where(a => a.CourseId == courseId && a.Title == request.Title && a.Weight == request.Weight)
+            .Select(a => new AssessmentResponseDto(a.Id, a.Title, a.Weight, a.MaxScore, a.CourseId))
+            .FirstOrDefaultAsync(ct);
 
         if (existing is not null)
         {
-            _logger.LogWarning(
-                "Duplicate assessment {Title} ({Kind}) already exists (record {AssessmentId})",
-                title,
-                kind,
-                existing.Id);
+            logger.LogWarning(
+                "Duplicate assessment {Title} (weight {Weight}) already exists in course {CourseId} (record {AssessmentId})",
+                request.Title, request.Weight, courseId, existing.Id);
 
-            return Task.FromResult(existing);
+            return existing;
         }
 
-        var id = Guid.NewGuid().ToString("N")[..8];
-
-        var assessment = new AssessmentRecord(
-            id,
-            title,
-            kind,
-            score,
-            DateTime.UtcNow);
-
-        _store[id] = assessment;
-
-        _logger.LogInformation(
-            "Created assessment {Title} ({Kind}) record {AssessmentId}",
-            title,
-            kind,
-            id);
-
-        return Task.FromResult(assessment);
-    }
-
-    public Task<AssessmentRecord?> GetByIdAsync(string id)
-    {
-        _store.TryGetValue(id, out var assessment);
-
-        if (assessment is null)
+        var assessment = new Assessment
         {
-            _logger.LogWarning(
-                "Assessment {AssessmentId} not found",
-                id);
-        }
+            Title = request.Title,
+            Weight = request.Weight,
+            MaxScore = request.MaxScore,
+            CourseId = courseId
+        };
 
-        return Task.FromResult(assessment);
+        context.Assessments.Add(assessment);
+        await context.SaveChangesAsync(ct);
+
+        logger.LogInformation(
+            "Created assessment {Title} (weight {Weight}) record {AssessmentId} in course {CourseId}",
+            assessment.Title, assessment.Weight, assessment.Id, assessment.CourseId);
+
+        return (await GetByIdAsync(courseId, assessment.Id, ct))!;
     }
 
-    public Task<IReadOnlyList<AssessmentRecord>> GetAllAsync()
+    public async Task<List<AssessmentResponseDto>> GetByCourseAsync(int courseId, CancellationToken ct)
     {
-        IReadOnlyList<AssessmentRecord> all = _store.Values.ToList();
-
-        return Task.FromResult(all);
+        return await context.Assessments
+            .AsNoTracking()
+            .Where(a => a.CourseId == courseId)
+            .Select(a => new AssessmentResponseDto(a.Id, a.Title, a.Weight, a.MaxScore, a.CourseId))
+            .ToListAsync(ct);
     }
 
-    public Task<bool> DeleteAsync(string id)
-    {
-        var removed = _store.Remove(id);
-
-        if (removed)
-        {
-            _logger.LogInformation(
-                "Deleted assessment {AssessmentId}",
-                id);
-        }
-        else
-        {
-            _logger.LogWarning(
-                "Delete failed. Assessment {AssessmentId} not found",
-                id);
-        }
-
-        return Task.FromResult(removed);
-    }
+    
 }
-
-
-public record AssessmentRecord(string Id,string Title,string Kind,double Score,DateTime CreatedAt);

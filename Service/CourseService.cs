@@ -62,8 +62,10 @@ public async Task<PagedResponse<CourseResponseDto>> GetCoursesAsync(
     var items = await sortedQuery
         .Skip((request.Page - 1) * request.PageSize)
         .Take(request.PageSize)
-        .Select(c => new CourseResponseDto(c.Id, c.Code, c.Title,
-            c.MaxCapacity, c.Enrollments.Count))
+        .Select(c => new CourseResponseDto(c.Id,
+         c.Code,
+        c.Title,
+        c.MaxCapacity, c.Enrollments.Count))
         .ToListAsync(ct);
 
     return new PagedResponse<CourseResponseDto>

@@ -26,7 +26,7 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("TmsDatabase"))
 
 builder.Services.AddSingleton<EnrollmentWorker>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
-builder.Services.AddSingleton<IStudentService, StudentService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 
