@@ -29,11 +29,10 @@ public class StudentsController(IStudentService studentService,TmSDbContext cont
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateStudentRequest request)
+    public async Task<IActionResult> Create( CreateStudentRequest request)
     {
         var student = await studentService.CreateAsync(
-            request.Name,
-            request.Gpa);
+            request.Name,request.Gpa);
 
         return CreatedAtAction(
             nameof(GetById),
@@ -69,5 +68,6 @@ public async Task<IActionResult> Update(string id,  CreateStudentRequest request
 }
     public record CreateStudentRequest(string Name, decimal Gpa);
 
+ 
 
 }
