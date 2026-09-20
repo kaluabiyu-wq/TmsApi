@@ -3,6 +3,9 @@
 using TmsApi.Application.DTOs;
 using TmsApi.Domain.Entities;
 using TmsApi.Application.Courses.Commands;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 
 namespace TmsApi.Application.Interfaces;
