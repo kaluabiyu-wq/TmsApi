@@ -46,6 +46,7 @@ public class StudentsController(IStudentService studentService,TmSDbContext cont
         var deleted = await studentService.DeleteAsync(id);
         return deleted ? NoContent() : NotFound();
     }
+    
 
  [HttpPut("{id}")]
 public async Task<IActionResult> Update(string id,  CreateStudentRequest request)
