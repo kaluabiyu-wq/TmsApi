@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TmsApi.Application.Interfaces;
 using TmsApi.Infrastructure.Persistence;
 
 namespace TmsApi.Api.Controllers.V1;
@@ -49,4 +50,11 @@ public class CourseController(TmSDbContext context) : ControllerBase
             hasPrevious = page > 1
         });
     }
+ 
+ [HttpDelete("{id:int}")]
+public async Task<IActionResult> DeleteCourse(int id, [FromServices] ICourseService courseService, CancellationToken ct)
+{
+    await courseService.DeleteAsync(id, ct);
+    return NoContent();
+}
 }

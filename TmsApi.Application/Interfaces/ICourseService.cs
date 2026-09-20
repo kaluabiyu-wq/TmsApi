@@ -19,4 +19,5 @@ Task<bool> CodeExistAsync (string Code,CancellationToken ct);
 Task<PagedResponse<CourseResponseDto>> GetCoursesAsync(PagedRequest request, CancellationToken ct);
 Task<List<CourseResponseDto>> GetAllAsync(CancellationToken ct);
 Task<CourseResponseDto> UpdateAsync(UpdateCourseCommand command, CancellationToken ct);
+Task DeleteAsync(int id, CancellationToken ct);
 }

@@ -103,5 +103,19 @@ public async Task<CourseResponseDto> UpdateAsync(UpdateCourseCommand command, Ca
         course.Id, course.Code, course.Title, course.MaxCapacity, course.Enrollments.Count );
     }
 
+public async Task DeleteAsync(int id, CancellationToken ct)
+{
+    var course = await context.Courses
+        .Include(c => c.Enrollments)
+        .FirstOrDefaultAsync(c => c.Id == id, ct)
+        ?? throw new KeyNotFoundException($"Course {id} not found");
+
+    if (course.Enrollments.Any(e => e.Status != "Cancelled"))
+        throw new InvalidOperationException("Cannot delete course: active student enrollments exist.");
+
+    context.Courses.Remove(course);
+    await context.SaveChangesAsync(ct);
+}
+
 }
 
