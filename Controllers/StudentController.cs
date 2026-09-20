@@ -47,7 +47,6 @@ public class StudentsController(IStudentService studentService,TmSDbContext cont
         return deleted ? NoContent() : NotFound();
     }
     
-
  [HttpPut("{id}")]
 public async Task<IActionResult> Update(string id,  CreateStudentRequest request)
 {
@@ -67,7 +66,8 @@ public async Task<IActionResult> Update(string id,  CreateStudentRequest request
 
     return Ok(student);
 }
-
-
     public record CreateStudentRequest(string Name, decimal Gpa);
+
+ 
+
 }

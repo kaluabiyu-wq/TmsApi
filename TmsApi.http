@@ -1,8 +1,11 @@
 
 @TmsApi_HostAddress = http://localhost:5285
 
-###
-GET {{TmsApi_HostAddress}}/api/error
+
+### 
+POST {{TmsApi_HostAddress}}/api/enrollments
 X-Training-User: kalu
 Accept: application/json
+
+
 
