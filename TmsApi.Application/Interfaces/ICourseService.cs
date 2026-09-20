@@ -14,6 +14,9 @@ public interface ICourseService
 Task<CourseResponseDto?> GetByCodeAsync(string code, CancellationToken ct);
 Task<CourseResponseDto> CreateAsync(CreateCourseRequest request,string instructorId, CancellationToken ct);
 
+   Task<CourseDetailEnrollmentDto?> GetDetailByIdAsync(int id, CancellationToken ct); 
+
+Task<Course?> GetCourseByCodeAsync(string code, CancellationToken cancellationToken = default);
 
 Task<bool> CodeExistAsync (string Code,CancellationToken ct);
 Task<PagedResponse<CourseResponseDto>> GetCoursesAsync(PagedRequest request, CancellationToken ct);

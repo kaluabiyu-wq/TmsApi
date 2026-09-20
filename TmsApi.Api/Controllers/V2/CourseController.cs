@@ -1,10 +1,12 @@
+using System.Security.Claims;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TmsApi.Infrastructure.Persistence;
+using TmsApi.Application.DTOs;
 using TmsApi.Application.Interfaces;
 using TmsApi.Application.Courses.Commands;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace TmsApi.Api.Controllers.V2;
 
@@ -31,23 +33,59 @@ public class CourseController(ICachedCourseService cachedCourseService, TmsDbCon
             .Take(pageSize)
             .ToList();
 
-        var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-        var hasNext = page < totalPages;
-        var hasPrevious = page > 1;
-
+     var paged = new PagedResponse<CourseResponseDto>
+     {
+       Items = rows,
+       TotalCount = totalCount,
+       Page = page,
+       PageSize = pageSize  
+     };
         return Ok(new
         {
-            data = rows,
-            meta = new { totalCount, page, pageSize, totalPages, hasNext, hasPrevious },
-            links = new
+            items = paged.Items,
+            totalCount = paged.TotalCount,
+            page = paged.Page,
+            pageSize = paged.PageSize,
+            totalPages = paged.TotalPages,
+            hasNext = paged.HasNext,
+            hasPrevious = paged.HasPrevious,
+             links = new
             {
                 self = $"/api/v2/courses?page={page}&pageSize={pageSize}",
-                next = hasNext ? $"/api/v2/courses?page={page + 1}&pageSize={pageSize}" : (string?)null,
-                prev = hasPrevious ? $"/api/v2/courses?page={page - 1}&pageSize={pageSize}" : (string?)null,
+                next = paged.HasNext ? $"/api/v2/courses?page={page + 1}&pageSize={pageSize}" : (string?)null,
+                prev = paged.HasPrevious ? $"/api/v2/courses?page={page - 1}&pageSize={pageSize}" : (string?)null,
                 enroll = "/api/v2/enrollments"
             }
         });
     }
+    [Authorize(Roles = "Instructor,Admin")]
+    [HttpPost]
+    public async Task<IActionResult> CreateCourse(
+        [FromBody] CreateCourseRequest request,
+        [FromServices] ICourseService courseService,
+        [FromServices] ICachedCourseService cachedCourseService,
+        CancellationToken ct)
+    {
+      
+        var instructorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(instructorId))
+        {
+            return Unauthorized();
+        }
+
+        if (await courseService.CodeExistAsync(request.Code, ct))
+        {
+            ModelState.AddModelError(nameof(request.Code), $"Course code '{request.Code}' already exists.");
+            return ValidationProblem(ModelState);
+        }
+
+        var created = await courseService.CreateAsync(request, instructorId, ct);
+
+        await cachedCourseService.InvalidateCourseCachedAsync(ct);
+
+        return CreatedAtAction(nameof(GetCourses), new { }, created);
+    }
+
  [Authorize(Roles = "Instructor,Admin")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateCourse(
@@ -64,7 +102,7 @@ public class CourseController(ICachedCourseService cachedCourseService, TmsDbCon
         var authResult = await authorizationService.AuthorizeAsync(User, course, "CanEditCourse");
         if (!authResult.Succeeded)
         {
-            return Forbid(); // 403 — caller doesn't own this course and isn't Admin
+            return Forbid(); 
         }
 
         var updated = await courseService.UpdateAsync(new UpdateCourseCommand(id, body.Title), ct);

@@ -119,5 +119,29 @@ public async Task DeleteAsync(int id, CancellationToken ct)
     await context.SaveChangesAsync(ct);
 }
 
+public Task<Course?> GetCourseByCodeAsync(string code, CancellationToken ct) =>
+    context.Courses.AsNoTracking()
+        .Include(c => c.Enrollments)
+        .FirstOrDefaultAsync(c => c.Code == code, ct);
+
+public Task<CourseDetailEnrollmentDto?> GetDetailByIdAsync(int id, CancellationToken ct) => 
+    context.Courses.AsNoTracking() 
+        .Where(c => c.Id == id) 
+        .Select(c => new CourseDetailEnrollmentDto( 
+            c.Id, 
+            c.Code, 
+            c.Title, 
+            c.Description, 
+            c.MaxCapacity, 
+            c.Enrollments.Count, 
+            c.Enrollments 
+                .Where(e => e.Status != "Cancelled") 
+                .Select(e => new EnrolledStudentDto( 
+                    e.Student.ID, 
+                    e.Student.RegistrationNumber, 
+                    e.Student.Name)) 
+                .ToList())) 
+        .FirstOrDefaultAsync(ct);
+
 }
 

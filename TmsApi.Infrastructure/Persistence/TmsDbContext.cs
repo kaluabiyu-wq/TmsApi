@@ -13,9 +13,6 @@ public class TmsDbContext : IdentityDbContext<TmsUser>
 {}
     public DbSet<Student> Students => Set<Student>();
     public DbSet<Course> Courses => Set<Course>();
-
-    public DbSet<Grade> Grades => Set<Grade>();
-
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
     public DbSet<Assessment> Assessments => Set<Assessment>();
 
