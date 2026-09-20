@@ -5,6 +5,7 @@ using TmsApi.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using TmsApi.Application.Interfaces;
 using Microsoft.Extensions.Logging;
+using TmsApi.Application.Courses.Commands;
 
 namespace TmsApi.Infrastructure.Persistence.Services;
 
@@ -80,6 +81,27 @@ public async Task<PagedResponse<CourseResponseDto>> GetCoursesAsync(
         PageSize = request.PageSize
     };
 }
+
+public async Task<List<CourseResponseDto>> GetAllAsync(CancellationToken ct)
+{
+    return await context.Courses.AsNoTracking()
+        .Select(c => new CourseResponseDto(
+            c.Id, c.Code, c.Title, c.MaxCapacity,
+            c.Enrollments.Count))
+        .ToListAsync(ct);
+}
+public async Task<CourseResponseDto> UpdateAsync(UpdateCourseCommand command, CancellationToken ct)
+    {
+       var course = await context.Courses
+        .FirstOrDefaultAsync(c => c.Id == command.Id, ct)
+        ?? throw new KeyNotFoundException($"Course {command.Id} not found");
+
+    course.Title = command.Title;
+    await context.SaveChangesAsync(ct);
+
+    return new CourseResponseDto(
+        course.Id, course.Code, course.Title, course.MaxCapacity, course.Enrollments.Count );
+    }
 
 }
 

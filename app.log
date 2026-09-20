@@ -1,0 +1,1256 @@
+Using launch settings from TmsApi.Api\Properties\launchSettings.json...
+Building...
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\TmsApi.Api.csproj : warning NU1903: Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc
+C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api\TmsApi.Api.csproj : warning NU1903: Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc
+warn: Microsoft.AspNetCore.Server.Kestrel[0]
+      Overriding address(es) 'http://localhost:5285'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5285
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\tarik\Desktop\M7-0\TmsApi2\TmsApi.Api
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [c50c5203]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [b408a1af]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [c60863bd]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [4462371b]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [5ae3217a]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [dd7c6771]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [196679cb]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [9d9276b3]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [ee184703]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [ce72ced7]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [eced7a97]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [1f95549a]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [a6802927]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [fd3e1f4f]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [76a6ed3e]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [e3856df4]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [83e685cb]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [968d3b42]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [c2ed8d69]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [3f446bc0]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [b62b50d7]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [9e36cfe3]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [e8c354f0]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache MISS for v2:course:all fetching from DB
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [e3efba2a]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [4fbd4e91]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [bb761e79]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [02f8267d]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [3a1b010a]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [e3986e72]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [93514a78]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [f5b0d58e]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [7101f3ad]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [91c7408e]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [d9093fae]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [66e75c4c]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [9b1759dc]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [c93f9709]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [aeee0351]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [2beb146d]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [629aade3]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [5fad07e7]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [7e9897d1]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [bc71199a]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [4a52acca]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [9a1e634f]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [0b78f69d]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [79bd75a1]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [8d3e9b5f]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [b3c56b57]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [2354284f]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Student' has a global query filter defined and is the required end of a relationship with the entity 'Certificate'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: 7/23/2026 06:29:47.301 CoreEventId.PossibleIncorrectRequiredNavigationWithQueryFilterInteractionWarning[10622] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      Entity 'Student' has a global query filter defined and is the required end of a relationship with the entity 'Certificate'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Student' has a global query filter defined and is the required end of a relationship with the entity 'Enrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: 7/23/2026 06:29:47.302 CoreEventId.PossibleIncorrectRequiredNavigationWithQueryFilterInteractionWarning[10622] (Microsoft.EntityFrameworkCore.Model.Validation) 
+      Entity 'Student' has a global query filter defined and is the required end of a relationship with the entity 'Enrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10400]
+      Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+warn: 7/23/2026 06:29:47.350 CoreEventId.SensitiveDataLoggingEnabledWarning[10400] (Microsoft.EntityFrameworkCore.Infrastructure) 
+      Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (25ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT c."Id", c."Code", c."Title", c."MaxCapacity", (
+          SELECT count(*)::int
+          FROM "Enrollments" AS e
+          WHERE c."Id" = e."CourseId")
+      FROM "Courses" AS c
+info: 7/23/2026 06:29:48.196 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (25ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT c."Id", c."Code", c."Title", c."MaxCapacity", (
+          SELECT count(*)::int
+          FROM "Enrollments" AS e
+          WHERE c."Id" = e."CourseId")
+      FROM "Courses" AS c
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1961ms [eced7a97]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1961ms [1f95549a]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1997ms [b408a1af]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1980ms [ce72ced7]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1996ms [9d9276b3]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1997ms [dd7c6771]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1235ms [2354284f]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1997ms [4462371b]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1997ms [196679cb]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1997ms [5ae3217a]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1997ms [c60863bd]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1989ms [ee184703]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1726ms [968d3b42]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1727ms [a6802927]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1726ms [e3856df4]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 2006ms [c50c5203]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1726ms [3f446bc0]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1726ms [b62b50d7]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1726ms [9e36cfe3]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1728ms [fd3e1f4f]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1727ms [c2ed8d69]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1728ms [83e685cb]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1729ms [76a6ed3e]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1712ms [e3efba2a]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1684ms [02f8267d]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1727ms [e8c354f0]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1639ms [93514a78]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1678ms [3a1b010a]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1710ms [bb761e79]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1634ms [f5b0d58e]
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1668ms [e3986e72]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1628ms [7101f3ad]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1596ms [91c7408e]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1589ms [d9093fae]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1551ms [c93f9709]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1566ms [66e75c4c]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1552ms [9b1759dc]
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1252ms [b3c56b57]
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1502ms [aeee0351]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1489ms [2beb146d]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1481ms [629aade3]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1470ms [5fad07e7]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1427ms [7e9897d1]
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1421ms [bc71199a]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1260ms [8d3e9b5f]
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1390ms [4a52acca]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1324ms [0b78f69d]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1339ms [9a1e634f]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1297ms [79bd75a1]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1716ms [4fbd4e91]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [372970f7]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [5370a661]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache MISS for v2:course:all fetching from DB
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [96f8eea6]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [01736d71]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [cffd74a5]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [de6a1727]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [57e284fb]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [2bfe860a]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [3398633e]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [b4ee735d]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [cefbee9d]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT c."Id", c."Code", c."Title", c."MaxCapacity", (
+          SELECT count(*)::int
+          FROM "Enrollments" AS e
+          WHERE c."Id" = e."CourseId")
+      FROM "Courses" AS c
+info: 7/23/2026 06:33:47.429 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT c."Id", c."Code", c."Title", c."MaxCapacity", (
+          SELECT count(*)::int
+          FROM "Enrollments" AS e
+          WHERE c."Id" = e."CourseId")
+      FROM "Courses" AS c
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 136ms [372970f7]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 136ms [5370a661]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [f22b3f38]
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 8ms [cefbee9d]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 130ms [96f8eea6]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 103ms [01736d71]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 18ms [b4ee735d]
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [f22b3f38]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 94ms [cffd74a5]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 61ms [57e284fb]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 54ms [2bfe860a]
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 49ms [3398633e]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 86ms [de6a1727]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [8bbbcbc7]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 2ms [8bbbcbc7]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [66cb7dd1]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [66cb7dd1]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [a54eed28]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [a54eed28]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [19a8f6f4]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [19a8f6f4]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [65ad9a21]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [65ad9a21]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [6b83166c]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [6b83166c]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [e12bc827]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [e12bc827]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [211ffb3b]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [211ffb3b]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [45baed4d]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [45baed4d]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [f63a8470]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [f63a8470]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [2837d841]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [2837d841]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [29050536]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [29050536]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [e1fa91b3]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [e1fa91b3]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [201bc9ee]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [201bc9ee]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [1096d46d]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 2ms [1096d46d]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [23024d1e]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [23024d1e]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [2a729657]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [2a729657]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [0f024fa6]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [0f024fa6]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [86255701]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [86255701]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [c08153dd]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [c08153dd]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [5beb4432]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [5beb4432]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [5df86700]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [5df86700]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [c99b14a7]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [c99b14a7]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [b35c362b]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [b35c362b]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [5701b3f4]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [5701b3f4]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [cb2f3728]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [cb2f3728]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [46c32265]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [46c32265]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [158679d3]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 2ms [158679d3]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [4ad6c78c]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [4ad6c78c]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [4185c92e]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [4185c92e]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [15e6e8db]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [15e6e8db]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [973ae60d]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [973ae60d]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [910b0df3]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [910b0df3]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [336eaf16]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [336eaf16]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [e64f5725]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [e64f5725]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [d602506c]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [d602506c]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [f1495c76]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [f1495c76]
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Request  GET /api/v2/courses [c39a5f21]
+info: TrainingAuthHandler[7]
+      Training was not authenticated. Failure message: Missing training user header.
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API call: GET /api/v2/courses
+info: TmsApi.Infrastructure.Persistence.Services.CachedCourseService[0]
+      Cache HIT for v2:course:all
+info: TmsApi.Api.Filters.AuditLogFilter[0]
+      TMS API response: 200
+info: TmsApi.Api.Middlewares.RequestLoggingMiddleware[0]
+      Response GET /api/v2/courses 200 1ms [c39a5f21]
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...

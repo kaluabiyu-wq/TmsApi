@@ -2,6 +2,11 @@
 
 using TmsApi.Application.DTOs;
 using TmsApi.Domain.Entities;
+using TmsApi.Application.Courses.Commands;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
 
 namespace TmsApi.Application.Interfaces;
 public interface ICourseService
@@ -12,4 +17,6 @@ Task<CourseResponseDto> CreateAsync(CreateCourseRequest request, CancellationTok
 
 Task<bool> CodeExistAsync (string Code,CancellationToken ct);
 Task<PagedResponse<CourseResponseDto>> GetCoursesAsync(PagedRequest request, CancellationToken ct);
+Task<List<CourseResponseDto>> GetAllAsync(CancellationToken ct);
+Task<CourseResponseDto> UpdateAsync(UpdateCourseCommand command, CancellationToken ct);
 }

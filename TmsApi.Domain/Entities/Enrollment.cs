@@ -13,7 +13,8 @@ public class Enrollment
     public decimal? Grade { get; set;}
 
     public int Year {get; set;}
-
+    
+  public string Status { get; set; } = "Pending"; 
    public bool IsArchived {get;set;} = false;
     public DateTime EnrolledAt { get; set;} = DateTime.UtcNow;
     public Student Student { get; set;} = null!;
