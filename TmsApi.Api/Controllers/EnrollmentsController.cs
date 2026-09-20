@@ -13,8 +13,7 @@ namespace TmsApi.Api.Controllers;
 [Produces("application/json")]
 [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
 public class EnrollmentsController(
-ICourseService courseService,
-IEnrollmentService enrollmentService) : ControllerBase
+ICourseService courseService,IEnrollmentService enrollmentService) : ControllerBase
 {
 
     [HttpGet("{id:int}", Name = nameof(GetEnrollment))]
