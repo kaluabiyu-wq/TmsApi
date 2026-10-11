@@ -17,9 +17,16 @@ public class CoursesApiTests : IClassFixture<CustomWebApplicatonFactory>
         _client = factory.CreateClient();
     }
 
+    private void SignInAsInstructor() =>
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", GenerateTestJwt());
+
     [Fact]
     public async Task GetCourses_ReturnsOkAndPagedJson()
     {
+        // Every endpoint now requires a signed-in user (fallback policy).
+        SignInAsInstructor();
+
         var response = await _client.GetAsync("/api/v2.0/courses?page=1&pageSize=10");
 
         response.EnsureSuccessStatusCode();
@@ -29,9 +36,17 @@ public class CoursesApiTests : IClassFixture<CustomWebApplicatonFactory>
     }
 
     [Fact]
+    public async Task GetCourses_WithoutToken_ReturnsUnauthorized()
+    {
+        var response = await _client.GetAsync("/api/v2.0/courses?page=1&pageSize=10");
+
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
+
+    [Fact]
     public async Task CreateCourse_InvalidCode_ReturnsValidationError()
     {
-             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GenerateTestJwt());
+        SignInAsInstructor();
 
         var response = await _client.PostAsJsonAsync("/api/v2.0/courses", new
         {
@@ -43,6 +58,39 @@ public class CoursesApiTests : IClassFixture<CustomWebApplicatonFactory>
         Assert.True(
             response.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.UnprocessableEntity);
     }
+
+    [Fact]
+    public async Task Register_IgnoresRequestedRole_AndAssignsStudent()
+    {
+        const string email = "role-escalation-test@example.com";
+        const string password = "Str0ng!Passw0rd#1";
+
+        // An attacker tries to pick their own role.
+        var register = await _client.PostAsJsonAsync("/api/v1.0/auth/register", new
+        {
+            email,
+            password,
+            firstName = "Eve",
+            lastName = "Tester",
+            role = "Admin"
+        });
+        register.EnsureSuccessStatusCode();
+
+        var login = await _client.PostAsJsonAsync("/api/v1.0/auth/login", new { email, password });
+        login.EnsureSuccessStatusCode();
+
+        var body = await login.Content.ReadFromJsonAsync<LoginJson>();
+        Assert.False(string.IsNullOrEmpty(body?.AccessToken));
+
+        var jwt = new JwtSecurityTokenHandler().ReadJwtToken(body!.AccessToken);
+        var roles = jwt.Claims
+            .Where(c => c.Type == "role" || c.Type == ClaimTypes.Role)
+            .Select(c => c.Value)
+            .ToList();
+
+        Assert.Equal(new[] { "Student" }, roles);
+    }
+
     private static string GenerateTestJwt()
     {
         var claims = new[]
@@ -63,6 +111,12 @@ public class CoursesApiTests : IClassFixture<CustomWebApplicatonFactory>
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    private sealed class LoginJson
+    {
+        public string AccessToken { get; set; } = "";
+        public string RefreshToken { get; set; } = "";
     }
 
     private sealed class PagedCoursesJson

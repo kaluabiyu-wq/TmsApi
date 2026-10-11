@@ -6,14 +6,20 @@ using TmsApi.Infrastructure.Persistence;
 using TmsApi.Infrastructure.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TmsApi.Api.Controllers.V1;
 
 [ApiController]
 [Route("api/v{version:apiVersion}/auth")]
 [ApiVersion("1.0")]
+[AllowAnonymous] // register, login and refresh must stay reachable once a fallback policy is added
 public class AuthController : ControllerBase
 {
+    // Every self-registered account gets this role. Admin and Instructor are
+    // assigned by an admin (or the bootstrap), never chosen by the caller.
+    private const string DefaultRole = "Student";
+
     private readonly UserManager<TmsUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
@@ -31,18 +37,20 @@ public class AuthController : ControllerBase
         _context = context;
         _tokenService = tokenService;
     }
-     
-    public record RegisterRequest(string Email,string Password,
-     string FirstName,string LastName,
-     string Role
+
+    // No Role field: callers can no longer pick their own role.
+    public record RegisterRequest(string Email, string Password,
+     string FirstName, string LastName
     );
+
+    [EnableRateLimiting("AuthLimiter")]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var existingUser = await _userManager.FindByEmailAsync(request.Email);
-        if(existingUser !=null)
+        if (existingUser != null)
         {
-            return Ok(new { message = "Registration request recieved."});
+            return Ok(new { message = "Registration request recieved." });
         }
 
         var user = new TmsUser
@@ -53,26 +61,32 @@ public class AuthController : ControllerBase
             LastName = request.LastName
         };
 
-
-        var result = await _userManager.CreateAsync(user,request.Password);
-        if(!result.Succeeded)
+        var result = await _userManager.CreateAsync(user, request.Password);
+        if (!result.Succeeded)
         {
-            var errors = result.Errors.Select(e=>e.Description);
-            return BadRequest(new { errors});
-
+            var errors = result.Errors.Select(e => e.Description);
+            return BadRequest(new { errors });
         }
 
-        if(!await _roleManager.RoleExistsAsync(request.Role))
+        // Make sure the fixed role exists (the bootstrap normally creates it).
+        if (!await _roleManager.RoleExistsAsync(DefaultRole))
         {
-            await _roleManager.CreateAsync(new IdentityRole(request.Role));
-
+            await _roleManager.CreateAsync(new IdentityRole(DefaultRole));
         }
-        await _userManager.AddToRoleAsync(user, request.Role);
-        return Ok(new {message = "Registration successful."});
+
+        var roleResult = await _userManager.AddToRoleAsync(user, DefaultRole);
+        if (!roleResult.Succeeded)
+        {
+            // Don't leave a user with no role behind.
+            await _userManager.DeleteAsync(user);
+            return StatusCode(500, new { detail = "Registration failed." });
+        }
+
+        return Ok(new { message = "Registration successful." });
     }
 
 
-   public record LoginRequest(string Email, string Password);
+    public record LoginRequest(string Email, string Password);
 
     [EnableRateLimiting("AuthLimiter")]
     [HttpPost("login")]
@@ -80,26 +94,26 @@ public class AuthController : ControllerBase
         [FromBody] LoginRequest request)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
-        if(user == null)
+        if (user == null)
         {
-            return Unauthorized(new {detail = "Invalid credentials."});
+            return Unauthorized(new { detail = "Invalid credentials." });
         }
         if (await _userManager.IsLockedOutAsync(user))
         {
-            return StatusCode(423, new { detail = "Account locked due to multiple failed login attempts. Try again in 15 minutes."});
+            return StatusCode(423, new { detail = "Account locked due to multiple failed login attempts. Try again in 15 minutes." });
 
         }
-        var validPassword = await _userManager.CheckPasswordAsync(user,request.Password);
-        if(!validPassword)
+        var validPassword = await _userManager.CheckPasswordAsync(user, request.Password);
+        if (!validPassword)
         {
             await _userManager.AccessFailedAsync(user);
-            return Unauthorized(new {detail = "Invalid credentials."});
+            return Unauthorized(new { detail = "Invalid credentials." });
         }
 
         await _userManager.ResetAccessFailedCountAsync(user);
 
         var roles = await _userManager.GetRolesAsync(user);
-        var accessToken = _tokenService.GenerateJwt(user,roles);
+        var accessToken = _tokenService.GenerateJwt(user, roles);
 
 
         var refreshToken = new RefreshToken
@@ -117,9 +131,9 @@ public class AuthController : ControllerBase
 
         return Ok(new
         {
-           accessToken,
-           refreshToken = refreshToken.Token
-            
+            accessToken,
+            refreshToken = refreshToken.Token
+
         });
     }
 
@@ -130,27 +144,27 @@ public class AuthController : ControllerBase
     {
         var storedToken = await _context.RefreshTokens
         .FirstOrDefaultAsync(rt => rt.Token == request.RefreshToken);
-        if(storedToken == null)
+        if (storedToken == null)
         {
-            return Unauthorized(new { detail = "Invalid refresh token."});
+            return Unauthorized(new { detail = "Invalid refresh token." });
         }
-        if(storedToken.IsUsed)
+        if (storedToken.IsUsed)
         {
             var userTokens = await _context.RefreshTokens
             .Where(rt => rt.UserId == storedToken.UserId)
             .ToListAsync();
-            foreach(var t in userTokens)
+            foreach (var t in userTokens)
             {
                 t.IsRevoked = true;
             }
             await _context.SaveChangesAsync();
-            return Unauthorized(new {detail ="Token theft detected. All user sessions revoked."});
+            return Unauthorized(new { detail = "Token theft detected. All user sessions revoked." });
 
         }
 
-        if(storedToken.IsRevoked || storedToken.ExpiresAt < DateTime.UtcNow)
+        if (storedToken.IsRevoked || storedToken.ExpiresAt < DateTime.UtcNow)
         {
-            return Unauthorized(new {detail = "Refresh token expired or revoked."});
+            return Unauthorized(new { detail = "Refresh token expired or revoked." });
         }
 
         storedToken.IsUsed = true;
@@ -172,7 +186,7 @@ public class AuthController : ControllerBase
         var roles = await _userManager.GetRolesAsync(user!);
         var newAccessToken = _tokenService.GenerateJwt(user!, roles);
 
-        return Ok( new
+        return Ok(new
         {
             accessToken = newAccessToken,
             refreshToken = newRefreshToken.Token

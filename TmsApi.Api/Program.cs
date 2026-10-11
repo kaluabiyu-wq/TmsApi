@@ -186,9 +186,8 @@ builder.Services.AddAntiforgery(options =>
 
 
 
-builder.Services
-    .AddAuthentication("Training")
-    .AddScheme<AuthenticationSchemeOptions, TrainingAuthHandler>("Training", null);
+// The "Training" scheme (TrainingAuthHandler) was removed: it trusted a plain
+// X-Training-User header from any caller. JWT is the only authentication scheme.
 
 builder.Services.AddOptions<PaymentOptions>()
     .BindConfiguration("Payments")
@@ -269,10 +268,31 @@ builder.Services.AddAuthentication(options =>
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]!)
         )
     };
+
+    // Browsers cannot set an Authorization header on a WebSocket, so SignalR
+    // sends the token as ?access_token=... Accept it for the hub path only.
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            if (!string.IsNullOrEmpty(accessToken) &&
+                context.HttpContext.Request.Path.StartsWithSegments("/hubs/tms"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 builder.Services.AddAuthorizationBuilder()
-.AddPolicy("CanEditCourse", policy =>
- policy.Requirements.Add(new CourseInstructorRequirement ()));
+    .AddPolicy("CanEditCourse", policy =>
+        policy.Requirements.Add(new CourseInstructorRequirement()))
+    // Every endpoint requires a signed-in user unless it opts out with
+    // [AllowAnonymous] (register, login, refresh, /health).
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build());
 
 
 builder.Services.AddProblemDetails();
@@ -288,8 +308,6 @@ builder.Host.UseDefaultServiceProvider(options =>
     options.ValidateScopes = true;
     options.ValidateOnBuild = true;
 });
-
-builder.Services.AddAuthorization();
 
 builder.Services.AddOpenApi("v1", options =>
 {
@@ -319,6 +337,22 @@ builder.Services.AddApiVersioning(options =>
 
 var app = builder.Build();
 
+// Fail fast with a readable message instead of a NullReferenceException on the
+// first login. On the host these come from environment variables:
+// Jwt__Key, Jwt__Issuer, Jwt__Audience, Jwt__ExpiryMinutes.
+var jwtKey = app.Configuration["Jwt:Key"];
+if (string.IsNullOrWhiteSpace(jwtKey) || Encoding.UTF8.GetByteCount(jwtKey) < 32)
+{
+    throw new InvalidOperationException(
+        "Jwt:Key is missing or shorter than 32 bytes. Set the Jwt__Key environment variable.");
+}
+if (string.IsNullOrWhiteSpace(app.Configuration["Jwt:Issuer"]) ||
+    string.IsNullOrWhiteSpace(app.Configuration["Jwt:Audience"]))
+{
+    throw new InvalidOperationException(
+        "Jwt:Issuer and Jwt:Audience must be set (Jwt__Issuer and Jwt__Audience).");
+}
+
 app.UseForwardedHeaders();
 
 if (app.Configuration.GetValue<bool>("MigrateOnStartup"))
@@ -328,12 +362,16 @@ if (app.Configuration.GetValue<bool>("MigrateOnStartup"))
     await db.Database.MigrateAsync();
 }
 
+
+await AdminBootstrap.RunAsync(app);
+
 app.UseExceptionHandler();
 app.UseStatusCodePages();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    // The fallback policy would otherwise put the API docs behind a login.
+    app.MapOpenApi().AllowAnonymous();
     app.MapScalarApiReference(options =>
     {
         options.WithTitle("TMS API Reference")
@@ -341,7 +379,7 @@ if (app.Environment.IsDevelopment())
             .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
         options.AddDocument("v1", "API Version 1.0")
             .AddDocument("v2", "API Version 2.0");
-    });
+    }).AllowAnonymous();
 }
 
 app.UseHttpsRedirection();
