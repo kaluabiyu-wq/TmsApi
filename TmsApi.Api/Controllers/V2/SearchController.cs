@@ -11,12 +11,16 @@ public class SearchController(IMediator mediator) : ControllerBase
 [HttpGet("search")]
 [EnableRateLimiting("search")]
 public async Task<IActionResult> SearchCourses(
-    [FromQuery] string? term, 
+    [FromQuery] string? term,
     CancellationToken ct)
 {
-        var results = await mediator.Send(new SearchCoursesQuery(term), ct);
-        return Ok(results);
+    if (string.IsNullOrWhiteSpace(term))
+    {
+        return BadRequest(new { detail = "The 'term' query parameter is required." });
+    }
 
+    var results = await mediator.Send(new SearchCoursesQuery(term), ct);
+    return Ok(results);
 }
 
 public record SearchCoursesQuery(string term);
