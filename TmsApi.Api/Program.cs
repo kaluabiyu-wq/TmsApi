@@ -34,11 +34,19 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TmsApi.Api.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
 
 
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 builder.Services.AddMediatR(cfg =>cfg.RegisterServicesFromAssemblies(typeof(EnrollStudentHandler).Assembly));
 builder.Services.AddValidatorsFromAssembly(typeof(EnrollStudentValidator).Assembly);
@@ -188,10 +196,14 @@ builder.Services.AddOptions<PaymentOptions>()
     .ValidateOnStart();
 
 builder.Services.AddDbContext<TmsDbContext>(options =>
-options.UseNpgsql(builder.Configuration.GetConnectionString("TmsDatabase"))
-.LogTo(Console.WriteLine, LogLevel.Information)
-.EnableSensitiveDataLogging()
-);
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("TmsDatabase"));
+    if (builder.Environment.IsDevelopment())
+    {
+        options.LogTo(Console.WriteLine, LogLevel.Information)
+               .EnableSensitiveDataLogging();
+    }
+});
 builder.Services.AddSingleton(Channel.CreateBounded<TranscriptRequest>(
     new BoundedChannelOptions(100)
     {
@@ -303,19 +315,18 @@ builder.Services.AddApiVersioning(options =>
     options.SubstituteApiVersionInUrl = true;
 });
 
-var service = new CryptoDemoService();
-string hash1 = service.HashUserPassword("Password123!");
-string hash2 = service.HashUserPassword("Password123!");
-
-Console.WriteLine($"Hash 1: {hash1}");
-Console.WriteLine($"Hash 2: {hash2}");
-
-bool match1 = service.VerifyUserPassword("Password!23!",hash1);
-bool match2 = service.VerifyUserPassword("Password!23!",hash2);
-
 
 
 var app = builder.Build();
+
+app.UseForwardedHeaders();
+
+if (app.Configuration.GetValue<bool>("MigrateOnStartup"))
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<TmsDbContext>();
+    await db.Database.MigrateAsync();
+}
 
 app.UseExceptionHandler();
 app.UseStatusCodePages();
@@ -373,6 +384,10 @@ app.UseMiddleware<V1DeprecationMiddleware>();
 
 
 app.MapHub<TmsHub>("/hubs/tms").RequireCors("TmsClient");
+app.MapGet("/health", async (TmsDbContext db) =>
+    await db.Database.CanConnectAsync() ? Results.Ok("Healthy") : Results.StatusCode(503))
+   .AllowAnonymous()
+   .DisableRateLimiting();
 app.MapControllers();
 
 
