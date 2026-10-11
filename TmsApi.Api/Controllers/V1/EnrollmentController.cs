@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -148,7 +149,9 @@ public class EnrollmentController(TmsDbContext context,IHubContext<TmsHub, ITmsH
         return Ok(items);
     }
 
-   
+
+// Approving enrollments is a staff decision: self-registered Students must not do it.
+[Authorize(Roles = "Instructor,Admin")]
 [HttpPost("~/api/v1/enrollments/{id:int}/approve")]
 public async Task<IActionResult> Approve(int id, CancellationToken ct)
 {

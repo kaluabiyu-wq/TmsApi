@@ -13,7 +13,7 @@ namespace TmsApi.Api.Controllers.V1;
 public class CourseController(TmsDbContext context,IAuthorizationService authorizationService) : ControllerBase
 {
 
-    
+
     [HttpGet]
     public async Task<IActionResult> GetCourses(
         [FromQuery] int page = 1,
@@ -53,7 +53,9 @@ public class CourseController(TmsDbContext context,IAuthorizationService authori
             hasPrevious = page > 1
         });
     }
- 
+
+ // Deleting a course is destructive: Admin only.
+ [Authorize(Roles = "Admin")]
  [HttpDelete("{id:int}")]
 public async Task<IActionResult> DeleteCourse(int id, [FromServices] ICourseService courseService, CancellationToken ct)
 {
@@ -76,12 +78,12 @@ public async Task<IActionResult> DeleteCourse(int id, [FromServices] ICourseServ
         return NoContent();
     }
 
-[HttpGet("{id:int}")] 
-public async Task<IActionResult> GetCourseDetail(int id, [FromServices] ICourseService 
-courseService, CancellationToken ct) 
-{ 
-var detail = await courseService.GetDetailByIdAsync(id, ct); 
-return detail is null ? NotFound() : Ok(detail); 
+[HttpGet("{id:int}")]
+public async Task<IActionResult> GetCourseDetail(int id, [FromServices] ICourseService
+courseService, CancellationToken ct)
+{
+var detail = await courseService.GetDetailByIdAsync(id, ct);
+return detail is null ? NotFound() : Ok(detail);
 }
 
 }

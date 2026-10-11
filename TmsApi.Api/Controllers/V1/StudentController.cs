@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TmsApi.Domain.Entities;
@@ -24,6 +25,8 @@ public class StudentsController(TmsDbContext context) : ControllerBase
         return Ok(students);
     }
 
+    // Creating student records is a staff action: self-registered Students must not do it.
+    [Authorize(Roles = "Instructor,Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(
         [FromBody] CreateStudentRequest request,

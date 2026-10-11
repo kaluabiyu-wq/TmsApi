@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,8 @@ public class EnrollmentsController(TmsDbContext context,IMediator mediator,IHubC
     }
 
 
+// Approving enrollments is a staff decision: self-registered Students must not do it.
+[Authorize(Roles = "Instructor,Admin")]
 [HttpPost("{id:int}/approve")]
 [Route("~/api/v2/enrollments/{id:int}/approve")]
 public async Task<IActionResult> Approve(int id, CancellationToken ct)
