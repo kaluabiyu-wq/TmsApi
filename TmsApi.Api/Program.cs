@@ -124,15 +124,17 @@ builder.Services.AddRateLimiter(options =>
 
     );
 
-    options.AddFixedWindowLimiter("AuthLimiter",opt =>
-    {
-        opt.PermitLimit = 5;
-        opt.Window = TimeSpan.FromMinutes(1);
-        opt.QueueLimit = 0;
-        
-    }
-    
-    );
+    // One window per client IP, so a single noisy client cannot lock everyone else out of login.
+    // The limit is configurable so tests can raise it.
+    options.AddPolicy("AuthLimiter", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = builder.Configuration.GetValue("RateLimiting:AuthPermitLimit", 5),
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0
+            }));
     options.AddTokenBucketLimiter("search", opt =>
     {
        opt.TokenLimit = 10;

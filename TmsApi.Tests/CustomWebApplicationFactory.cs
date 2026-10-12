@@ -21,7 +21,9 @@ public class CustomWebApplicatonFactory : WebApplicationFactory<Program>
         ["JWt:Key"] = "ThisIsASecretKeyForTestingPurposesOnly123456!",
         ["Jwt:Secret"] = "ThisIsASecretKeyForTestingPurposeOnly123456!",
         ["Jwt:Issuer"] = "TmsTestIssuer",
-        ["Jwt:Audience"] = "TmsTestAudience"
+        ["Jwt:Audience"] = "TmsTestAudience",
+        // Tests make many auth calls from one address; production keeps the default of 5 per minute.
+        ["RateLimiting:AuthPermitLimit"] = "1000"
           });
         });
 
