@@ -4,3 +4,5 @@
 .vs/
 *.log
 resp*.json
+TmsApi.Tests/
+**/appsettings.Development.json

@@ -364,6 +364,16 @@ if (app.Configuration.GetValue<bool>("MigrateOnStartup"))
     await db.Database.MigrateAsync();
 }
 
+// Optional one-time seed of demo courses and students into an empty database.
+// SeedAsync migrates first and only inserts into tables that are still empty.
+// Demo data does not belong in a real deployment: set Seed__RunOnStartup=true
+// for the first deploy only, then remove it.
+if (app.Configuration.GetValue<bool>("Seed:RunOnStartup"))
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<TmsDbContext>();
+    await DataSeeder.SeedAsync(db);
+}
 
 await AdminBootstrap.RunAsync(app);
 
