@@ -23,7 +23,14 @@ public class CustomWebApplicatonFactory : WebApplicationFactory<Program>
         ["Jwt:Issuer"] = "TmsTestIssuer",
         ["Jwt:Audience"] = "TmsTestAudience",
         // Tests make many auth calls from one address; production keeps the default of 5 per minute.
-        ["RateLimiting:AuthPermitLimit"] = "1000"
+        ["RateLimiting:AuthPermitLimit"] = "1000",
+
+        // Tests use the in-memory provider: never migrate or seed, and never run the
+        // admin bootstrap, even if a developer has these set in user-secrets.
+        ["MigrateOnStartup"] = "false",
+        ["Seed:RunOnStartup"] = "false",
+        ["Bootstrap:AdminEmail"] = "",
+        ["Bootstrap:AdminPassword"] = ""
           });
         });
 
