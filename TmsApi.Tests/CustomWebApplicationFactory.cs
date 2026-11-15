@@ -22,8 +22,16 @@ public class CustomWebApplicatonFactory : WebApplicationFactory<Program>
         ["Jwt:Secret"] = "ThisIsASecretKeyForTestingPurposeOnly123456!",
         ["Jwt:Issuer"] = "TmsTestIssuer",
         ["Jwt:Audience"] = "TmsTestAudience",
-        // Tests make many auth calls from one address; production keeps the default of 5 per minute.
+
+        // Tests send many requests from one address with no API key. Production keeps
+        // the defaults (auth 5 per minute; anon 10, free 30, paid 200 tokens).
         ["RateLimiting:AuthPermitLimit"] = "1000",
+        ["RateLimiting:AnonTokenLimit"] = "100000",
+        ["RateLimiting:AnonTokensPerPeriod"] = "100000",
+        ["RateLimiting:FreeTokenLimit"] = "100000",
+        ["RateLimiting:FreeTokensPerPeriod"] = "100000",
+        ["RateLimiting:PaidTokenLimit"] = "100000",
+        ["RateLimiting:PaidTokensPerPeriod"] = "100000",
 
         // Tests use the in-memory provider: never migrate or seed, and never run the
         // admin bootstrap, even if a developer has these set in user-secrets.

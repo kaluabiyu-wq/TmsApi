@@ -14,6 +14,13 @@ public class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
         .HasForeignKey(e => e.StudentId);
         b.HasOne(e => e.Course).WithMany(c => c.Enrollments)
         .HasForeignKey(e => e.CourseId);
+
+        // Student is soft-deleted (Student.IsDeleted), and Enrollment requires a Student.
+        // Without a matching filter, EF silently drops enrollments whenever a query joins
+        // to a deleted student (and warns about it at startup). This makes the rule explicit:
+        // enrollments of a deleted student are hidden by default. The rows stay in the
+        // database, and an audit query can still read them with .IgnoreQueryFilters().
+        b.HasQueryFilter(e => !e.Student.IsDeleted);
     }
 
 
