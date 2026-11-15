@@ -288,6 +288,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorizationBuilder()
+.AddTmsPolicies()
     .AddPolicy("CanEditCourse", policy =>
         policy.Requirements.Add(new CourseInstructorRequirement()))
     // Every endpoint requires a signed-in user unless it opts out with
