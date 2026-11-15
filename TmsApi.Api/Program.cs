@@ -74,6 +74,15 @@ options.DefaultEntryOptions = new HybridCacheEntryOptions
 });
 builder.Services.AddRateLimiter(options =>
 {
+        // Defaults match production. Tests raise them through configuration.
+    var rl = builder.Configuration.GetSection("RateLimiting");
+    var anonLimit = rl.GetValue("AnonTokenLimit", 10);
+    var anonRefill = rl.GetValue("AnonTokensPerPeriod", 5);
+    var freeLimit = rl.GetValue("FreeTokenLimit", 30);
+    var freeRefill = rl.GetValue("FreeTokensPerPeriod", 10);
+    var paidLimit = rl.GetValue("PaidTokenLimit", 200);
+    var paidRefill = rl.GetValue("PaidTokensPerPeriod", 100);
+
     options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
     {
         var (partitionKey, tier) = ApiKeyResolver.Resolve(httpContext);
@@ -84,8 +93,8 @@ builder.Services.AddRateLimiter(options =>
                 partitionKey: $"paid:{partitionKey}",
                 factory: _ => new TokenBucketRateLimiterOptions
                 {
-                    TokenLimit = 200,
-                    TokensPerPeriod = 100,
+                    TokenLimit = paidLimit,
+                    TokensPerPeriod = paidRefill,
                     ReplenishmentPeriod = TimeSpan.FromSeconds(10),
                     QueueLimit = 0,
                     AutoReplenishment = true
@@ -95,8 +104,8 @@ builder.Services.AddRateLimiter(options =>
                 partitionKey: $"free:{partitionKey}",
                 factory: _ => new TokenBucketRateLimiterOptions
                 {
-                    TokenLimit = 30,
-                    TokensPerPeriod = 10,
+                    TokenLimit = freeLimit,
+                    TokensPerPeriod = freeRefill,
                     ReplenishmentPeriod = TimeSpan.FromSeconds(10),
                     QueueLimit = 0,
                     AutoReplenishment = true
@@ -106,8 +115,8 @@ builder.Services.AddRateLimiter(options =>
                 partitionKey: $"anon:{partitionKey}",
                 factory: _ => new TokenBucketRateLimiterOptions
                 {
-                    TokenLimit = 10,
-                    TokensPerPeriod = 5,
+                    TokenLimit = anonLimit,
+                    TokensPerPeriod = anonRefill,
                     ReplenishmentPeriod = TimeSpan.FromSeconds(10),
                     QueueLimit = 0,
                     AutoReplenishment = true
@@ -241,6 +250,7 @@ builder.Services.AddSingleton<EnrollmentWorker>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
+builder.Services.AddScoped<IClassroomService, ClassroomService>();
 builder.Services.AddScoped<ICertficateService,CertificateService>();
 builder.Services.AddScoped<ICachedCourseService,CachedCourseService>();
 builder.Services.AddSingleton<ITranscriptStatusStore,InMemoryTranscriptStatusStore>();

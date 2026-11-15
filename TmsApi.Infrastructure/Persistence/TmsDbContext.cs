@@ -17,6 +17,7 @@ public class TmsDbContext : IdentityDbContext<TmsUser>
     public DbSet<Assessment> Assessments => Set<Assessment>();
 
     public DbSet<Certificate> Certificates => Set<Certificate>();
+    public DbSet<Classroom> Classrooms => Set<Classroom>();
 
      public DbSet<RefreshToken> RefreshTokens { get; set; }
 
