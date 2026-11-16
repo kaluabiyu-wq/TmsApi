@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TmsApi.Api.Hubs;
 
+[Authorize]
 public class WaitlistHub : Hub
 {
     public async Task JoinStudentGroup(int studentId)

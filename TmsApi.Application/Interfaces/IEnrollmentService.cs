@@ -4,6 +4,13 @@ using TmsApi.Domain.Entities;
 using TmsApi.Application.Enrollments.Queries;
 
 namespace TmsApi.Application.Interfaces;
+public enum EnrollmentCreateResult
+{
+    Created,
+    CourseFull,
+    AlreadyEnrolled
+}
+
 public interface IEnrollmentService
 {
     Task<EnrollmentResponseDto?> GetByIdAsync(int courseId, int id, CancellationToken ct);
@@ -13,6 +20,7 @@ public interface IEnrollmentService
    
     Task<bool> ExistsAsync(int studentId, string courseCode, CancellationToken ct);
     Task AddAsync(Enrollment enrollment, CancellationToken ct);
+    Task<EnrollmentCreateResult> TryAddWithinCapacityAsync(Enrollment enrollment, CancellationToken ct);
     Task<List<Enrollment>> GetByStudentIdAsync(int studentId, CancellationToken ct);
 
 }

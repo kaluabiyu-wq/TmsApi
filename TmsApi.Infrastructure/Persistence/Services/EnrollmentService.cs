@@ -34,8 +34,9 @@ public class EnrollmentService(TmsDbContext context, ILogger<EnrollmentService> 
             EnrolledAt = DateTime.UtcNow
         };
 
-        context.Enrollments.Add(enrollment);
-        await context.SaveChangesAsync(ct);
+        var createResult = await TryAddWithinCapacityAsync(enrollment, ct);
+        if (createResult != EnrollmentCreateResult.Created)
+            return null;
 
         logger.LogInformation(
             "Enrollment {EnrollmentId} created for student {StudentId} in course {CourseId}",
@@ -60,8 +61,41 @@ public class EnrollmentService(TmsDbContext context, ILogger<EnrollmentService> 
 
 public async Task AddAsync(Enrollment enrollment, CancellationToken ct)
 {
+    var result = await TryAddWithinCapacityAsync(enrollment, ct);
+    if (result != EnrollmentCreateResult.Created)
+        throw new InvalidOperationException($"Enrollment was not created: {result}.");
+}
+
+public async Task<EnrollmentCreateResult> TryAddWithinCapacityAsync(Enrollment enrollment, CancellationToken ct)
+{
+    // Use the same course-row lock as WaitlistService. This makes a normal enrollment
+    // and a waitlist seat offer mutually exclusive for a given course.
+    await using var tx = await context.Database.BeginTransactionAsync(ct);
+    var courseRows = await context.Courses
+        .FromSqlInterpolated($"SELECT * FROM \"Courses\" WHERE \"Id\" = {enrollment.CourseId} FOR UPDATE")
+        .ToListAsync(ct);
+    var course = courseRows.FirstOrDefault();
+    if (course is null) return EnrollmentCreateResult.CourseFull;
+
+    var duplicate = await context.Enrollments.AnyAsync(e =>
+        e.StudentId == enrollment.StudentId && e.CourseId == enrollment.CourseId &&
+        (e.Status == "Pending" || e.Status == "Approved"), ct);
+    if (duplicate) return EnrollmentCreateResult.AlreadyEnrolled;
+
+    var occupied = await context.Enrollments.CountAsync(e =>
+        e.CourseId == enrollment.CourseId && (e.Status == "Pending" || e.Status == "Approved"), ct);
+    var held = await context.WaitlistEntries.CountAsync(w =>
+        w.CourseId == enrollment.CourseId && w.Status == WaitlistStatus.Offered, ct);
+    var queueExists = await context.WaitlistEntries.AnyAsync(w =>
+        w.CourseId == enrollment.CourseId && w.Status == WaitlistStatus.Waiting && w.Student.IsActive, ct);
+    // Never let a new direct enrollment jump ahead of students already in the queue.
+    if (occupied + held >= course.MaxCapacity || queueExists)
+        return EnrollmentCreateResult.CourseFull;
+
     context.Enrollments.Add(enrollment);
     await context.SaveChangesAsync(ct);
+    await tx.CommitAsync(ct);
+    return EnrollmentCreateResult.Created;
 }
 
 public Task<List<Enrollment>> GetByStudentIdAsync(int studentId, CancellationToken ct) =>

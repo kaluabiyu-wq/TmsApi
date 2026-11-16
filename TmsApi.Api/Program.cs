@@ -225,6 +225,7 @@ builder.Services.AddSingleton(Channel.CreateBounded<TranscriptRequest>(
 
 
 builder.Services.AddHostedService<TranscriptWorker>();
+builder.Services.AddHostedService<WaitlistMaintenanceWorker>();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<ITranscriptNotificationService,SignalRTranscriptNotificationService>();
 builder.Services.AddSingleton(Channel.CreateBounded<TranscriptRequest>(

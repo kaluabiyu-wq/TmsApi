@@ -19,14 +19,10 @@ IRequestHandler<EnrollstudentCommand, Result<EnrollmentCreated,EnrollmentError>>
         return Result<EnrollmentCreated, EnrollmentError>.Failure(
             EnrollmentError.courseNotFound(command.Coursecode));
 
-       if(course.EnrollmentCount >= course.MaxCapacity)
-         return Result<EnrollmentCreated, EnrollmentError>.Failure(
-            EnrollmentError.courseFull(course.Title,course.MaxCapacity));
-
-            
       if(await enrollmentService.ExistsAsync(command.StudentId,command.Coursecode, ct))
       return Result<EnrollmentCreated, EnrollmentError>.Failure(
           EnrollmentError.AlreadyEnrolled(command.StudentId,command.Coursecode));
+
      var enrollment = new Enrollment
      {
          StudentId = command.StudentId,
@@ -34,7 +30,14 @@ IRequestHandler<EnrollstudentCommand, Result<EnrollmentCreated,EnrollmentError>>
          EnrolledAt = DateTime.UtcNow
      };
 
-     await enrollmentService.AddAsync(enrollment,ct);
+     var createResult = await enrollmentService.TryAddWithinCapacityAsync(enrollment, ct);
+     if (createResult == EnrollmentCreateResult.CourseFull)
+         return Result<EnrollmentCreated, EnrollmentError>.Failure(
+             EnrollmentError.courseFull(course.Title, course.MaxCapacity));
+     if (createResult == EnrollmentCreateResult.AlreadyEnrolled)
+         return Result<EnrollmentCreated, EnrollmentError>.Failure(
+             EnrollmentError.AlreadyEnrolled(command.StudentId, command.Coursecode));
+
      return Result<EnrollmentCreated, EnrollmentError>.Success(
         new EnrollmentCreated(enrollment.ID,enrollment.StudentId,course.Code));
     
