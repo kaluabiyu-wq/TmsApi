@@ -35,6 +35,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TmsApi.Api.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
+using TmsApi.Application.Waitlists;
+using TmsApi.Api.Services;
 
 
 
@@ -251,6 +253,8 @@ builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 builder.Services.AddScoped<IClassroomService, ClassroomService>();
+builder.Services.AddScoped<IWaitlistService, WaitlistService>();
+builder.Services.AddScoped<IWaitlistNotifier, WaitlistNotifier>();
 builder.Services.AddScoped<ICertficateService,CertificateService>();
 builder.Services.AddScoped<ICachedCourseService,CachedCourseService>();
 builder.Services.AddSingleton<ITranscriptStatusStore,InMemoryTranscriptStatusStore>();
@@ -445,6 +449,7 @@ app.UseMiddleware<V1DeprecationMiddleware>();
 
 
 app.MapHub<TmsHub>("/hubs/tms").RequireCors("TmsClient");
+app.MapHub<WaitlistHub>("/hubs/waitlist");
 app.MapGet("/health", async (TmsDbContext db) =>
     await db.Database.CanConnectAsync() ? Results.Ok("Healthy") : Results.StatusCode(503))
    .AllowAnonymous()
