@@ -25,6 +25,12 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                 ioe.Message,
                 (IDictionary<string, string[]>?)null),
 
+            UnauthorizedAccessException uae => (
+                StatusCodes.Status403Forbidden,
+                "Forbidden",
+                uae.Message,
+                (IDictionary<string, string[]>?)null),
+
             KeyNotFoundException knfe => (
                 StatusCodes.Status404NotFound,
                 "Not found",
