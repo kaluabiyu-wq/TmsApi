@@ -8,15 +8,7 @@ using TmsApi.Application.DTOs;
 
 namespace TmsApi.Api.Controllers.V2;
 
-/// <summary>
-/// Training sessions and attendance. Thin controller: it identifies the caller and translates
-/// "service returned null" into 404. Business rules (enrollment, course ownership, overlap)
-/// live in AttendanceService, and rule violations surface as ProblemDetails through
-/// GlobalExceptionHandler (409 conflict, 403 not-your-course).
-///
-/// Role gate here is InstructorOrAdmin; the service then enforces that an instructor only
-/// reaches courses assigned to them.
-/// </summary>
+
 [ApiController]
 [Route("api/v{version:apiVersion}")]
 [ApiVersion("2.0")]
@@ -62,10 +54,7 @@ public class AttendanceController(IAttendanceService attendance) : ControllerBas
         return result is null ? NotFound() : Ok(result);
     }
 
-    /// <summary>
-    /// Saves the whole roster in one call. Idempotent upsert: existing marks are updated, new ones inserted.
-    /// Returns 200 (not 201) because it may create, update, or both.
-    /// </summary>
+    
     [HttpPost("sessions/{id:int}/attendance")]
     public async Task<ActionResult<SessionAttendanceResponse>> MarkAttendance(
         int id, [FromBody] MarkAttendanceRequest request, CancellationToken ct)
@@ -86,11 +75,7 @@ public class AttendanceController(IAttendanceService attendance) : ControllerBas
         return result is null ? NotFound() : Ok(result);
     }
 
-    // ---- reports
-
-    // NOTE: Student is not yet linked to TmsUser (same limitation as WaitlistsController),
-    // so students cannot be authenticated as "owner" of their own records. Until the identity
-    // integration phase, this report is staff-only.
+    
     [HttpGet("students/{id:int}/attendance")]
     public async Task<ActionResult<StudentAttendanceResponse>> GetStudentAttendance(
         int id,
