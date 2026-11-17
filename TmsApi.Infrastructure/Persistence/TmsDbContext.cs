@@ -19,7 +19,9 @@ public class TmsDbContext : IdentityDbContext<TmsUser>
     public DbSet<AssessmentAttempt> AssessmentAttempts => Set<AssessmentAttempt>();
     public DbSet<AssessmentSubmission> AssessmentSubmissions => Set<AssessmentSubmission>();
     public DbSet<AssessmentAnswer> AssessmentAnswers => Set<AssessmentAnswer>();
-
+    public DbSet<GradeRecord> GradeRecords => Set<GradeRecord>();
+    public DbSet<GradeAppeal> GradeAppeals => Set<GradeAppeal>();
+    public DbSet<GradeChangeHistory> GradeChangeHistories => Set<GradeChangeHistory>();
     public DbSet<Certificate> Certificates => Set<Certificate>();
     public DbSet<Classroom> Classrooms => Set<Classroom>();
     public DbSet<WaitlistEntry> WaitlistEntries { get; set; }
