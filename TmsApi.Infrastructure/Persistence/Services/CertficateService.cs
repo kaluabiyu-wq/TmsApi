@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using TmsApi.Application.DTOs;
 using TmsApi.Domain.Entities;
@@ -29,7 +30,11 @@ public class CertificateService(TmsDbContext context, ILogger<CertificateService
         var certficates = new Certificate
         {
             SerialNumber = request.SerialNumber,
+            VerificationCode = Convert.ToHexString(RandomNumberGenerator.GetBytes(24)),
+            Status = "Issued",
             IssuedAt = DateTime.UtcNow,
+            IssuedBy = "LegacyCertificateService",
+            StorageKey = $"legacy-no-pdf-{Guid.NewGuid():N}",
             StudentId = request.StudentId,
             CourseId = courseId,
             

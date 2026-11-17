@@ -38,6 +38,8 @@ using Microsoft.AspNetCore.HttpOverrides;
 using TmsApi.Application.Attendance;
 using TmsApi.Application.Waitlists;
 using TmsApi.Api.Services;
+using TmsApi.Application.Certificates;
+using TmsApi.Infrastructure.Certificates;
 
 
 
@@ -259,6 +261,13 @@ builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<IWaitlistService, WaitlistService>();
 builder.Services.AddScoped<IWaitlistNotifier, WaitlistNotifier>();
 builder.Services.AddScoped<ICertficateService,CertificateService>();
+builder.Services.Configure<CertificateStorageOptions>(
+    builder.Configuration.GetSection("Certificates:Storage"));
+builder.Services.AddScoped<ICertificateEligibilityService, CertificateEligibilityService>();
+builder.Services.AddScoped<ICertificatePdfService, CertificatePdfService>();
+builder.Services.AddScoped<ICertificateFileStore, LocalCertificateFileStore>();
+builder.Services.AddScoped<ICertificateIssuanceService, CertificateIssuanceService>();
+builder.Services.AddScoped<ICertificateTemplateService, CertificateTemplateService>();
 builder.Services.AddScoped<ICachedCourseService,CachedCourseService>();
 builder.Services.AddSingleton<ITranscriptStatusStore,InMemoryTranscriptStatusStore>();
 builder.Services.AddScoped<TokenService>();
