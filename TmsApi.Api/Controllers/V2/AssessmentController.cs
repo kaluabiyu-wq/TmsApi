@@ -1,14 +1,18 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using TmsApi.Api.Authorization;
 using Microsoft.EntityFrameworkCore;
 using TmsApi.Infrastructure.Persistence;
 
 namespace TmsApi.Api.Controllers.V2;
 
 [ApiController]
+[Authorize]
 [Route("api/v{version:apiVersion}/courses/{courseId:int}/assessments")]
 [ApiVersion("2.0")]
-public class AssessmentController(TmsDbContext context) : ControllerBase
+public class AssessmentController(TmsDbContext context, IAuthorizationService authorization) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAssessments(
@@ -20,7 +24,21 @@ public class AssessmentController(TmsDbContext context) : ControllerBase
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 50);
 
-        var baseQuery = context.Assessments
+        var course = await context.Courses.AsNoTracking().FirstOrDefaultAsync(c => c.Id == courseId, ct);
+        if (course is null) return NotFound();
+        var instructorAccess = await authorization.AuthorizeAsync(User, course, new CourseInstructorRequirement());
+        var query = context.Assessments.AsNoTracking().Where(a => a.CourseId == courseId);
+        if (!instructorAccess.Succeeded)
+        {
+            if (!User.IsInRole("Student")) return Forbid();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
+            var studentId = await context.Students.AsNoTracking().Where(s => s.UserId == userId && s.IsActive).Select(s => (int?)s.ID).FirstOrDefaultAsync(ct);
+            if (studentId is null || !await context.Enrollments.AnyAsync(e => e.StudentId == studentId && e.CourseId == courseId && e.Status == "Approved", ct))
+                return Forbid();
+            query = query.Where(a => a.Status == "Published");
+        }
+
+        var baseQuery = query
             .AsNoTracking()
             .Where(a => a.CourseId == courseId);
 
@@ -36,7 +54,13 @@ public class AssessmentController(TmsDbContext context) : ControllerBase
                 a.Title,
                 a.Weight,
                 a.MaxScore,
-                a.CourseId
+                a.CourseId,
+                a.Description,
+                a.OpensAt,
+                a.ClosesAt,
+                a.DurationMinutes,
+                a.MaxAttempts,
+                a.Status
             })
             .ToListAsync(ct);
 

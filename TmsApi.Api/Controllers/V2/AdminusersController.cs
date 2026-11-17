@@ -9,10 +9,7 @@ using TmsApi.Infrastructure.Persistence;
 
 namespace TmsApi.Api.Controllers.V2;
 
-/// <summary>
-/// Admin-only user management. Self-registration only ever creates Students,
-/// so this is how someone becomes an Instructor or another Admin.
-/// </summary>
+
 [ApiController]
 [Route("api/v{version:apiVersion}/admin/users")]
 [ApiVersion("2.0")]

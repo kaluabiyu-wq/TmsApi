@@ -7,12 +7,7 @@ using TmsApi.Application.Interfaces;
 
 namespace TmsApi.Api.Controllers.V2;
 
-/// <summary>
-/// Phase 1 template controller. Copy this shape for every new feature:
-/// thin controller -> service interface -> DbContext, DTOs in and out,
-/// PagedResponse for lists, named authorization policies,
-/// and errors left to the global ProblemDetails handler.
-/// </summary>
+
 [ApiController]
 [Route("api/v{version:apiVersion}/classrooms")]
 [ApiVersion("2.0")]
