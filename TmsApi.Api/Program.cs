@@ -35,6 +35,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using TmsApi.Api.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
+using TmsApi.Application.Attendance;
 using TmsApi.Application.Waitlists;
 using TmsApi.Api.Services;
 
@@ -254,6 +255,7 @@ builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 builder.Services.AddScoped<IClassroomService, ClassroomService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<IWaitlistService, WaitlistService>();
 builder.Services.AddScoped<IWaitlistNotifier, WaitlistNotifier>();
 builder.Services.AddScoped<ICertficateService,CertificateService>();
