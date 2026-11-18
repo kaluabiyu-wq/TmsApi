@@ -46,6 +46,7 @@ using TmsApi.Infrastructure.Auditing;
 using TmsApi.Infrastructure.Notifications;
 using TmsApi.Application.Programs;
 using TmsApi.Infrastructure.Programs;
+using TmsApi.Application.Scheduling;
 
 
 
@@ -277,6 +278,7 @@ builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 builder.Services.AddScoped<IClassroomService, ClassroomService>();
+builder.Services.AddScoped<ICourseScheduleService, CourseScheduleService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<IWaitlistService, WaitlistService>();
 builder.Services.AddScoped<IWaitlistNotifier, WaitlistNotifier>();

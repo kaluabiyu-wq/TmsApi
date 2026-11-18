@@ -712,6 +712,55 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("TmsApi.Domain.Entities.CourseSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassroomId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EndAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("InstructorId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("StartAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Topic")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId", "StartAt");
+
+                    b.HasIndex("ClassroomId", "StartAt", "EndAt");
+
+                    b.HasIndex("InstructorId", "StartAt", "EndAt");
+
+                    b.ToTable("CourseSchedules", (string)null);
+                });
+
             modelBuilder.Entity("TmsApi.Domain.Entities.Enrollment", b =>
                 {
                     b.Property<int>("ID")
@@ -1682,6 +1731,33 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Certificate");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.CourseSchedule", b =>
+                {
+                    b.HasOne("TmsApi.Domain.Entities.Classroom", "Classroom")
+                        .WithMany()
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TmsApi.Domain.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TmsApi.Domain.Entities.TmsUser", "Instructor")
+                        .WithMany()
+                        .HasForeignKey("InstructorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Instructor");
                 });
 
             modelBuilder.Entity("TmsApi.Domain.Entities.Enrollment", b =>
