@@ -1,3 +1,5 @@
+using TmsApi.Application.Notifications;
+
 namespace TmsApi.Application.Hubs;
 
 public interface ITmsHubClient
@@ -7,4 +9,5 @@ public interface ITmsHubClient
     Task ReceiveGradePosted(string courseCode, int studentId, decimal grade);
 
     Task ReceiveEnrollmentStatusUpdated(int enrollmentId, string status);
+    Task ReceiveNotification(NotificationRealtimeMessage notification);
 }

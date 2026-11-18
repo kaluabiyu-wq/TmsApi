@@ -14,7 +14,10 @@ public class Student
     public string? UserId { get; set; }
 
     public decimal GPA { get; set;}
-    public bool IsActive { get; set; } =true;
+    public bool IsActive { get; set; } = true;
+
+    /// <summary>Active, Inactive or Graduated. IsActive remains for backward compatibility.</summary>
+    public string Status { get; set; } = "Active";
    
    public bool IsDeleted {get;set;} = false;
    public uint Version { get; set; }

@@ -1,3 +1,5 @@
+using TmsApi.Application.Reports;
+using TmsApi.Infrastructure.Reporting;
 using Microsoft.AspNetCore.Authentication;
 using Scalar.AspNetCore;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +43,10 @@ using TmsApi.Api.Services;
 using TmsApi.Application.Certificates;
 using TmsApi.Infrastructure.Certificates;
 using TmsApi.Infrastructure.Auditing;
+using TmsApi.Infrastructure.Notifications;
+using TmsApi.Application.Programs;
+using TmsApi.Infrastructure.Programs;
+using TmsApi.Application.Scheduling;
 
 
 
@@ -235,6 +241,17 @@ builder.Services.AddHostedService<TranscriptWorker>();
 builder.Services.AddHostedService<WaitlistMaintenanceWorker>();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<ITranscriptNotificationService,SignalRTranscriptNotificationService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IInstitutionalReportService, InstitutionalReportService>();
+builder.Services.AddScoped<IProgramService, ProgramService>();
+builder.Services.AddScoped<IProgressService, ProgressService>();
+builder.Services.AddScoped<INotificationRealtimePublisher, SignalRNotificationPublisher>();
+builder.Services.Configure<SmtpNotificationOptions>(builder.Configuration.GetSection("Notifications:Smtp"));
+builder.Services.Configure<SmsNotificationOptions>(builder.Configuration.GetSection("Notifications:Sms"));
+builder.Services.AddHttpClient("TmsSms");
+builder.Services.AddScoped<INotificationChannelSender, SmtpEmailNotificationSender>();
+builder.Services.AddScoped<INotificationChannelSender, HttpSmsNotificationSender>();
+builder.Services.AddHostedService<NotificationDeliveryWorker>();
 builder.Services.AddSingleton(Channel.CreateBounded<TranscriptRequest>(
 new BoundedChannelOptions(100)
 {
@@ -261,6 +278,7 @@ builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IAssessmentService, AssessmentService>();
 builder.Services.AddScoped<IClassroomService, ClassroomService>();
+builder.Services.AddScoped<ICourseScheduleService, CourseScheduleService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<IWaitlistService, WaitlistService>();
 builder.Services.AddScoped<IWaitlistNotifier, WaitlistNotifier>();

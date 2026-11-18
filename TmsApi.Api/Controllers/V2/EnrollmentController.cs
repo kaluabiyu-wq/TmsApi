@@ -11,13 +11,14 @@ using TmsApi.Application.Hubs;
 using TmsApi.Infrastructure.Persistence;
 using TmsApi.Domain.Entities;
 using TmsApi.Application.Interfaces;
+using TmsApi.Application.Notifications;
 
 namespace TmsApi.Api.Controllers.V2;
 
 [ApiController]
 [Route("api/v{version:apiVersion}/enrollments")]
 [ApiVersion("2.0")]
-public class EnrollmentsController(TmsDbContext context, IMediator mediator, IHubContext<TmsHub, ITmsHubClient> hubContext, IAuditService audit) : ControllerBase
+public class EnrollmentsController(TmsDbContext context, IMediator mediator, IHubContext<TmsHub, ITmsHubClient> hubContext, IAuditService audit, INotificationService notifications) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Enroll(EnrollstudentCommand command, CancellationToken ct)
@@ -55,6 +56,7 @@ public async Task<IActionResult> Approve(int id, CancellationToken ct)
 {
     var enrollment = await context.Enrollments
         .Include(e => e.Course)
+        .Include(e => e.Student)
         .FirstOrDefaultAsync(e => e.ID == id, ct);
 
     if (enrollment is null)
@@ -99,7 +101,15 @@ public async Task<IActionResult> Approve(int id, CancellationToken ct)
 
     await audit.LogApprovalAsync("Enrollment", id.ToString(), oldValues, new { enrollment.Status, enrollment.CourseId, enrollment.StudentId }, ct);
 
-    await hubContext.Clients.All.ReceiveEnrollmentStatusUpdated(id, "Approved");
+    if (!string.IsNullOrWhiteSpace(enrollment.Student.UserId))
+    {
+        await notifications.CreateAsync(new CreateNotificationRequest(
+            enrollment.Student.UserId,
+            "Enrollment approved",
+            $"Your enrollment in {enrollment.Course.Title} has been approved.",
+            "Success", "Enrollment", "/dashboard"), ct);
+        await hubContext.Clients.User(enrollment.Student.UserId).ReceiveEnrollmentStatusUpdated(id, "Approved");
+    }
 
     return NoContent();
 }

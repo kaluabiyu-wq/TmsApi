@@ -712,6 +712,55 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("TmsApi.Domain.Entities.CourseSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassroomId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EndAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("InstructorId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("StartAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Topic")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId", "StartAt");
+
+                    b.HasIndex("ClassroomId", "StartAt", "EndAt");
+
+                    b.HasIndex("InstructorId", "StartAt", "EndAt");
+
+                    b.ToTable("CourseSchedules", (string)null);
+                });
+
             modelBuilder.Entity("TmsApi.Domain.Entities.Enrollment", b =>
                 {
                     b.Property<int>("ID")
@@ -750,6 +799,75 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("Enrollments");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.GeneratedReport", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ContentType")
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(260)
+                        .HasColumnType("character varying(260)");
+
+                    b.Property<long?>("FileSizeBytes")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FiltersJson")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("character varying(12)");
+
+                    b.Property<int>("ReportDefinitionId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("RequestedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("RequestedByUserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("StoragePath")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportDefinitionId");
+
+                    b.HasIndex("RequestedByUserId", "RequestedAt");
+
+                    b.HasIndex("Status", "RequestedAt");
+
+                    b.ToTable("GeneratedReports", (string)null);
                 });
 
             modelBuilder.Entity("TmsApi.Domain.Entities.GradeAppeal", b =>
@@ -863,6 +981,182 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                     b.ToTable("GradeRecords");
                 });
 
+            modelBuilder.Entity("TmsApi.Domain.Entities.Notification", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("ActionUrl")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(180)
+                        .HasColumnType("character varying(180)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "CreatedAt");
+
+                    b.HasIndex("UserId", "IsRead", "CreatedAt");
+
+                    b.ToTable("Notifications", (string)null);
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.NotificationDelivery", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Attempts")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Channel")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastError")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<DateTime?>("NextAttemptAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("NotificationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("SentAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NotificationId", "Channel")
+                        .IsUnique();
+
+                    b.HasIndex("Status", "NextAttemptAt");
+
+                    b.ToTable("NotificationDeliveries", (string)null);
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.NotificationPreference", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
+
+                    b.Property<bool>("EmailEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("InAppEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("SmsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Category")
+                        .IsUnique();
+
+                    b.ToTable("NotificationPreferences", (string)null);
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.ProgramCourse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ProgramId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Sequence")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("ProgramId", "CourseId")
+                        .IsUnique();
+
+                    b.HasIndex("ProgramId", "Sequence")
+                        .IsUnique();
+
+                    b.ToTable("ProgramCourses", (string)null);
+                });
+
             modelBuilder.Entity("TmsApi.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -891,6 +1185,43 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.ReportDefinition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("character varying(160)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Key")
+                        .IsUnique();
+
+                    b.ToTable("ReportDefinitions", (string)null);
                 });
 
             modelBuilder.Entity("TmsApi.Domain.Entities.Student", b =>
@@ -923,6 +1254,13 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasDefaultValue("Active");
+
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
@@ -939,6 +1277,82 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                         .HasFilter("\"UserId\" IS NOT NULL");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.StudentProgramEnrollment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EnrolledAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ProgramId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("WithdrawnAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgramId");
+
+                    b.HasIndex("StudentId", "ProgramId")
+                        .IsUnique();
+
+                    b.ToTable("StudentProgramEnrollments", (string)null);
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.StudentProgress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("LastCalculatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ProgramCourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("StartedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("StudentProgramEnrollmentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgramCourseId");
+
+                    b.HasIndex("StudentProgramEnrollmentId", "ProgramCourseId")
+                        .IsUnique();
+
+                    b.ToTable("StudentProgress", (string)null);
                 });
 
             modelBuilder.Entity("TmsApi.Domain.Entities.TmsUser", b =>
@@ -1014,6 +1428,49 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.TrainingProgram", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<int?>("DurationMonths")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(180)
+                        .HasColumnType("character varying(180)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("TrainingPrograms", (string)null);
                 });
 
             modelBuilder.Entity("TmsApi.Domain.Entities.TrainingSession", b =>
@@ -1276,6 +1733,33 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                     b.Navigation("Certificate");
                 });
 
+            modelBuilder.Entity("TmsApi.Domain.Entities.CourseSchedule", b =>
+                {
+                    b.HasOne("TmsApi.Domain.Entities.Classroom", "Classroom")
+                        .WithMany()
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TmsApi.Domain.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TmsApi.Domain.Entities.TmsUser", "Instructor")
+                        .WithMany()
+                        .HasForeignKey("InstructorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Instructor");
+                });
+
             modelBuilder.Entity("TmsApi.Domain.Entities.Enrollment", b =>
                 {
                     b.HasOne("TmsApi.Domain.Entities.Course", "Course")
@@ -1293,6 +1777,17 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.GeneratedReport", b =>
+                {
+                    b.HasOne("TmsApi.Domain.Entities.ReportDefinition", "ReportDefinition")
+                        .WithMany()
+                        .HasForeignKey("ReportDefinitionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ReportDefinition");
                 });
 
             modelBuilder.Entity("TmsApi.Domain.Entities.GradeAppeal", b =>
@@ -1347,6 +1842,74 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("Submission");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.NotificationDelivery", b =>
+                {
+                    b.HasOne("TmsApi.Domain.Entities.Notification", "Notification")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Notification");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.ProgramCourse", b =>
+                {
+                    b.HasOne("TmsApi.Domain.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TmsApi.Domain.Entities.TrainingProgram", "Program")
+                        .WithMany("ProgramCourses")
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Program");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.StudentProgramEnrollment", b =>
+                {
+                    b.HasOne("TmsApi.Domain.Entities.TrainingProgram", "Program")
+                        .WithMany("StudentEnrollments")
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TmsApi.Domain.Entities.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Program");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.StudentProgress", b =>
+                {
+                    b.HasOne("TmsApi.Domain.Entities.ProgramCourse", "ProgramCourse")
+                        .WithMany("StudentProgress")
+                        .HasForeignKey("ProgramCourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TmsApi.Domain.Entities.StudentProgramEnrollment", "StudentProgramEnrollment")
+                        .WithMany("ProgressItems")
+                        .HasForeignKey("StudentProgramEnrollmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProgramCourse");
+
+                    b.Navigation("StudentProgramEnrollment");
                 });
 
             modelBuilder.Entity("TmsApi.Domain.Entities.TrainingSession", b =>
@@ -1417,6 +1980,16 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                     b.Navigation("Appeals");
                 });
 
+            modelBuilder.Entity("TmsApi.Domain.Entities.Notification", b =>
+                {
+                    b.Navigation("Deliveries");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.ProgramCourse", b =>
+                {
+                    b.Navigation("StudentProgress");
+                });
+
             modelBuilder.Entity("TmsApi.Domain.Entities.Student", b =>
                 {
                     b.Navigation("AssessmentAttempts");
@@ -1424,6 +1997,18 @@ namespace TmsApi.Infrastructure.Persistence.Migrations
                     b.Navigation("Certificates");
 
                     b.Navigation("Enrollments");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.StudentProgramEnrollment", b =>
+                {
+                    b.Navigation("ProgressItems");
+                });
+
+            modelBuilder.Entity("TmsApi.Domain.Entities.TrainingProgram", b =>
+                {
+                    b.Navigation("ProgramCourses");
+
+                    b.Navigation("StudentEnrollments");
                 });
 
             modelBuilder.Entity("TmsApi.Domain.Entities.TrainingSession", b =>

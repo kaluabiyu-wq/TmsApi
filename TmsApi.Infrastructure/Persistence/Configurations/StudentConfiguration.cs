@@ -15,6 +15,7 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
         .HasColumnType("timeStamp without time Zone")
         .HasDefaultValueSql("now()");
         builder.Property(s => s.Version).IsRowVersion();
+        builder.Property(s => s.Status).HasMaxLength(30).HasDefaultValue("Active").IsRequired();
         
      
     

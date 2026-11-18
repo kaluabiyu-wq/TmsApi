@@ -8,6 +8,7 @@ using TmsApi.Api.Contracts;
 using TmsApi.Domain.Entities;
 using TmsApi.Infrastructure.Persistence;
 using TmsApi.Application.Interfaces;
+using TmsApi.Application.Notifications;
 
 namespace TmsApi.Api.Controllers.V2;
 
@@ -15,7 +16,7 @@ namespace TmsApi.Api.Controllers.V2;
 [ApiVersion("2.0")]
 [Route("api/v{version:apiVersion}/gradebook")]
 [Authorize]
-public sealed class GradebookController(TmsDbContext db, IAuthorizationService authorization, IAuditService audit) : ControllerBase
+public sealed class GradebookController(TmsDbContext db, IAuthorizationService authorization, IAuditService audit, INotificationService notifications) : ControllerBase
 {
     private string? UserId => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
 
@@ -87,6 +88,16 @@ public sealed class GradebookController(TmsDbContext db, IAuthorizationService a
         await db.SaveChangesAsync(ct);
         foreach (var change in auditChanges)
             await audit.LogGradeChangeAsync(change.Record.Id.ToString(), change.OldValues, new { change.Record.Score, change.Record.MaxScore, change.Record.Percentage, change.Record.Weight, change.Record.IsPublished }, ct);
+
+        var studentIds = latest.Select(x => x.StudentId).Distinct().ToArray();
+        var recipients = await db.Students.AsNoTracking().Where(s => studentIds.Contains(s.ID) && s.UserId != null)
+            .Select(s => new { s.UserId }).ToListAsync(ct);
+        foreach (var recipient in recipients.Where(x => !string.IsNullOrWhiteSpace(x.UserId)))
+        {
+            await notifications.CreateAsync(new CreateNotificationRequest(
+                recipient.UserId!, "Grade published", $"Your result for {assessment.Title} is now available.",
+                "Success", "Grades", "/dashboard"), ct);
+        }
         return Ok(new { assessmentId, PublishedCount = latest.Count });
     }
 
