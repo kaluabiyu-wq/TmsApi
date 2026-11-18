@@ -10,13 +10,14 @@ using TmsApi.Application.Enrollments.Queries;
 using TmsApi.Application.Hubs;
 using TmsApi.Infrastructure.Persistence;
 using TmsApi.Domain.Entities;
+using TmsApi.Application.Interfaces;
 
 namespace TmsApi.Api.Controllers.V2;
 
 [ApiController]
 [Route("api/v{version:apiVersion}/enrollments")]
 [ApiVersion("2.0")]
-public class EnrollmentsController(TmsDbContext context,IMediator mediator,IHubContext<TmsHub, ITmsHubClient> hubContext) : ControllerBase
+public class EnrollmentsController(TmsDbContext context, IMediator mediator, IHubContext<TmsHub, ITmsHubClient> hubContext, IAuditService audit) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Enroll(EnrollstudentCommand command, CancellationToken ct)
@@ -80,6 +81,7 @@ public async Task<IActionResult> Approve(int id, CancellationToken ct)
             type: "https://tms.local/errors/course_full");
     }
 
+    var oldValues = new { enrollment.Status };
     enrollment.Status = "Approved";
 
     try
@@ -94,6 +96,8 @@ public async Task<IActionResult> Approve(int id, CancellationToken ct)
             detail: "This enrollment was modified by another request. Reload and try again.",
             type: "https://tms.local/errors/concurrency_conflict");
     }
+
+    await audit.LogApprovalAsync("Enrollment", id.ToString(), oldValues, new { enrollment.Status, enrollment.CourseId, enrollment.StudentId }, ct);
 
     await hubContext.Clients.All.ReceiveEnrollmentStatusUpdated(id, "Approved");
 

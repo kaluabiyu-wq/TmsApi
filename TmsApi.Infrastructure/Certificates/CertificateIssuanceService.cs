@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TmsApi.Application.Certificates;
+using TmsApi.Application.Interfaces;
 using TmsApi.Domain.Entities;
 using TmsApi.Infrastructure.Persistence;
 
@@ -12,7 +13,8 @@ public sealed class CertificateIssuanceService(
     ICertificateEligibilityService eligibility,
     ICertificatePdfService pdf,
     ICertificateFileStore files,
-    IConfiguration configuration) : ICertificateIssuanceService
+    IConfiguration configuration,
+    IAuditService audit) : ICertificateIssuanceService
 {
     private string PublicBaseUrl
     {
@@ -100,6 +102,7 @@ public sealed class CertificateIssuanceService(
             Details = $"Issued certificate {serial}."
         });
         await db.SaveChangesAsync(ct);
+        await audit.LogCertificateIssueAsync(certificate.Id.ToString(), new { certificate.SerialNumber, certificate.StudentId, certificate.CourseId, certificate.IssuedAt, certificate.Status }, ct);
         await tx.CommitAsync(ct);
 
         return ToDto(certificate);

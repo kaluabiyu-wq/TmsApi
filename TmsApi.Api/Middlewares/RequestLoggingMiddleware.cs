@@ -18,6 +18,7 @@ public class RequestLoggingMiddleware
     {
     
         var correlationId = Guid.NewGuid().ToString("N")[..8];
+        context.Items["Tms.CorrelationId"] = correlationId;
         context.Response.Headers["X-Correlation-Id"] = correlationId;
 
         var method = context.Request.Method;
