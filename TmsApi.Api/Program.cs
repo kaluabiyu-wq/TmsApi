@@ -41,6 +41,7 @@ using TmsApi.Api.Services;
 using TmsApi.Application.Certificates;
 using TmsApi.Infrastructure.Certificates;
 using TmsApi.Infrastructure.Auditing;
+using TmsApi.Infrastructure.Notifications;
 
 
 
@@ -235,6 +236,14 @@ builder.Services.AddHostedService<TranscriptWorker>();
 builder.Services.AddHostedService<WaitlistMaintenanceWorker>();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<ITranscriptNotificationService,SignalRTranscriptNotificationService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<INotificationRealtimePublisher, SignalRNotificationPublisher>();
+builder.Services.Configure<SmtpNotificationOptions>(builder.Configuration.GetSection("Notifications:Smtp"));
+builder.Services.Configure<SmsNotificationOptions>(builder.Configuration.GetSection("Notifications:Sms"));
+builder.Services.AddHttpClient("TmsSms");
+builder.Services.AddScoped<INotificationChannelSender, SmtpEmailNotificationSender>();
+builder.Services.AddScoped<INotificationChannelSender, HttpSmsNotificationSender>();
+builder.Services.AddHostedService<NotificationDeliveryWorker>();
 builder.Services.AddSingleton(Channel.CreateBounded<TranscriptRequest>(
 new BoundedChannelOptions(100)
 {

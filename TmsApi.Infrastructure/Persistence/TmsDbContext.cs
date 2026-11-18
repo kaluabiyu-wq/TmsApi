@@ -30,6 +30,9 @@ public class TmsDbContext : IdentityDbContext<TmsUser>
     public DbSet<TrainingSession> TrainingSessions => Set<TrainingSession>();
     public DbSet<AttendanceRecord> AttendanceRecords => Set<AttendanceRecord>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<Notification> Notifications => Set<Notification>();
+    public DbSet<NotificationPreference> NotificationPreferences => Set<NotificationPreference>();
+    public DbSet<NotificationDelivery> NotificationDeliveries => Set<NotificationDelivery>();
 
      public DbSet<RefreshToken> RefreshTokens { get; set; }
 

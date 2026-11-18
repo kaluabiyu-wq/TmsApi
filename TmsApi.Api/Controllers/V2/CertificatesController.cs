@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TmsApi.Infrastructure.Persistence;
 using TmsApi.Application.Certificates;
+using TmsApi.Application.Notifications;
 
 namespace TmsApi.Api.Controllers.V2;
 
@@ -12,7 +13,7 @@ namespace TmsApi.Api.Controllers.V2;
 [ApiVersion("2.0")]
 [Route("api/v{version:apiVersion}/certificates")]
 [Authorize]
-public sealed class CertificatesController(ICertificateIssuanceService certificates, TmsDbContext db) : ControllerBase
+public sealed class CertificatesController(ICertificateIssuanceService certificates, TmsDbContext db, INotificationService notifications) : ControllerBase
 {
     private string UserId => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
     private string? ClientIp => HttpContext.Connection.RemoteIpAddress?.ToString();
@@ -26,6 +27,14 @@ public sealed class CertificatesController(ICertificateIssuanceService certifica
         {
             var result = await certificates.IssueAsync(
                 request.StudentId, request.CourseId, request.TemplateId, UserId, ClientIp, ct);
+            var recipient = await db.Students.AsNoTracking().Where(s => s.ID == request.StudentId)
+                .Select(s => s.UserId).FirstOrDefaultAsync(ct);
+            if (!string.IsNullOrWhiteSpace(recipient))
+            {
+                await notifications.CreateAsync(new CreateNotificationRequest(
+                    recipient, "Certificate issued", "Your training certificate is ready to view and download.",
+                    "Success", "Certificates", "/my-certificates"), ct);
+            }
             return CreatedAtAction(nameof(GetById), new { id = result.Id, version = "2" }, result);
         }
         catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }
