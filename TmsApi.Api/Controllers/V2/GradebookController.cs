@@ -7,6 +7,7 @@ using TmsApi.Api.Authorization;
 using TmsApi.Api.Contracts;
 using TmsApi.Domain.Entities;
 using TmsApi.Infrastructure.Persistence;
+using TmsApi.Application.Interfaces;
 
 namespace TmsApi.Api.Controllers.V2;
 
@@ -14,7 +15,7 @@ namespace TmsApi.Api.Controllers.V2;
 [ApiVersion("2.0")]
 [Route("api/v{version:apiVersion}/gradebook")]
 [Authorize]
-public sealed class GradebookController(TmsDbContext db, IAuthorizationService authorization) : ControllerBase
+public sealed class GradebookController(TmsDbContext db, IAuthorizationService authorization, IAuditService audit) : ControllerBase
 {
     private string? UserId => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
 
@@ -59,6 +60,7 @@ public sealed class GradebookController(TmsDbContext db, IAuthorizationService a
         var latest = submissions.GroupBy(x => x.StudentId).Select(g => g.First()).ToList();
         if (latest.Count == 0) return Conflict(new { message = "No fully graded submissions are available." });
 
+        var auditChanges = new List<(GradeRecord Record, object? OldValues)>();
         foreach (var item in latest)
         {
             var score = item.Submission.Score!.Value;
@@ -70,6 +72,7 @@ public sealed class GradebookController(TmsDbContext db, IAuthorizationService a
                 record = new GradeRecord { StudentId = item.StudentId, CourseId = courseId, AssessmentId = assessmentId };
                 db.GradeRecords.Add(record);
             }
+            var oldValues = record.Id == 0 ? null : new { record.Score, record.MaxScore, record.Percentage, record.Weight, record.IsPublished };
             record.SubmissionId = item.Submission.Id;
             record.Score = score;
             record.MaxScore = assessment.MaxScore;
@@ -79,8 +82,11 @@ public sealed class GradebookController(TmsDbContext db, IAuthorizationService a
             record.PublishedAt = DateTime.UtcNow;
             record.PublishedByUserId = UserId;
             record.UpdatedAt = DateTime.UtcNow;
+            auditChanges.Add((record, oldValues));
         }
         await db.SaveChangesAsync(ct);
+        foreach (var change in auditChanges)
+            await audit.LogGradeChangeAsync(change.Record.Id.ToString(), change.OldValues, new { change.Record.Score, change.Record.MaxScore, change.Record.Percentage, change.Record.Weight, change.Record.IsPublished }, ct);
         return Ok(new { assessmentId, PublishedCount = latest.Count });
     }
 

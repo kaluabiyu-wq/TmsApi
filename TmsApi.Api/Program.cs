@@ -40,6 +40,7 @@ using TmsApi.Application.Waitlists;
 using TmsApi.Api.Services;
 using TmsApi.Application.Certificates;
 using TmsApi.Infrastructure.Certificates;
+using TmsApi.Infrastructure.Auditing;
 
 
 
@@ -210,6 +211,9 @@ builder.Services.AddOptions<PaymentOptions>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IAuditService, AuditService>();
+
 builder.Services.AddDbContext<TmsDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("TmsDatabase"));
@@ -315,6 +319,7 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorizationBuilder()
 .AddTmsPolicies()
+    .AddPolicy("ViewAuditLogs", policy => policy.RequireRole("Admin", "SuperAdmin", "Auditor"))
     .AddPolicy("CanEditCourse", policy =>
         policy.Requirements.Add(new CourseInstructorRequirement()))
     // Every endpoint requires a signed-in user unless it opts out with
