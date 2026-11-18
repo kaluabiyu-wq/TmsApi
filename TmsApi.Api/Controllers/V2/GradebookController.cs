@@ -2,9 +2,11 @@ using System.Security.Claims;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TmsApi.Api.Filters;
-using TmsApi.Application.DTOs;
-using TmsApi.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using TmsApi.Api.Authorization;
+using TmsApi.Api.Contracts;
+using TmsApi.Domain.Entities;
+using TmsApi.Infrastructure.Persistence;
 
 namespace TmsApi.Api.Controllers.V2;
 
@@ -12,101 +14,174 @@ namespace TmsApi.Api.Controllers.V2;
 [ApiVersion("2.0")]
 [Route("api/v{version:apiVersion}/gradebook")]
 [Authorize]
-[GradebookExceptionFilter]
-public class GradebookController(IGradebookService service) : ControllerBase
+public sealed class GradebookController(TmsDbContext db, IAuthorizationService authorization) : ControllerBase
 {
-    private GradebookActor Actor => new(
-        User.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? User.FindFirstValue("sub")
-            ?? throw new UnauthorizedAccessException("Missing user id."),
-        IsAdmin: User.IsInRole("Admin") || User.IsInRole("SuperAdmin"),
-        IsStudent: User.IsInRole("Student"));
+    private string? UserId => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
 
-    private const string Staff = "Admin,Instructor,SuperAdmin";
-
-    // ── Reads ──
-
-    [HttpGet("course/{id:int}")]
-    [Authorize(Roles = Staff)]
-    public async Task<IActionResult> GetCourse(int id, CancellationToken ct)
-        => Ok(await service.GetCourseGradebookAsync(id, Actor, ct));
-
-    [HttpGet("student/{id:int}")]
-    [Authorize(Roles = Staff + ",Student")]
-    public async Task<IActionResult> GetStudent(int id, CancellationToken ct)
-        => Ok(await service.GetStudentGradesAsync(id, Actor, ct));
-
-    [HttpGet("me")]
-    [Authorize(Roles = "Student")]
-    public async Task<IActionResult> GetMine(CancellationToken ct)
-        => Ok(await service.GetMyGradesAsync(Actor, ct));
-
-    // ── Assessment-level grading ──
-
-    [HttpPost]
-    [Authorize(Roles = Staff)]
-    public async Task<IActionResult> Save(
-        [FromBody] SaveGradeRequest request, CancellationToken ct)
-        => Ok(await service.SaveGradeAsync(request, Actor, ct));
-
-    [HttpPut("{id:int}")]
-    [Authorize(Roles = Staff)]
-    public async Task<IActionResult> Update(
-        int id, [FromBody] UpdateGradeRequest request, CancellationToken ct)
-        => Ok(await service.UpdateGradeAsync(id, request, Actor, ct));
-
-    [HttpPost("{id:int}/publish")]
-    [Authorize(Roles = Staff)]
-    public async Task<IActionResult> PublishAssessmentGrade(int id, CancellationToken ct)
+    private async Task<Course?> AuthorizedCourse(int courseId, CancellationToken ct)
     {
-        await service.PublishAssessmentGradeAsync(id, Actor, ct);
-        return NoContent();
+        var course = await db.Courses.AsNoTracking().FirstOrDefaultAsync(c => c.Id == courseId, ct);
+        if (course is null) return null;
+        var result = await authorization.AuthorizeAsync(User, course, new CourseInstructorRequirement());
+        return result.Succeeded ? course : null;
     }
 
-    [HttpPost("{id:int}/correct")]
-    [Authorize(Roles = Staff)]
-    public async Task<IActionResult> Correct(
-        int id, [FromBody] CorrectGradeRequest request, CancellationToken ct)
-        => Ok(await service.CorrectGradeAsync(id, request, Actor, ct));
-
-    // ── Final grade ──
-
-    [HttpPost("enrollments/{enrollmentId:int}/publish")]
-    [Authorize(Roles = Staff)]
-    public async Task<IActionResult> PublishFinal(int enrollmentId, CancellationToken ct)
+    [HttpGet("courses/{courseId:int}")]
+    public async Task<IActionResult> GetCourseGradebook(int courseId, CancellationToken ct)
     {
-        var final = await service.PublishFinalGradeAsync(enrollmentId, Actor, ct);
-        return Ok(new { enrollmentId, finalGrade = final });
+        var course = await AuthorizedCourse(courseId, ct);
+        if (course is null) return NotFound();
+        var rows = await db.GradeRecords.AsNoTracking()
+            .Where(g => g.CourseId == courseId && g.IsPublished)
+            .OrderBy(g => g.Student.Name).ThenBy(g => g.Assessment.Title)
+            .Select(g => new GradeRecordDto(g.Id, g.StudentId, g.Student.Name, g.Student.RegistrationNumber,
+                g.AssessmentId, g.Assessment.Title, g.Score, g.MaxScore, g.Percentage, g.Weight, g.IsPublished, g.PublishedAt))
+            .ToListAsync(ct);
+        return Ok(new { course.Id, course.Code, course.Title, Grades = rows });
     }
 
-    // ── Appeals ──
-
-    [HttpPost("enrollments/{enrollmentId:int}/appeals")]
-    [Authorize(Roles = "Student")]
-    public async Task<IActionResult> SubmitAppeal(
-        int enrollmentId, [FromBody] SubmitGradeAppealRequest request, CancellationToken ct)
+    /// <summary>Publish grades only from already graded Phase 4 submissions. Never trusts a score from the browser.</summary>
+    [HttpPost("courses/{courseId:int}/assessments/{assessmentId:int}/publish")]
+    public async Task<IActionResult> PublishAssessmentGrades(int courseId, int assessmentId, CancellationToken ct)
     {
-        var id = await service.SubmitAppealAsync(enrollmentId, request, Actor, ct);
-        return Created($"/api/v2/gradebook/appeals/{id}", new { id });
+        var course = await AuthorizedCourse(courseId, ct);
+        if (course is null) return NotFound();
+        var assessment = await db.Assessments.FirstOrDefaultAsync(a => a.Id == assessmentId && a.CourseId == courseId, ct);
+        if (assessment is null) return NotFound();
+        if (assessment.Status != "Published") return Conflict(new { message = "Publish the assessment before publishing its grades." });
+        if (assessment.MaxScore <= 0 || assessment.Weight < 0) return BadRequest(new { message = "Assessment MaxScore and Weight are invalid." });
+
+        var submissions = await db.AssessmentSubmissions
+            .Where(s => s.Attempt.AssessmentId == assessmentId && s.GradingStatus == "Graded" && s.Score.HasValue)
+            .OrderByDescending(s => s.SubmittedAt)
+            .Select(s => new { Submission = s, s.Attempt.StudentId })
+            .ToListAsync(ct);
+        var latest = submissions.GroupBy(x => x.StudentId).Select(g => g.First()).ToList();
+        if (latest.Count == 0) return Conflict(new { message = "No fully graded submissions are available." });
+
+        foreach (var item in latest)
+        {
+            var score = item.Submission.Score!.Value;
+            if (score < 0 || score > assessment.MaxScore)
+                return Conflict(new { message = $"Submission {item.Submission.Id} has a score outside the assessment range." });
+            var record = await db.GradeRecords.FirstOrDefaultAsync(g => g.StudentId == item.StudentId && g.AssessmentId == assessmentId, ct);
+            if (record is null)
+            {
+                record = new GradeRecord { StudentId = item.StudentId, CourseId = courseId, AssessmentId = assessmentId };
+                db.GradeRecords.Add(record);
+            }
+            record.SubmissionId = item.Submission.Id;
+            record.Score = score;
+            record.MaxScore = assessment.MaxScore;
+            record.Percentage = Math.Round(score / assessment.MaxScore * 100m, 2, MidpointRounding.AwayFromZero);
+            record.Weight = assessment.Weight;
+            record.IsPublished = true;
+            record.PublishedAt = DateTime.UtcNow;
+            record.PublishedByUserId = UserId;
+            record.UpdatedAt = DateTime.UtcNow;
+        }
+        await db.SaveChangesAsync(ct);
+        return Ok(new { assessmentId, PublishedCount = latest.Count });
     }
 
-    [HttpGet("appeals/mine")]
+    [HttpGet("my-courses")]
     [Authorize(Roles = "Student")]
-    public async Task<IActionResult> MyAppeals(CancellationToken ct)
-        => Ok(await service.GetMyAppealsAsync(Actor, ct));
-
-    [HttpGet("appeals")]
-    [Authorize(Roles = Staff)]
-    public async Task<IActionResult> Appeals(
-        [FromQuery] string? status, [FromQuery] int? courseId, CancellationToken ct)
-        => Ok(await service.GetAppealsAsync(status, courseId, Actor, ct));
-
-    [HttpPut("appeals/{id:int}")]
-    [Authorize(Roles = Staff)]
-    public async Task<IActionResult> ReviewAppeal(
-        int id, [FromBody] ReviewGradeAppealRequest request, CancellationToken ct)
+    public async Task<IActionResult> GetMyGrades(CancellationToken ct)
     {
-        await service.ReviewAppealAsync(id, request, Actor, ct);
-        return NoContent();
+        var studentId = await db.Students.Where(s => s.UserId == UserId && s.IsActive)
+            .Select(s => (int?)s.ID).FirstOrDefaultAsync(ct);
+        if (studentId is null) return NotFound();
+        var enrollments = await db.Enrollments.AsNoTracking()
+            .Where(e => e.StudentId == studentId && !e.IsArchived && e.Status == "Approved")
+            .Select(e => new { e.CourseId, e.Course.Code, e.Course.Title, e.Grade })
+            .ToListAsync(ct);
+        var result = new List<StudentCourseGradeDto>();
+        foreach (var e in enrollments)
+        {
+            var grades = await db.GradeRecords.AsNoTracking().Where(g => g.StudentId == studentId && g.CourseId == e.CourseId && g.IsPublished)
+                .OrderBy(g => g.Assessment.Title)
+                .Select(g => new GradeRecordDto(g.Id, g.StudentId, g.Student.Name, g.Student.RegistrationNumber,
+                    g.AssessmentId, g.Assessment.Title, g.Score, g.MaxScore, g.Percentage, g.Weight, g.IsPublished, g.PublishedAt))
+                .ToListAsync(ct);
+            result.Add(new StudentCourseGradeDto(e.CourseId, e.Code, e.Title, e.Grade, grades));
+        }
+        return Ok(result);
+    }
+
+    [HttpPost("courses/{courseId:int}/calculate-final")]
+    public async Task<IActionResult> CalculateFinalGrades(int courseId, CancellationToken ct)
+    {
+        if (await AuthorizedCourse(courseId, ct) is null) return NotFound();
+        var assessments = await db.Assessments.AsNoTracking()
+            .Where(a => a.CourseId == courseId && a.Status == "Published")
+            .Select(a => new { a.Id, a.Weight }).ToListAsync(ct);
+        if (assessments.Count == 0) return Conflict(new { message = "There are no published assessments in this course." });
+        if (assessments.Any(a => a.Weight < 0) || assessments.Sum(a => a.Weight) != 100m)
+            return Conflict(new { message = "Published assessment weights must total exactly 100 before final grades can be calculated." });
+
+        var enrollments = await db.Enrollments.Where(e => e.CourseId == courseId && e.Status == "Approved" && !e.IsArchived).ToListAsync(ct);
+        var updated = 0;
+        foreach (var enrollment in enrollments)
+        {
+            var records = await db.GradeRecords.Where(g => g.CourseId == courseId && g.StudentId == enrollment.StudentId && g.IsPublished)
+                .ToListAsync(ct);
+            if (assessments.Any(a => records.All(g => g.AssessmentId != a.Id))) continue; // do not treat missing work as zero
+            var finalPercent = assessments.Sum(a => records.Single(g => g.AssessmentId == a.Id).Percentage * a.Weight / 100m);
+            enrollment.Grade = Math.Round(finalPercent, 2, MidpointRounding.AwayFromZero);
+            updated++;
+        }
+        await db.SaveChangesAsync(ct);
+        return Ok(new { courseId, UpdatedEnrollmentGrades = updated, EnrolledStudents = enrollments.Count,
+            PendingIncomplete = enrollments.Count - updated });
+    }
+
+    [HttpPost("records/{gradeRecordId:int}/appeals")]
+    [Authorize(Roles = "Student")]
+    public async Task<IActionResult> SubmitAppeal(int gradeRecordId, SubmitGradeAppealRequest request, CancellationToken ct)
+    {
+        var studentId = await db.Students.Where(s => s.UserId == UserId && s.IsActive).Select(s => (int?)s.ID).FirstOrDefaultAsync(ct);
+        if (studentId is null) return NotFound();
+        if (string.IsNullOrWhiteSpace(request.Reason) || request.Reason.Trim().Length > 4000)
+            return BadRequest(new { message = "Reason is required and must be at most 4000 characters." });
+        var grade = await db.GradeRecords.FirstOrDefaultAsync(g => g.Id == gradeRecordId && g.StudentId == studentId && g.IsPublished, ct);
+        if (grade is null) return NotFound();
+        if (await db.GradeAppeals.AnyAsync(a => a.GradeRecordId == gradeRecordId && a.Status == "Pending", ct))
+            return Conflict(new { message = "A pending appeal already exists for this grade." });
+        var appeal = new GradeAppeal { GradeRecordId = gradeRecordId, StudentId = studentId.Value, Reason = request.Reason.Trim() };
+        db.GradeAppeals.Add(appeal);
+        await db.SaveChangesAsync(ct);
+        return Created($"/api/v2/gradebook/appeals/{appeal.Id}", new { appeal.Id, appeal.Status, appeal.SubmittedAt });
+    }
+
+    [HttpGet("courses/{courseId:int}/appeals")]
+    public async Task<IActionResult> GetAppeals(int courseId, CancellationToken ct)
+    {
+        if (await AuthorizedCourse(courseId, ct) is null) return NotFound();
+        var appeals = await db.GradeAppeals.AsNoTracking().Where(a => a.GradeRecord.CourseId == courseId)
+            .OrderBy(a => a.Status).ThenBy(a => a.SubmittedAt)
+            .Select(a => new { a.Id, a.GradeRecordId, a.StudentId, StudentName = a.Student.Name,
+                a.Reason, a.Status, a.ReviewComment, a.SubmittedAt, a.ReviewedAt })
+            .ToListAsync(ct);
+        return Ok(appeals);
+    }
+
+    [HttpPut("appeals/{appealId:int}/review")]
+    public async Task<IActionResult> ReviewAppeal(int appealId, ReviewGradeAppealRequest request, CancellationToken ct)
+    {
+        if (!User.IsInRole("Admin") && !User.IsInRole("Instructor")) return Forbid();
+        var appeal = await db.GradeAppeals.Include(a => a.GradeRecord).ThenInclude(g => g.Course)
+            .FirstOrDefaultAsync(a => a.Id == appealId, ct);
+        if (appeal is null) return NotFound();
+        var auth = await authorization.AuthorizeAsync(User, appeal.GradeRecord.Course, new CourseInstructorRequirement());
+        if (!auth.Succeeded) return Forbid();
+        if (appeal.Status != "Pending") return Conflict(new { message = "This appeal has already been reviewed." });
+        var decision = request.Decision?.Trim();
+        if (decision is not ("Approved" or "Rejected")) return BadRequest(new { message = "Decision must be Approved or Rejected." });
+        appeal.Status = decision;
+        appeal.ReviewComment = request.Comment?.Trim();
+        appeal.ReviewerUserId = UserId;
+        appeal.ReviewedAt = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct);
+        return Ok(new { appeal.Id, appeal.Status, appeal.ReviewComment, appeal.ReviewedAt });
     }
 }

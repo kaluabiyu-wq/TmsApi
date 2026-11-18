@@ -1,23 +1,16 @@
 namespace TmsApi.Domain.Entities;
 
-public class GradeAppeal
+public sealed class GradeAppeal
 {
     public int Id { get; set; }
-
-    public int EnrollmentId { get; set; }
-    public Enrollment Enrollment { get; set; } = null!;
-
-    // Identity user id (string), not Student.ID.
-    public string StudentId { get; set; } = "";
-
-    public string Reason { get; set; } = "";
-
-    // Pending | UnderReview | Approved | Rejected
-    public string Status { get; set; } = "Pending";
-
-    public string? Response { get; set; }
-    public string? ReviewedBy { get; set; }
-
+    public int GradeRecordId { get; set; }
+    public GradeRecord GradeRecord { get; set; } = null!;
+    public int StudentId { get; set; }
+    public Student Student { get; set; } = null!;
+    public string Reason { get; set; } = string.Empty;
+    public string Status { get; set; } = "Pending"; // Pending, Approved, Rejected
+    public string? ReviewerUserId { get; set; }
+    public string? ReviewComment { get; set; }
     public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
     public DateTime? ReviewedAt { get; set; }
 }
