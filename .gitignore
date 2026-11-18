@@ -485,3 +485,6 @@ obj/
 
 *.log
 resp*.json
+
+# Generated institutional report exports
+TmsApi.Api/App_Data/Reports/*

@@ -44,6 +44,8 @@ using TmsApi.Application.Certificates;
 using TmsApi.Infrastructure.Certificates;
 using TmsApi.Infrastructure.Auditing;
 using TmsApi.Infrastructure.Notifications;
+using TmsApi.Application.Programs;
+using TmsApi.Infrastructure.Programs;
 
 
 
@@ -240,6 +242,8 @@ builder.Services.AddSignalR();
 builder.Services.AddSingleton<ITranscriptNotificationService,SignalRTranscriptNotificationService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IInstitutionalReportService, InstitutionalReportService>();
+builder.Services.AddScoped<IProgramService, ProgramService>();
+builder.Services.AddScoped<IProgressService, ProgressService>();
 builder.Services.AddScoped<INotificationRealtimePublisher, SignalRNotificationPublisher>();
 builder.Services.Configure<SmtpNotificationOptions>(builder.Configuration.GetSection("Notifications:Smtp"));
 builder.Services.Configure<SmsNotificationOptions>(builder.Configuration.GetSection("Notifications:Sms"));
