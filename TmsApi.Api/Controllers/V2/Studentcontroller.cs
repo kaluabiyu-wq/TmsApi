@@ -16,6 +16,23 @@ public class StudentController(TmsDbContext context, UserManager<TmsUser> userMa
 
     public sealed record LinkStudentAccountRequest(string UserId);
 
+    public sealed record UpdateStudentStatusRequest(string Status);
+
+    [Authorize(Roles = "Admin,SuperAdmin,Registrar")]
+    [HttpPut("{studentId:int}/status")]
+    public async Task<IActionResult> UpdateStatus(int studentId, [FromBody] UpdateStudentStatusRequest request, CancellationToken ct)
+    {
+        var normalized = request.Status?.Trim();
+        if (normalized is not ("Active" or "Inactive" or "Graduated"))
+            return BadRequest(new { message = "Status must be Active, Inactive or Graduated." });
+        var student = await context.Students.FirstOrDefaultAsync(x => x.ID == studentId, ct);
+        if (student is null) return NotFound();
+        student.Status = normalized;
+        student.IsActive = normalized == "Active";
+        await context.SaveChangesAsync(ct);
+        return Ok(new { student.ID, student.Status, student.IsActive });
+    }
+
     [Authorize(Roles = "Admin")]
     [HttpPut("{studentId:int}/link-account")]
     public async Task<IActionResult> LinkAccount(int studentId, [FromBody] LinkStudentAccountRequest request, CancellationToken ct)
@@ -54,7 +71,8 @@ public class StudentController(TmsDbContext context, UserManager<TmsUser> userMa
                 s.RegistrationNumber,
                 s.Name,
                 s.GPA,
-                s.IsActive
+                s.IsActive,
+                s.Status
             })
             .ToListAsync(ct);
 

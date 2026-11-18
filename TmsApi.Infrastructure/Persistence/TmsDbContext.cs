@@ -33,6 +33,8 @@ public class TmsDbContext : IdentityDbContext<TmsUser>
     public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<NotificationPreference> NotificationPreferences => Set<NotificationPreference>();
     public DbSet<NotificationDelivery> NotificationDeliveries => Set<NotificationDelivery>();
+    public DbSet<ReportDefinition> ReportDefinitions => Set<ReportDefinition>();
+    public DbSet<GeneratedReport> GeneratedReports => Set<GeneratedReport>();
 
      public DbSet<RefreshToken> RefreshTokens { get; set; }
 

@@ -1,22 +1,15 @@
-
 using Microsoft.AspNetCore.SignalR;
 using TmsApi.Api.Hubs;
-using TmsApi.Application.Hubs;
 using TmsApi.Application.Notifications;
+using TmsApi.Application.Hubs;
 
 namespace TmsApi.Api.Notifications;
 
-public sealed class SignalRNotificationPublisher(
-    IHubContext<TmsHub, ITmsHubClient> hubContext)
-    : INotificationRealtimePublisher
+public sealed class SignalRNotificationPublisher(IHubContext<TmsHub, ITmsHubClient> hub) : INotificationRealtimePublisher
 {
-    public async Task PublishAsync(
-        string userId,
-        NotificationRealtimeMessage notification,
-        CancellationToken cancellationToken = default)
+    public Task PublishAsync(string userId, NotificationRealtimeMessage message, CancellationToken ct = default)
     {
-        await hubContext.Clients
-            .User(userId)
-            .ReceiveNotification(notification);
+        // Clients.User maps to the authenticated NameIdentifier claim; never trust a client-supplied user group.
+        return hub.Clients.User(userId).ReceiveNotification(message);
     }
 }
