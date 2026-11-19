@@ -25,13 +25,22 @@ public class AuthController : ControllerBase
 
     private readonly TmsDbContext _context;
     private readonly TokenService _tokenService;
+    private readonly TmsApi.Api.Services.IPasswordResetEmailSender _resetEmail;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger<AuthController> _logger;
 
     public AuthController(UserManager<TmsUser> userManager,
         RoleManager<IdentityRole> roleManager,
         TmsDbContext context,
-        TokenService tokenService
+        TokenService tokenService,
+        TmsApi.Api.Services.IPasswordResetEmailSender resetEmail,
+        IConfiguration configuration,
+        ILogger<AuthController> logger
     )
     {
+        _resetEmail = resetEmail;
+        _configuration = configuration;
+        _logger = logger;
         _userManager = userManager;
         _roleManager = roleManager;
         _context = context;
@@ -191,5 +200,84 @@ public class AuthController : ControllerBase
             accessToken = newAccessToken,
             refreshToken = newRefreshToken.Token
         });
+    }
+
+    public record ForgotPasswordRequest(string Email);
+
+    /// <summary>
+    /// Always answers 200 with the same message, whether or not the account exists,
+    /// so the endpoint cannot be used to discover registered emails.
+    /// </summary>
+    [EnableRateLimiting("AuthLimiter")]
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request, CancellationToken ct)
+    {
+        const string message = "If an account with that email exists, a password reset link has been sent.";
+
+        if (string.IsNullOrWhiteSpace(request.Email)) return Ok(new { message });
+
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user is null || string.IsNullOrWhiteSpace(user.Email)) return Ok(new { message });
+
+        try
+        {
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var baseUrl = (_configuration["Frontend:BaseUrl"]
+                           ?? _configuration.GetSection("AllowedOrigins").Get<string[]>()?.FirstOrDefault()
+                           ?? "http://localhost:4200").TrimEnd('/');
+            var link = $"{baseUrl}/reset-password?email={Uri.EscapeDataString(user.Email)}&token={Uri.EscapeDataString(token)}";
+
+            await _resetEmail.SendAsync(user.Email, user.FirstName, link, ct);
+        }
+        catch (Exception ex)
+        {
+            // Never reveal delivery problems to the caller; log them for the operator.
+            _logger.LogError(ex, "Could not send password reset email.");
+        }
+
+        return Ok(new { message });
+    }
+
+    public record ResetPasswordRequest(string Email, string Token, string NewPassword);
+
+    [EnableRateLimiting("AuthLimiter")]
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+    {
+        const string invalid = "This reset link is invalid or has expired. Request a new one.";
+
+        if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Token)
+            || string.IsNullOrWhiteSpace(request.NewPassword))
+        {
+            return BadRequest(new { detail = "Email, token and new password are required." });
+        }
+
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user is null) return BadRequest(new { detail = invalid });
+
+        var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+        if (!result.Succeeded)
+        {
+            // Password-rule failures are safe to show; token failures get the generic message.
+            var ruleErrors = result.Errors
+                .Where(e => e.Code.StartsWith("Password"))
+                .Select(e => e.Description)
+                .ToList();
+            return ruleErrors.Count > 0
+                ? BadRequest(new { errors = ruleErrors })
+                : BadRequest(new { detail = invalid });
+        }
+
+        await _userManager.ResetAccessFailedCountAsync(user);
+        await _userManager.SetLockoutEndDateAsync(user, null);
+
+        // Sign out every existing session of this account.
+        var tokens = await _context.RefreshTokens
+            .Where(rt => rt.UserId == user.Id && !rt.IsRevoked)
+            .ToListAsync();
+        foreach (var t in tokens) t.IsRevoked = true;
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Password updated. You can now sign in." });
     }
 }
