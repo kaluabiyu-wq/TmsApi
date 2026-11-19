@@ -111,6 +111,115 @@ public static class DataSeeder
 ];
 
 
+    // Demo instructors (development only). Change these passwords outside local/demo use.
+    public const string DemoInstructorPassword = "Instructor#2026pass";
+
+    private static readonly (string Email, string FirstName, string LastName, string Department, string[] CoursePrefixes)[] Instructors =
+    [
+        ("instructor1@tms.local", "Almaz", "Tadesse", "Software Engineering", ["CSE"]),
+        ("instructor2@tms.local", "Solomon", "Bekele", "Data, Cloud and Design", ["DAT", "ARC", "DEV", "MOB", "AI", "UX"]),
+    ];
+
+    /// <summary>
+    /// Seeds courses and students (see the overload below) and also creates two demo
+    /// Instructor accounts, assigns every still-unassigned course to one of them, and
+    /// gives their first courses some enrolled students so the instructor portal has data.
+    /// Safe to run repeatedly: it never duplicates users, never reassigns a course that
+    /// already has an instructor, and only enrolls students into courses with no enrollments.
+    /// </summary>
+    public static async Task SeedAsync(
+        TmsDbContext context,
+        UserManager<TmsUser> userManager,
+        RoleManager<IdentityRole> roleManager,
+        CancellationToken ct = default)
+    {
+        await SeedAsync(context, ct);
+
+        if (!await roleManager.RoleExistsAsync("Instructor"))
+        {
+            await roleManager.CreateAsync(new IdentityRole("Instructor"));
+        }
+
+        var activeStudentIds = await context.Students
+            .Where(st => st.IsActive && !st.IsDeleted)
+            .OrderBy(st => st.RegistrationNumber)
+            .Select(st => st.ID)
+            .ToListAsync(ct);
+
+        var offset = 0;
+        foreach (var (email, firstName, lastName, department, prefixes) in Instructors)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user is null)
+            {
+                user = new TmsUser
+                {
+                    UserName = email,
+                    Email = email,
+                    EmailConfirmed = true,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Department = department
+                };
+
+                var created = await userManager.CreateAsync(user, DemoInstructorPassword);
+                if (!created.Succeeded)
+                {
+                    throw new InvalidOperationException(
+                        $"Seeding instructor {email} failed: " +
+                        string.Join("; ", created.Errors.Select(e => e.Description)));
+                }
+            }
+
+            if (!await userManager.IsInRoleAsync(user, "Instructor"))
+            {
+                await userManager.AddToRoleAsync(user, "Instructor");
+            }
+
+            // Courses nobody teaches yet whose code starts with one of this instructor's prefixes.
+            var unassigned = await context.Courses
+                .Where(c => c.InstructorId == "")
+                .OrderBy(c => c.Code)
+                .ToListAsync(ct);
+
+            var mine = unassigned
+                .Where(c => prefixes.Any(p => c.Code.StartsWith(p + "-")))
+                .ToList();
+
+            foreach (var course in mine)
+            {
+                course.InstructorId = user.Id;
+            }
+
+            await context.SaveChangesAsync(ct);
+
+            // Enroll students into this instructor's first three courses (only if empty).
+            var year = DateTime.UtcNow.Year;
+            foreach (var course in mine.Take(3))
+            {
+                if (await context.Enrollments.AnyAsync(e => e.CourseId == course.Id, ct)) continue;
+
+                var picked = activeStudentIds.Skip(offset).Take(10).ToList();
+                if (picked.Count == 0) picked = activeStudentIds.Take(10).ToList();
+                offset = (offset + 5) % Math.Max(activeStudentIds.Count, 1);
+
+                var take = Math.Min(picked.Count, course.MaxCapacity);
+                for (var i = 0; i < take; i++)
+                {
+                    context.Enrollments.Add(new Enrollment
+                    {
+                        StudentId = picked[i],
+                        CourseId = course.Id,
+                        Year = year,
+                        Status = i < take - 2 ? "Approved" : "Pending" // last two wait for approval
+                    });
+                }
+            }
+
+            await context.SaveChangesAsync(ct);
+        }
+    }
+
     public static async Task SeedAsync(TmsDbContext context, CancellationToken ct = default)
     {
          if (context.Database.IsRelational())

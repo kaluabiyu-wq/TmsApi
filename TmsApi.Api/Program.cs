@@ -422,7 +422,11 @@ if (app.Configuration.GetValue<bool>("Seed:RunOnStartup"))
 {
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<TmsDbContext>();
-    await DataSeeder.SeedAsync(db);
+    var seedUsers = scope.ServiceProvider.GetRequiredService<UserManager<TmsUser>>();
+    var seedRoles = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    // Also creates two demo instructors (instructor1@tms.local, instructor2@tms.local)
+    // and assigns the unassigned courses to them.
+    await DataSeeder.SeedAsync(db, seedUsers, seedRoles);
 }
 
 await AdminBootstrap.RunAsync(app);
