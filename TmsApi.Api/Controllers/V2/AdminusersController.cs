@@ -89,4 +89,58 @@ public class AdminUsersController(
 
         return Ok(new { email = user.Email, role });
     }
+
+    public record CreateInstructorRequest(string Email, string Password, string FirstName, string LastName, string? Department);
+
+    /// <summary>
+    /// Admin-only creation of an Instructor account. Instructors never self-register.
+    /// </summary>
+    [HttpPost("instructors")]
+    public async Task<IActionResult> CreateInstructor([FromBody] CreateInstructorRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+        {
+            return BadRequest(new { detail = "Email and password are required." });
+        }
+
+        if (await userManager.FindByEmailAsync(request.Email) is not null)
+        {
+            return Conflict(new { detail = "A user with this email already exists." });
+        }
+
+        const string role = "Instructor";
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            var roleCreated = await roleManager.CreateAsync(new IdentityRole(role));
+            if (!roleCreated.Succeeded)
+            {
+                return StatusCode(500, new { detail = "Could not create the Instructor role." });
+            }
+        }
+
+        var user = new TmsUser
+        {
+            UserName = request.Email,
+            Email = request.Email,
+            FirstName = request.FirstName?.Trim() ?? string.Empty,
+            LastName = request.LastName?.Trim() ?? string.Empty,
+            Department = request.Department
+        };
+
+        var created = await userManager.CreateAsync(user, request.Password);
+        if (!created.Succeeded)
+        {
+            return BadRequest(new { errors = created.Errors.Select(e => e.Description) });
+        }
+
+        var added = await userManager.AddToRoleAsync(user, role);
+        if (!added.Succeeded)
+        {
+            // Never leave an account without its role behind.
+            await userManager.DeleteAsync(user);
+            return StatusCode(500, new { detail = "Could not assign the Instructor role." });
+        }
+
+        return Created(string.Empty, new { id = user.Id, email = user.Email, role });
+    }
 }
