@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -14,7 +15,9 @@ public record CreateEnrollmentRequest(string StudentId);
 
 public record EnrollmentSummaryDto(
     int Id,
+    string StudentId,
     string StudentName,
+    string CourseCode,
     string CourseName,
     string Status,
     DateTime EnrolledAt);
@@ -67,6 +70,7 @@ public class EnrollmentController(TmsDbContext context,IHubContext<TmsHub, ITmsH
         });
     }
 
+    [Authorize(Roles = "Student,Admin")]
     [HttpPost]
     public async Task<IActionResult> Create(
         int courseId,
@@ -81,8 +85,14 @@ public class EnrollmentController(TmsDbContext context,IHubContext<TmsHub, ITmsH
             return NotFound(new { message = $"Course {courseId} was not found." });
         }
 
-        var student = await context.Students
-            .FirstOrDefaultAsync(s => s.RegistrationNumber == request.StudentId, ct);
+        // A student account is always mapped through the authenticated Identity user.
+        // Never trust a registration number supplied by a student in the request body.
+        var student = User.IsInRole("Student")
+            ? await context.Students.FirstOrDefaultAsync(
+                s => s.UserId == (User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub"))
+                     && !s.IsDeleted, ct)
+            : await context.Students.FirstOrDefaultAsync(
+                s => s.RegistrationNumber == request.StudentId && !s.IsDeleted, ct);
 
         if (student is null)
         {
@@ -132,6 +142,7 @@ public class EnrollmentController(TmsDbContext context,IHubContext<TmsHub, ITmsH
 
   
   
+    [Authorize(Roles = "Admin,Instructor")]
     [HttpGet]
     [Route("~/api/v1/enrollments")]
     public async Task<IActionResult> GetAllEnrollments(CancellationToken ct)
@@ -140,7 +151,9 @@ public class EnrollmentController(TmsDbContext context,IHubContext<TmsHub, ITmsH
             .AsNoTracking()
             .Select(e => new EnrollmentSummaryDto(
                 e.ID,
+                e.Student.RegistrationNumber,
                 e.Student.Name,
+                e.Course.Code,
                 e.Course.Title,
                 e.Status,
                 e.EnrolledAt))
