@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TmsApi.Domain.Entities;
 using TmsApi.Infrastructure.Persistence;
+using TmsApi.Api.Notifications;
 
 namespace TmsApi.Api.Controllers.V2;
 
@@ -17,7 +18,8 @@ namespace TmsApi.Api.Controllers.V2;
 public class AdminUsersController(
     UserManager<TmsUser> userManager,
     RoleManager<IdentityRole> roleManager,
-    TmsDbContext context) : ControllerBase
+    TmsDbContext context,
+    RoleBasedNotificationService roleNotifications) : ControllerBase
 {
     private static readonly string[] AllowedRoles = ["Admin", "Instructor", "Student"];
 
@@ -168,6 +170,16 @@ public class AdminUsersController(
             };
             context.Students.Add(student);
             await context.SaveChangesAsync(ct);
+            try
+            {
+                await roleNotifications.NotifyAdminsAsync("New student account created",
+                    $"{user.FirstName} {user.LastName} was registered as a student.",
+                    "Users", "Info", "/admin/users", ct);
+            }
+            catch
+            {
+                // Notification failure must not undo an already-created student account.
+            }
 
             return Created(string.Empty, new { id = user.Id, studentId = student.ID, email = user.Email, registrationNumber = regNo, role });
         }
@@ -230,6 +242,56 @@ public class AdminUsersController(
             return StatusCode(500, new { detail = "Could not assign the Instructor role." });
         }
 
+        try
+        {
+            await roleNotifications.NotifyAdminsAsync("New instructor account created",
+                $"{user.FirstName} {user.LastName} was registered as an instructor.",
+                "Users", "Info", "/admin/users");
+            await roleNotifications.NotifyUsersAsync([user.Id], "Welcome to the instructor portal",
+                "Your instructor account has been created. You will receive notifications when courses are assigned to you.",
+                "Users", "Success", "/instructor");
+        }
+        catch
+        {
+            // Notification failure must not undo an already-created instructor account.
+        }
         return Created(string.Empty, new { id = user.Id, email = user.Email, role });
+    }
+
+    public record UpdateInstructorProfileRequest(string FirstName, string LastName, string? Department);
+
+    [HttpPut("instructors/{userId}")]
+    public async Task<IActionResult> UpdateInstructorProfile(string userId,
+        [FromBody] UpdateInstructorProfileRequest request, CancellationToken ct)
+    {
+        if (string.IsNullOrWhiteSpace(request.FirstName) || string.IsNullOrWhiteSpace(request.LastName))
+            return BadRequest(new { detail = "First name and last name are required." });
+
+        var user = await userManager.FindByIdAsync(userId);
+        if (user is null || !await userManager.IsInRoleAsync(user, "Instructor"))
+            return NotFound(new { detail = "Instructor not found." });
+
+        user.FirstName = request.FirstName.Trim();
+        user.LastName = request.LastName.Trim();
+        user.Department = request.Department?.Trim();
+        var updated = await userManager.UpdateAsync(user);
+        if (!updated.Succeeded)
+            return BadRequest(new { errors = updated.Errors.Select(e => e.Description) });
+
+        try
+        {
+            await roleNotifications.NotifyAdminsAsync("Instructor profile updated",
+                $"{user.FirstName} {user.LastName}'s instructor profile was updated.",
+                "Users", "Info", "/admin/users", ct);
+            await roleNotifications.NotifyUsersAsync([user.Id], "Your instructor profile was updated",
+                "An administrator updated your instructor profile information.",
+                "Users", "Info", "/instructor/profile", ct);
+        }
+        catch
+        {
+            // The profile update remains successful if notification delivery is unavailable.
+        }
+
+        return Ok(new { id = user.Id, email = user.Email, user.FirstName, user.LastName, user.Department });
     }
 }

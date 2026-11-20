@@ -8,6 +8,7 @@ using TmsApi.Api.Authorization;
 using TmsApi.Api.Contracts;
 using TmsApi.Domain.Entities;
 using TmsApi.Infrastructure.Persistence;
+using TmsApi.Api.Notifications;
 
 namespace TmsApi.Api.Controllers.V2;
 
@@ -18,7 +19,8 @@ namespace TmsApi.Api.Controllers.V2;
 [Authorize]
 public sealed class AssessmentWorkflowController(
     TmsDbContext db,
-    IAuthorizationService authorization) : ControllerBase
+    IAuthorizationService authorization,
+    RoleBasedNotificationService roleNotifications) : ControllerBase
 {
     private string? UserId => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
 
@@ -57,6 +59,13 @@ public sealed class AssessmentWorkflowController(
         };
         db.Assessments.Add(assessment);
         await db.SaveChangesAsync(ct);
+        if (!string.Equals(UserId, course.InstructorId, StringComparison.Ordinal))
+            await roleNotifications.NotifyCourseInstructorAsync(course.Id, "New assessment created",
+                $"Assessment “{assessment.Title}” was created for {course.Title}.",
+                "Assessments", "Info", "/instructor/assessments", ct);
+        await roleNotifications.NotifyAdminsAsync("New assessment created",
+            $"Assessment “{assessment.Title}” was created for {course.Title}.",
+            "Assessments", "Info", "/admin", ct);
         return CreatedAtAction(nameof(Get), new { version = "2.0", courseId = course.Id, id = assessment.Id }, ToInstructorDto(assessment));
     }
 
@@ -75,6 +84,10 @@ public sealed class AssessmentWorkflowController(
         assessment.DurationMinutes = request.DurationMinutes; assessment.MaxAttempts = request.MaxAttempts;
         assessment.UpdatedAt = DateTime.UtcNow;
         await db.SaveChangesAsync(ct);
+        if (!string.Equals(UserId, assessment.Course.InstructorId, StringComparison.Ordinal))
+            await roleNotifications.NotifyCourseInstructorAsync(assessment.CourseId, "Assessment updated",
+                $"Assessment “{assessment.Title}” was updated.",
+                "Assessments", "Info", "/instructor/assessments", ct);
         return Ok(ToInstructorDto(assessment));
     }
 
@@ -91,6 +104,14 @@ public sealed class AssessmentWorkflowController(
             return BadRequest(new { message = "ClosesAt must be later than OpensAt." });
         assessment.Status = "Published"; assessment.UpdatedAt = DateTime.UtcNow;
         await db.SaveChangesAsync(ct);
+        if (!string.Equals(UserId, assessment.Course.InstructorId, StringComparison.Ordinal))
+            await roleNotifications.NotifyCourseInstructorAsync(assessment.CourseId, "Assessment published",
+                $"Assessment “{assessment.Title}” was published.",
+                "Assessments", "Info", "/instructor/assessments", ct);
+        await roleNotifications.NotifyAssessmentPublishedAsync(assessment.CourseId, assessment.Title, ct);
+        await roleNotifications.NotifyAdminsAsync("Assessment published",
+            $"Assessment “{assessment.Title}” was published for {assessment.Course.Title}.",
+            "Assessments", "Info", "/admin", ct);
         return NoContent();
     }
 
@@ -239,6 +260,10 @@ public sealed class AssessmentWorkflowController(
         };
         db.AssessmentSubmissions.Add(submission);
         await db.SaveChangesAsync(ct);
+        await roleNotifications.NotifyCourseInstructorAsync(attempt.Assessment.CourseId,
+            "New assessment submission",
+            $"A student submitted “{attempt.Assessment.Title}”.",
+            "Assessments", "Info", "/instructor/assessments", ct);
         return Ok(new { submission.Id, submission.SubmittedAt, submission.Score, submission.GradingStatus });
     }
 
@@ -253,6 +278,7 @@ public sealed class AssessmentWorkflowController(
             .Select(s => new {
                 s.Id, s.AttemptId, s.SubmittedAt, s.Score, s.GradingStatus, s.Feedback,
                 StudentId = s.Attempt.StudentId, StudentName = s.Attempt.Student.Name,
+                RegistrationNumber = s.Attempt.Student.RegistrationNumber,
                 s.Attempt.AttemptNumber,
                 Answers = s.Attempt.Answers.OrderBy(a => a.Question.SortOrder).Select(a => new {
                     a.QuestionId, a.Question.Prompt, a.Question.QuestionType, a.AnswerText,
@@ -289,6 +315,12 @@ public sealed class AssessmentWorkflowController(
         }
         else submission.GradingStatus = "Pending";
         await db.SaveChangesAsync(ct);
+        if (!string.Equals(UserId, assessment.Course.InstructorId, StringComparison.Ordinal))
+            await roleNotifications.NotifyCourseInstructorAsync(assessment.CourseId, "Assessment grading updated",
+                $"Grading was updated for “{assessment.Title}”.",
+                "Assessments", "Info", "/instructor/assessments", ct);
+        await roleNotifications.NotifyAssessmentGradedAsync(submission.Attempt.StudentId,
+            assessment.Title, submission.Score, ct);
         return Ok(new { submission.Id, submission.Score, submission.GradingStatus, submission.Feedback });
     }
 
