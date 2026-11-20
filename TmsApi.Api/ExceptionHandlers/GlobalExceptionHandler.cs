@@ -1,10 +1,12 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using TmsApi.Api.Notifications;
 
 namespace TmsApi.Api.ExceptionHandlers;
 
-public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IServiceScopeFactory scopeFactory) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext, Exception exception, CancellationToken ct)
@@ -47,6 +49,20 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         if (status == StatusCodes.Status500InternalServerError)
         {
             logger.LogError(exception, "Unhandled exception (trace={TraceId})", httpContext.TraceIdentifier);
+            try
+            {
+                await using var scope = scopeFactory.CreateAsyncScope();
+                var notifications = scope.ServiceProvider.GetRequiredService<RoleBasedNotificationService>();
+                await notifications.NotifyAdminsAsync(
+                    "System error detected",
+                    $"An unexpected server error occurred while processing {httpContext.Request.Method} {httpContext.Request.Path}. Reference: {httpContext.TraceIdentifier}.",
+                    "System", "Warning", "/admin", ct);
+            }
+            catch (Exception notificationError)
+            {
+                // Notification delivery must never mask the original application exception.
+                logger.LogWarning(notificationError, "Could not create administrator system-error notification.");
+            }
         }
 
         var problem = new ProblemDetails

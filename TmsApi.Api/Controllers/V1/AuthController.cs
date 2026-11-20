@@ -7,6 +7,7 @@ using TmsApi.Infrastructure.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Authorization;
+using TmsApi.Api.Notifications;
 
 namespace TmsApi.Api.Controllers.V1;
 
@@ -28,6 +29,7 @@ public class AuthController : ControllerBase
     private readonly TmsApi.Api.Services.IPasswordResetEmailSender _resetEmail;
     private readonly IConfiguration _configuration;
     private readonly ILogger<AuthController> _logger;
+    private readonly RoleBasedNotificationService _roleNotifications;
 
     public AuthController(UserManager<TmsUser> userManager,
         RoleManager<IdentityRole> roleManager,
@@ -35,12 +37,14 @@ public class AuthController : ControllerBase
         TokenService tokenService,
         TmsApi.Api.Services.IPasswordResetEmailSender resetEmail,
         IConfiguration configuration,
-        ILogger<AuthController> logger
+        ILogger<AuthController> logger,
+        RoleBasedNotificationService roleNotifications
     )
     {
         _resetEmail = resetEmail;
         _configuration = configuration;
         _logger = logger;
+        _roleNotifications = roleNotifications;
         _userManager = userManager;
         _roleManager = roleManager;
         _context = context;
@@ -91,6 +95,16 @@ public class AuthController : ControllerBase
             return StatusCode(500, new { detail = "Registration failed." });
         }
 
+        try
+        {
+            await _roleNotifications.NotifyAdminsAsync("New student registration",
+                $"{user.FirstName} {user.LastName} registered a student account.",
+                "Users", "Info", "/admin/users");
+        }
+        catch (Exception notificationError)
+        {
+            _logger.LogWarning(notificationError, "Could not notify administrators about a new student registration.");
+        }
         return Ok(new { message = "Registration successful." });
     }
 

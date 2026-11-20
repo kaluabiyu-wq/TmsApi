@@ -63,15 +63,21 @@ public sealed class CourseScheduleService(TmsDbContext db) : ICourseScheduleServ
         if (!string.IsNullOrWhiteSpace(query.InstructorId)) q = q.Where(x => x.InstructorId == query.InstructorId);
         if (query.ClassroomId.HasValue) q = q.Where(x => x.ClassroomId == query.ClassroomId.Value);
         if (query.CourseId.HasValue) q = q.Where(x => x.CourseId == query.CourseId.Value);
-        return await Project(q).OrderBy(x => x.StartAt).ToListAsync(ct);
+        // Materialize the SQL projection before sorting. Sorting a projected DTO
+        // inside the EF query can produce an expression EF/Npgsql cannot translate.
+        var items = await Project(q).ToListAsync(ct);
+        return items.OrderBy(x => x.StartAt).ThenBy(x => x.Id).ToList();
     }
 
     public async Task<IReadOnlyList<CourseScheduleResponse>> GetInstructorScheduleAsync(string instructorId, DateTime from, DateTime to, CancellationToken ct)
     {
         ValidateRange(from, to);
-        return await Project(db.CourseSchedules.AsNoTracking()
-            .Where(x => !x.IsCancelled && x.InstructorId == instructorId && x.StartAt < to && x.EndAt > from))
-            .OrderBy(x => x.StartAt).ToListAsync(ct);
+        var q = db.CourseSchedules.AsNoTracking()
+            .Where(x => !x.IsCancelled && x.InstructorId == instructorId && x.StartAt < to && x.EndAt > from);
+
+        // Sort after materialization to keep DTO members out of the SQL expression tree.
+        var items = await Project(q).ToListAsync(ct);
+        return items.OrderBy(x => x.StartAt).ThenBy(x => x.Id).ToList();
     }
 
     public async Task<IReadOnlyList<CourseScheduleResponse>> GetCourseScheduleAsync(int courseId, DateTime from, DateTime to, string? instructorId, CancellationToken ct)
@@ -81,7 +87,10 @@ public sealed class CourseScheduleService(TmsDbContext db) : ICourseScheduleServ
             .Where(x => !x.IsCancelled && x.CourseId == courseId && x.StartAt < to && x.EndAt > from);
         if (!string.IsNullOrWhiteSpace(instructorId))
             q = q.Where(x => x.InstructorId == instructorId);
-        return await Project(q).OrderBy(x => x.StartAt).ToListAsync(ct);
+        // Materialize the SQL projection before sorting. Sorting a projected DTO
+        // inside the EF query can produce an expression EF/Npgsql cannot translate.
+        var items = await Project(q).ToListAsync(ct);
+        return items.OrderBy(x => x.StartAt).ThenBy(x => x.Id).ToList();
     }
 
     private async Task ValidateBookingAsync(CourseSchedule s, int? excludeId, CancellationToken ct)

@@ -3,6 +3,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TmsApi.Application.Notifications;
+using TmsApi.Api.Notifications;
 
 namespace TmsApi.Api.Controllers.V2;
 
@@ -11,7 +12,7 @@ namespace TmsApi.Api.Controllers.V2;
 [Route("api/v{version:apiVersion}/notifications")]
 [Authorize]
 [Produces("application/json")]
-public sealed class NotificationsController(INotificationService notifications) : ControllerBase
+public sealed class NotificationsController(INotificationService notifications, RoleBasedNotificationService roleNotifications) : ControllerBase
 {
     private string? CurrentUserId => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.FindFirstValue("sub");
 
@@ -71,5 +72,24 @@ public sealed class NotificationsController(INotificationService notifications) 
         var userId = CurrentUserId; if (userId is null) return Unauthorized();
         try { return Ok(await notifications.UpdatePreferenceAsync(userId, request, ct)); }
         catch (ArgumentException ex) { return BadRequest(new { message = ex.Message }); }
+    }
+
+    public sealed record AnnouncementRequest(string Title, string Message, string Role, string? Category = "Announcements", string? ActionUrl = null);
+
+    [HttpPost("announcements")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
+    public async Task<IActionResult> CreateAnnouncement([FromBody] AnnouncementRequest request, CancellationToken ct)
+    {
+        var role = request.Role?.Trim();
+        if (string.IsNullOrWhiteSpace(request.Title) || request.Title.Length > 180 ||
+            string.IsNullOrWhiteSpace(request.Message) || request.Message.Length > 4000)
+            return BadRequest(new { message = "A title (max 180 characters) and message (max 4000 characters) are required." });
+        if (role is not ("Student" or "Instructor" or "Admin" or "SuperAdmin"))
+            return BadRequest(new { message = "Role must be Student, Instructor, Admin or SuperAdmin." });
+
+        await roleNotifications.NotifyRoleAsync(role, request.Title, request.Message,
+            string.IsNullOrWhiteSpace(request.Category) ? "Announcements" : request.Category,
+            "Info", request.ActionUrl, ct);
+        return Accepted(new { message = "Announcement notifications have been created for the selected role." });
     }
 }

@@ -1,4 +1,7 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using TmsApi.Api.Notifications;
+using TmsApi.Domain.Entities;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using TmsApi.Infrastructure.Persistence;
@@ -113,4 +116,36 @@ public class CourseController(ICachedCourseService cachedCourseService, TmsDbCon
     }
 
     public record UpdateCourseRequestBody(string Title);
+    public record AssignInstructorRequest(string InstructorId);
+
+    [Authorize(Roles = "Admin,SuperAdmin")]
+    [HttpPut("{id:int}/instructor")]
+    public async Task<IActionResult> AssignInstructor(
+        int id,
+        [FromBody] AssignInstructorRequest request,
+        [FromServices] UserManager<TmsUser> userManager,
+        [FromServices] RoleBasedNotificationService roleNotifications,
+        [FromServices] ICachedCourseService cache,
+        CancellationToken ct)
+    {
+        if (string.IsNullOrWhiteSpace(request.InstructorId))
+            return BadRequest(new { message = "InstructorId is required." });
+
+        var course = await context.Courses.FindAsync(new object?[] { id }, ct);
+        if (course is null) return NotFound();
+
+        var instructor = await userManager.FindByIdAsync(request.InstructorId);
+        if (instructor is null || !await userManager.IsInRoleAsync(instructor, "Instructor"))
+            return BadRequest(new { message = "The selected account is not an instructor." });
+
+        var previousInstructorId = course.InstructorId;
+        if (string.Equals(previousInstructorId, instructor.Id, StringComparison.Ordinal))
+            return NoContent();
+
+        course.InstructorId = instructor.Id;
+        await context.SaveChangesAsync(ct);
+        await cache.InvalidateCourseCachedAsync(ct);
+        await roleNotifications.NotifyCourseAssignmentChangedAsync(course.Id, previousInstructorId, instructor.Id, ct);
+        return NoContent();
+    }
 }

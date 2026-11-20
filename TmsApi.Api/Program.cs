@@ -246,6 +246,7 @@ builder.Services.AddScoped<IInstitutionalReportService, InstitutionalReportServi
 builder.Services.AddScoped<IProgramService, ProgramService>();
 builder.Services.AddScoped<IProgressService, ProgressService>();
 builder.Services.AddScoped<INotificationRealtimePublisher, SignalRNotificationPublisher>();
+builder.Services.AddScoped<RoleBasedNotificationService>();
 builder.Services.Configure<SmtpNotificationOptions>(builder.Configuration.GetSection("Notifications:Smtp"));
 builder.Services.Configure<SmsNotificationOptions>(builder.Configuration.GetSection("Notifications:Sms"));
 builder.Services.AddHttpClient("TmsSms");
